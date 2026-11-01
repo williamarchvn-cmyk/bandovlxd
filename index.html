@@ -559,7 +559,7 @@ function initMap() {
       'Thư viện bản đồ (Leaflet) chưa tải được. Kiểm tra kết nối internet, tắt trình chặn quảng cáo cho trang này rồi tải lại (F5). Danh sách bên trái vẫn dùng được.');
     return;
   }
-  map = L.map('map', { zoomControl: true, maxZoom: 19 }).setView(DEFAULT_CENTER, 13);
+  map = L.map('map', { zoomControl: true, maxZoom: 19, doubleClickZoom: isAdmin() }).setView(DEFAULT_CENTER, 13);
   map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
   hasMap = true;
 
@@ -640,11 +640,22 @@ function initMap() {
   legend.onAdd = () => {
     const d = L.DomUtil.create('div', 'legend');
     d.innerHTML = '<span>🏪 Cửa hàng</span><span>🏠 ' + (isAdmin() ? 'Khách hàng' : 'Vị trí của bạn') + '</span>';
+    L.DomEvent.disableClickPropagation(d);
     return d;
   };
   legend.addTo(map);
 
+  // Nhấp đúp / chạm 2 lần (trang xem) → ghim vị trí của bạn + mở tab tìm cửa hàng
+  // Tự nhận diện 2 lần bấm liên tiếp để chạy giống nhau trên chuột lẫn màn hình cảm ứng
+  let lastTap = null;
   map.on('click', e => {
+    if (!isAdmin()) {
+      const now = Date.now();
+      if (lastTap && now - lastTap.t < 450 && lastTap.p.distanceTo(e.containerPoint) < 30) {
+        lastTap = null; lookupAt(e.latlng); return;
+      }
+      lastTap = { t: now, p: e.containerPoint };
+    }
     const d = clickDraft();
     if (d) setDraftLocation(d, e.latlng.lat, e.latlng.lng);
   });
@@ -1062,7 +1073,7 @@ function markDirty(d) { if (S.editing && d === S.editing.draft) S.editing.dirty 
 /* ================= Tra cứu (chế độ xem) ================= */
 function renderLookup() {
   const d = S.lookup;
-  $('#list').innerHTML = '<p class="muted small" style="margin:2px 0 10px">Đặt vị trí của bạn và chọn vật tư cần mua — hệ thống gợi ý cửa hàng <b>gần nhất</b> và <b>rẻ nhất</b>.</p>' +
+  $('#list').innerHTML = '<p class="muted small" style="margin:2px 0 10px"><b>Nhấp đúp (chạm 2 lần) lên bản đồ</b> hoặc bấm "Đặt vị trí" để ghim vị trí của bạn, rồi chọn vật tư cần mua — hệ thống gợi ý cửa hàng <b>gần nhất</b> và <b>rẻ nhất</b>.</p>' +
     locHTML(d, 'Vị trí của bạn') + cartHTML(d) +
     '<button type="button" class="btn suggest btn-suggest">🔎 Gợi ý cửa hàng</button><div class="suggest-box"></div>';
   updateLocUI(d);
@@ -1656,6 +1667,31 @@ $('#panelHideM').addEventListener('click', () => { setPanel(false); $('#panelTog
 document.body.addEventListener('transitionend', e => {
   if (e.target === document.body && hasMap) map.invalidateSize();
 });
+
+/* ---------- Ghim vị trí từ bản đồ (nhấp đúp) ---------- */
+function lookupAt(latlng) {
+  if (isAdmin() || !$('#login').hidden) return;
+  const wasHidden = panelHidden;
+  if (S.detailId) closeDetail();
+  if (S.tab !== 'lookup') switchTab('lookup');
+  if (wasHidden) setPanel(true);
+  const d = S.lookup;
+  setDraftLocation(d, latlng.lat, latlng.lng);
+  // Đợi bảng hiện xong rồi: cuộn tới "Danh sách cần mua", đặt con trỏ vào ô chọn sản phẩm còn trống,
+  // và (trên điện thoại bản đồ thấp đi) lướt bản đồ tới chỗ vừa ghim nếu nó bị khuất
+  setTimeout(() => {
+    const list = $('#list');
+    const sel = $$('#list .c-prod').find(x => !x.value) || $('#list .c-prod');
+    if (sel) {
+      const box = sel.closest('.cart-box') || sel;
+      const top = list.scrollTop + box.getBoundingClientRect().top - list.getBoundingClientRect().top - 8;
+      if (list.scrollTo) list.scrollTo({ top: Math.max(0, top), behavior: 'smooth' }); else list.scrollTop = Math.max(0, top);
+      try { sel.focus({ preventScroll: true }); } catch (e) { /* bỏ qua */ }
+    }
+    if (d.lat != null) goTo(d.lat, d.lng);
+  }, wasHidden ? 320 : 30);
+  toast('Đã ghim vị trí của bạn — chọn sản phẩm cần mua', 'ok');
+}
 
 /* ---------- Rê chuột lên thẻ → làm nổi ghim tương ứng ---------- */
 function markerOfCard(c) { return (c.dataset.kind === 'store' ? storeMarkers : custMarkers).get(c.dataset.id); }
