@@ -217,6 +217,7 @@ input.invalid{border-color:var(--danger);background:var(--danger-50)}
 .panel-toggle .pt-ico{transition:transform .25s ease}
 body.panel-off .panel-toggle .pt-ico{transform:rotate(180deg)}
 .pt-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.panel-hide-m{display:none}
 
 /* ---------- Nút chọn nền bản đồ ---------- */
 .base-switch{display:flex;flex-direction:column;gap:2px;background:#fff;padding:5px;border-radius:12px;box-shadow:var(--shadow)}
@@ -286,6 +287,15 @@ body.panel-off .panel-toggle .pt-ico{transform:rotate(180deg)}
   .panel-toggle .pt-ico{transform:rotate(-90deg)}
   body.panel-off .panel-toggle .pt-ico{transform:rotate(90deg)}
   .pt-label{position:static;width:auto;height:auto;overflow:visible;clip:auto}
+  body:not(.panel-off) .panel-toggle{display:none}
+  .panel-hide-m{display:inline-flex;align-items:center;gap:4px;flex:none;height:32px;padding:0 12px 0 9px;border:1px solid var(--line);border-radius:999px;background:#fff;color:#475569;font:inherit;font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+  .panel-hide-m:hover{background:var(--primary-50);color:var(--primary);border-color:#c7d4ea}
+  .panel-hide-m:active{transform:scale(.97)}
+  .side-head{gap:8px}
+  .brand{gap:8px}
+  .brand h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mode-badge{font-size:9px;padding:1px 5px;margin-left:4px;white-space:nowrap}
+  .hd-btn{width:32px;height:32px}
   .sync{padding:7px}
   .sync b{display:none}
   .login-card{padding:26px 20px 18px}
@@ -307,6 +317,7 @@ body.panel-off .panel-toggle .pt-ico{transform:rotate(180deg)}
         <p id="modeText">Tìm cửa hàng vật tư gần &amp; rẻ</p>
       </div>
     </div>
+    <button type="button" id="panelHideM" class="panel-hide-m" aria-controls="side" title="Ẩn bảng — xem bản đồ toàn màn hình"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>Ẩn bảng</button>
     <span id="sync" class="sync" title="Trạng thái đồng bộ"><i></i><b>Đang kết nối…</b></span>
     <button type="button" id="btnLogout" class="hd-btn" title="Đăng xuất" aria-label="Đăng xuất" hidden><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg></button>
   </header>
@@ -1641,6 +1652,7 @@ function setPanel(show) {
   if (hasMap) setTimeout(() => map.invalidateSize(), 300);
 }
 $('#panelToggle').addEventListener('click', () => setPanel(panelHidden));
+$('#panelHideM').addEventListener('click', () => { setPanel(false); $('#panelToggle').focus(); });
 document.body.addEventListener('transitionend', e => {
   if (e.target === document.body && hasMap) map.invalidateSize();
 });
