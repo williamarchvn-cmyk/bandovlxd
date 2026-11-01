@@ -44,7 +44,7 @@ button,input,select{font:inherit;color:inherit}
 
 .view{display:flex;flex-direction:column;min-height:0;flex:1}
 .tabs{display:flex;gap:4px;padding:10px 12px 0}
-.tab{flex:1;border:0;background:transparent;padding:9px 6px;border-radius:10px 10px 0 0;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+.tab{flex:1;border:0;background:transparent;padding:9px 6px;line-height:1.3;border-radius:10px 10px 0 0;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
 .tab[aria-selected="true"]{color:var(--primary);border-bottom-color:var(--primary);background:var(--primary-50)}
 .toolbar{display:flex;gap:8px;padding:10px 12px 0;align-items:center}
 .toolbar input[type=search]{flex:1;min-width:0}
@@ -205,6 +205,18 @@ input.invalid{border-color:var(--danger);background:var(--danger-50)}
 .pin-big.pin-store{box-shadow:0 0 0 6px rgba(22,163,74,.25),0 6px 14px rgba(0,0,0,.35)}
 .pin-big.pin-customer{box-shadow:0 0 0 6px rgba(249,115,22,.28),0 6px 14px rgba(0,0,0,.35)}
 
+/* ---------- Nút chọn nền bản đồ ---------- */
+.base-switch{display:flex;flex-direction:column;gap:2px;background:#fff;padding:5px;border-radius:12px;box-shadow:var(--shadow)}
+.base-btn{display:flex;flex-direction:column;align-items:center;gap:4px;width:66px;white-space:nowrap;padding:5px 2px 6px;border:0;background:transparent;border-radius:9px;cursor:pointer;font:inherit;font-size:11px;font-weight:600;line-height:1.1;color:#475569;transition:background .15s,color .15s}
+.base-btn:hover{background:var(--line2)}
+.base-btn .ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(15,23,42,.08);transition:box-shadow .15s,transform .1s}
+.base-btn:active .ico{transform:scale(.93)}
+.base-btn[aria-pressed="true"]{color:var(--primary)}
+.base-btn[aria-pressed="true"] .ico{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--primary)}
+.ico-street{background:linear-gradient(135deg,#fff7e6,#fde2b8);color:#c2410c}
+.ico-sat{background:linear-gradient(135deg,#1f3d2b,#4d7c0f);color:#fff}
+.ico-osm{background:linear-gradient(135deg,#e0f2fe,#dbeafe);color:#0369a1}
+
 /* ---------- Chuyển cảnh ---------- */
 @keyframes viewIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -248,6 +260,10 @@ input.invalid{border-color:var(--danger);background:var(--danger-50)}
   .brand-ico{width:32px;height:32px;font-size:17px}
   .brand h1{font-size:15px}
   .legend{display:none}
+  .base-switch{flex-direction:row;padding:4px}
+  .base-btn{width:56px;font-size:10px;padding:4px 1px 5px}
+  .base-btn .ico{width:30px;height:30px;border-radius:9px}
+  .base-btn .ico svg{width:16px;height:16px}
   .leaflet-control-attribution{font-size:9px;line-height:1.35}
   .notice{top:auto;bottom:30px}
   .sync{padding:7px}
@@ -527,12 +543,44 @@ function initMap() {
     maxZoom: 19, subdomains: 'abc', keepBuffer: 6, updateWhenZooming: false,
     attribution: '&copy; <a href="https://www.openstreetmap.fr/" target="_blank" rel="noopener">OpenStreetMap France</a> | &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">Những người đóng góp OpenStreetMap</a>'
   });
-  esriStreet.addTo(map);
-  L.control.layers({ 'Đường phố (Esri)': esriStreet, 'Vệ tinh (Esri)': esriImg, 'OpenStreetMap Pháp': osmFr }, null, { position: 'topright' }).addTo(map);
+  // ---- Chọn nền bản đồ bằng icon ----
+  let switched = false, warned = false, curBase = '';
+  const SV = d => '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>';
+  const BASES = {
+    street: { layer: esriStreet, label: 'Đường phố', title: 'Bản đồ đường phố (Esri)',
+      icon: SV('<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/>') },
+    sat: { layer: esriImg, label: 'Vệ tinh', title: 'Ảnh vệ tinh (Esri)',
+      icon: SV('<path d="M13 7 9 3 5 7l4 4"/><path d="m17 11 4 4-4 4-4-4"/><path d="m8 12 4 4 6-6-4-4z"/><path d="m16 8 3-3"/><path d="M9 21a6 6 0 0 0-6-6"/>') },
+    osm: { layer: osmFr, label: 'OSM', title: 'OpenStreetMap Pháp',
+      icon: SV('<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/>') }
+  };
+  let baseBox = null;
+  function setBase(k) {
+    if (!BASES[k]) return;
+    for (const b of Object.values(BASES)) if (b.layer !== BASES[k].layer && map.hasLayer(b.layer)) map.removeLayer(b.layer);
+    if (!map.hasLayer(BASES[k].layer)) BASES[k].layer.addTo(map);
+    curBase = k; warned = false;
+    if (baseBox) $$('.base-btn', baseBox).forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.base === k)));
+  }
+  const BaseCtl = L.Control.extend({
+    options: { position: 'topright' },
+    onAdd() {
+      const box = L.DomUtil.create('div', 'base-switch');
+      box.setAttribute('role', 'group'); box.setAttribute('aria-label', 'Chọn nền bản đồ');
+      box.innerHTML = Object.entries(BASES).map(([k, b]) =>
+        '<button type="button" class="base-btn" data-base="' + k + '" title="' + b.title + '" aria-label="' + b.title + '" aria-pressed="false">' +
+        '<span class="ico ico-' + k + '">' + b.icon + '</span><span class="lbl">' + b.label + '</span></button>').join('');
+      L.DomEvent.disableClickPropagation(box); L.DomEvent.disableScrollPropagation(box);
+      box.addEventListener('click', e => { const t = e.target.closest('.base-btn'); if (t) setBase(t.dataset.base); });
+      baseBox = box;
+      return box;
+    }
+  });
+  new BaseCtl().addTo(map);
+  setBase('street');
   L.control.scale({ imperial: false, position: 'bottomright' }).addTo(map);
 
   // Tự chuyển nền khi lỗi tile liên tiếp
-  let switched = false, warned = false;
   const watch = (layer, isEsri) => {
     let errs = 0;
     layer.on('tileload', () => { errs = 0; });
@@ -541,7 +589,7 @@ function initMap() {
       if (errs < 6 || !map.hasLayer(layer)) return;
       if (isEsri && !switched) {
         switched = true; errs = 0;
-        map.removeLayer(layer); osmFr.addTo(map);
+        setBase('osm');
         toast('Nền Esri bị lỗi — đã tự chuyển sang OpenStreetMap Pháp', 'warn');
       } else if (!warned) {
         warned = true;
@@ -551,7 +599,6 @@ function initMap() {
     });
   };
   watch(esriStreet, true); watch(esriImg, true); watch(osmFr, false);
-  map.on('baselayerchange', () => { warned = false; });
 
   storeLayer = L.layerGroup().addTo(map);
   custLayer = L.layerGroup().addTo(map);
@@ -841,9 +888,9 @@ function renderDatalists() {
 }
 function renderTabs() {
   const t1 = $('#tab1'), t2 = $('#tab2');
-  t1.textContent = 'Cửa hàng (' + S.stores.length + ')';
+  t1.textContent = isAdmin() ? 'Cửa hàng (' + S.stores.length + ')' : 'Toàn bộ cửa hàng';
   if (isAdmin()) { t2.dataset.tab = 'customers'; t2.textContent = 'Khách hàng (' + S.customers.length + ')'; }
-  else { t2.dataset.tab = 'lookup'; t2.textContent = '🔎 Tra cứu giỏ hàng'; }
+  else { t2.dataset.tab = 'lookup'; t2.textContent = '🔎 Tìm cửa hàng gần nhất và rẻ nhất'; }
   t1.setAttribute('aria-selected', String(S.tab === 'stores'));
   t2.setAttribute('aria-selected', String(S.tab !== 'stores'));
   $('#toolbar').hidden = S.tab === 'lookup';
