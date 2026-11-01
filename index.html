@@ -24,6 +24,11 @@ body{
   height:100vh; overflow:hidden;
   display:grid; grid-template-columns:400px minmax(0,1fr); grid-template-rows:minmax(0,1fr);
   grid-template-areas:"side map";
+  transition:grid-template-columns .25s ease,grid-template-rows .25s ease;
+}
+@media (min-width:761px){
+  body.panel-off{grid-template-columns:0px minmax(0,1fr)}
+  #side>*{width:399px}
 }
 @supports (height:100dvh){ body{height:100dvh} }
 button,input,select{font:inherit;color:inherit}
@@ -31,7 +36,8 @@ button,input,select{font:inherit;color:inherit}
 [hidden]{display:none!important}
 
 /* ---------- Sidebar ---------- */
-#side{grid-area:side;display:flex;flex-direction:column;min-height:0;min-width:0;background:var(--panel);border-right:1px solid var(--line);z-index:2}
+#side{grid-area:side;display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden;background:var(--panel);border-right:1px solid var(--line);z-index:2;transition:visibility 0s}
+body.panel-off #side{visibility:hidden;transition:visibility 0s .25s}
 .side-head{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;border-bottom:1px solid var(--line2)}
 .brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
 .brand-ico{width:38px;height:38px;border-radius:10px;background:var(--primary-50);display:grid;place-items:center;font-size:20px;flex:none}
@@ -205,6 +211,13 @@ input.invalid{border-color:var(--danger);background:var(--danger-50)}
 .pin-big.pin-store{box-shadow:0 0 0 6px rgba(22,163,74,.25),0 6px 14px rgba(0,0,0,.35)}
 .pin-big.pin-customer{box-shadow:0 0 0 6px rgba(249,115,22,.28),0 6px 14px rgba(0,0,0,.35)}
 
+/* ---------- Nút ẩn/hiện bảng ---------- */
+.panel-toggle{position:absolute;z-index:1001;top:50%;left:0;transform:translateY(-50%);width:24px;height:62px;padding:0;border:1px solid var(--line);border-left:0;border-radius:0 12px 12px 0;background:#fff;color:#475569;box-shadow:3px 0 12px rgba(15,23,42,.12);display:grid;place-items:center;cursor:pointer;transition:background .15s,color .15s,width .15s}
+.panel-toggle:hover{background:var(--primary-50);color:var(--primary);width:28px}
+.panel-toggle .pt-ico{transition:transform .25s ease}
+body.panel-off .panel-toggle .pt-ico{transform:rotate(180deg)}
+.pt-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
 /* ---------- Nút chọn nền bản đồ ---------- */
 .base-switch{display:flex;flex-direction:column;gap:2px;background:#fff;padding:5px;border-radius:12px;box-shadow:var(--shadow)}
 .base-btn{display:flex;flex-direction:column;align-items:center;gap:4px;width:66px;white-space:nowrap;padding:5px 2px 6px;border:0;background:transparent;border-radius:9px;cursor:pointer;font:inherit;font-size:11px;font-weight:600;line-height:1.1;color:#475569;transition:background .15s,color .15s}
@@ -253,7 +266,7 @@ input.invalid{border-color:var(--danger);background:var(--danger-50)}
 /* ---------- Điện thoại ---------- */
 @media (max-width:760px){
   body{grid-template-columns:minmax(0,1fr);grid-template-rows:42vh minmax(0,1fr);grid-template-areas:"map" "side"}
-  @supports (height:100dvh){ body{grid-template-rows:42dvh minmax(0,1fr)} }
+  @supports (height:100dvh){ body{grid-template-rows:42dvh minmax(0,1fr)} body.panel-off{grid-template-rows:100dvh minmax(0,0fr)} }
   #side{border-right:0;border-top:1px solid var(--line);box-shadow:0 -4px 14px rgba(0,0,0,.06)}
   #map{min-height:0}
   .side-head{padding:10px 12px 8px}
@@ -265,7 +278,14 @@ input.invalid{border-color:var(--danger);background:var(--danger-50)}
   .base-btn .ico{width:30px;height:30px;border-radius:9px}
   .base-btn .ico svg{width:16px;height:16px}
   .leaflet-control-attribution{font-size:9px;line-height:1.35}
-  .notice{top:auto;bottom:30px}
+  .notice{top:auto;bottom:66px}
+  body.panel-off{grid-template-rows:100vh minmax(0,0fr)}
+  body.panel-off #side{border-top:0;box-shadow:none}
+  .panel-toggle{top:auto;bottom:24px;left:50%;transform:translateX(-50%);width:auto;height:34px;padding:0 14px 0 10px;border:1px solid var(--line);border-radius:999px;display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;box-shadow:0 4px 14px rgba(15,23,42,.16)}
+  .panel-toggle:hover{width:auto}
+  .panel-toggle .pt-ico{transform:rotate(-90deg)}
+  body.panel-off .panel-toggle .pt-ico{transform:rotate(90deg)}
+  .pt-label{position:static;width:auto;height:auto;overflow:visible;clip:auto}
   .sync{padding:7px}
   .sync b{display:none}
   .login-card{padding:26px 20px 18px}
@@ -313,6 +333,7 @@ input.invalid{border-color:var(--danger);background:var(--danger-50)}
 
 <main id="mapWrap">
   <div id="map" role="application" aria-label="Bản đồ cửa hàng và khách hàng"></div>
+  <button type="button" id="panelToggle" class="panel-toggle" aria-controls="side" aria-expanded="true" title="Ẩn bảng — xem bản đồ toàn màn hình"><svg class="pt-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg><span class="pt-label">Ẩn bảng</span></button>
   <div id="notice" class="notice" role="alert" hidden>
     <div><b id="noticeTitle"></b><p id="noticeText"></p></div>
     <button type="button" class="icon-btn" id="noticeClose" aria-label="Đóng thông báo">✕</button>
@@ -617,8 +638,13 @@ function initMap() {
     if (d) setDraftLocation(d, e.latlng.lat, e.latlng.lng);
   });
 
-  const fix = () => map.invalidateSize();
-  fix(); setTimeout(fix, 400);
+  map.invalidateSize();
+  let rafId = 0;
+  const fix = () => {
+    if (rafId) return;
+    rafId = requestAnimationFrame(() => { rafId = 0; map.invalidateSize(); });
+  };
+  setTimeout(() => map.invalidateSize(), 400);
   window.addEventListener('resize', fix);
   if (typeof ResizeObserver !== 'undefined') new ResizeObserver(fix).observe($('#map'));
 }
@@ -1048,6 +1074,7 @@ function prodBoxHTML(d) {
     '<button type="button" class="btn ghost sm p-add" style="margin-top:4px">＋ Thêm sản phẩm</button></fieldset>';
 }
 function showFormView(html) {
+  if (panelHidden) setPanel(true);
   $('#listView').hidden = true;
   const fv = $('#formView'); fv.hidden = false; fv.innerHTML = html; fv.scrollTop = 0;
 }
@@ -1529,7 +1556,7 @@ function showLogin(msg) {
 }
 function hideLogin() {
   $('#login').hidden = true;
-  $('#side').inert = false; $('#mapWrap').inert = false;
+  $('#side').inert = panelHidden; $('#mapWrap').inert = false;
 }
 function authMsg(e) {
   const m = (e && e.message) || String(e || '');
@@ -1597,6 +1624,23 @@ $('#pwToggle').addEventListener('click', () => {
   i.focus();
 });
 
+/* ---------- Ẩn / hiện bảng để xem bản đồ toàn màn hình ---------- */
+let panelHidden = false;
+function setPanel(show) {
+  panelHidden = !show;
+  document.body.classList.toggle('panel-off', !show);
+  $('#side').inert = !show || !$('#login').hidden;
+  const b = $('#panelToggle');
+  b.setAttribute('aria-expanded', String(show));
+  b.title = show ? 'Ẩn bảng — xem bản đồ toàn màn hình' : 'Hiện bảng danh sách';
+  b.querySelector('.pt-label').textContent = show ? 'Ẩn bảng' : 'Hiện bảng';
+  if (hasMap) setTimeout(() => map.invalidateSize(), 300);
+}
+$('#panelToggle').addEventListener('click', () => setPanel(panelHidden));
+document.body.addEventListener('transitionend', e => {
+  if (e.target === document.body && hasMap) map.invalidateSize();
+});
+
 /* ---------- Rê chuột lên thẻ → làm nổi ghim tương ứng ---------- */
 function markerOfCard(c) { return (c.dataset.kind === 'store' ? storeMarkers : custMarkers).get(c.dataset.id); }
 document.addEventListener('mouseover', ev => {
@@ -1646,7 +1690,7 @@ async function start() {
   if (sess) enterAdmin(sess); else showLogin();
 }
 
-window.BDVT = { Core, S, _test: { getMap: () => map, logout, renderAll, openStoreForm, openCustomerForm, runSuggest, closeForm, switchTab, loadData } };
+window.BDVT = { Core, S, _test: { getMap: () => map, logout, setPanel, renderAll, openStoreForm, openCustomerForm, runSuggest, closeForm, switchTab, loadData } };
 start();
 })();
 </script>
