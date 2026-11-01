@@ -266,7 +266,8 @@ body.panel-off .panel-toggle .pt-ico{transform:rotate(180deg)}
 /* ---------- Điện thoại ---------- */
 @media (max-width:760px){
   body{grid-template-columns:minmax(0,1fr);grid-template-rows:42vh minmax(0,1fr);grid-template-areas:"map" "side"}
-  @supports (height:100dvh){ body{grid-template-rows:42dvh minmax(0,1fr)} body.panel-off{grid-template-rows:100dvh minmax(0,0fr)} }
+  @supports (height:100dvh){ body{grid-template-rows:42dvh minmax(0,1fr)} }
+  body.panel-off{grid-template-rows:100% minmax(0,0fr)}
   #side{border-right:0;border-top:1px solid var(--line);box-shadow:0 -4px 14px rgba(0,0,0,.06)}
   #map{min-height:0}
   .side-head{padding:10px 12px 8px}
@@ -279,9 +280,8 @@ body.panel-off .panel-toggle .pt-ico{transform:rotate(180deg)}
   .base-btn .ico svg{width:16px;height:16px}
   .leaflet-control-attribution{font-size:9px;line-height:1.35}
   .notice{top:auto;bottom:66px}
-  body.panel-off{grid-template-rows:100vh minmax(0,0fr)}
   body.panel-off #side{border-top:0;box-shadow:none}
-  .panel-toggle{top:auto;bottom:24px;left:50%;transform:translateX(-50%);width:auto;height:34px;padding:0 14px 0 10px;border:1px solid var(--line);border-radius:999px;display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;box-shadow:0 4px 14px rgba(15,23,42,.16)}
+  .panel-toggle{top:auto;bottom:calc(24px + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%);width:auto;height:34px;padding:0 14px 0 10px;border:1px solid var(--line);border-radius:999px;display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;box-shadow:0 4px 14px rgba(15,23,42,.16)}
   .panel-toggle:hover{width:auto}
   .panel-toggle .pt-ico{transform:rotate(-90deg)}
   body.panel-off .panel-toggle .pt-ico{transform:rotate(90deg)}
@@ -1625,6 +1625,10 @@ $('#pwToggle').addEventListener('click', () => {
 });
 
 /* ---------- Ẩn / hiện bảng để xem bản đồ toàn màn hình ---------- */
+if (!(window.CSS && CSS.supports && CSS.supports('height', '100dvh'))) {
+  const fitH = () => { document.body.style.height = window.innerHeight + 'px'; };
+  fitH(); window.addEventListener('resize', fitH);
+}
 let panelHidden = false;
 function setPanel(show) {
   panelHidden = !show;
