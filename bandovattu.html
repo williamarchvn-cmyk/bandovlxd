@@ -1,0 +1,1373 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bản đồ Vật tư</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{
+  --bg:#f4f7fb; --panel:#fff; --line:#e3e8f0; --line2:#eef2f7;
+  --text:#1f2937; --muted:#6b7280; --primary:#2563eb; --primary-d:#1d4ed8; --primary-50:#eff4ff;
+  --store:#16a34a; --store-50:#ecfdf3; --cust:#f97316; --cust-50:#fff4ec;
+  --danger:#dc2626; --danger-50:#fef2f2; --warn:#b45309; --warn-50:#fffbeb;
+  --radius:12px; --shadow:0 1px 2px rgba(16,24,40,.06),0 6px 16px rgba(16,24,40,.08);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--text); background:var(--bg); font-size:14px; line-height:1.45;
+  height:100vh; overflow:hidden;
+  display:grid; grid-template-columns:400px minmax(0,1fr); grid-template-rows:minmax(0,1fr);
+  grid-template-areas:"side map";
+}
+@supports (height:100dvh){ body{height:100dvh} }
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--primary);outline-offset:2px;border-radius:6px}
+[hidden]{display:none!important}
+
+/* ---------- Sidebar ---------- */
+#side{grid-area:side;display:flex;flex-direction:column;min-height:0;min-width:0;background:var(--panel);border-right:1px solid var(--line);z-index:2}
+.side-head{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;border-bottom:1px solid var(--line2)}
+.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.brand-ico{width:38px;height:38px;border-radius:10px;background:var(--primary-50);display:grid;place-items:center;font-size:20px;flex:none}
+.brand h1{font-size:17px;margin:0;font-weight:700;letter-spacing:-.01em}
+.brand p{margin:0;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mode-badge{font-size:10px;font-weight:700;background:var(--primary);color:#fff;padding:2px 6px;border-radius:6px;margin-left:6px;vertical-align:2px}
+.sync{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);background:var(--line2);padding:4px 8px;border-radius:999px;white-space:nowrap}
+.sync i{width:8px;height:8px;border-radius:50%;background:#f59e0b}
+.sync.live i{background:#22c55e}.sync.ok i{background:var(--primary)}.sync.err i{background:var(--danger)}.sync.nolive i{background:#9ca3af}
+
+.view{display:flex;flex-direction:column;min-height:0;flex:1}
+.tabs{display:flex;gap:4px;padding:10px 12px 0}
+.tab{flex:1;border:0;background:transparent;padding:9px 6px;border-radius:10px 10px 0 0;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+.tab[aria-selected="true"]{color:var(--primary);border-bottom-color:var(--primary);background:var(--primary-50)}
+.toolbar{display:flex;gap:8px;padding:10px 12px 0;align-items:center}
+.toolbar input[type=search]{flex:1;min-width:0}
+.filter-row{padding:8px 12px 0}
+.filter-row label{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.filter-row select{flex:1;min-width:0;padding:7px 8px}
+.list{flex:1;overflow:auto;padding:10px 12px 18px;min-height:0}
+#formView{overflow:auto;padding:0 14px}
+
+input[type=text],input[type=search],input[type=tel],input:not([type]),select{
+  width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;transition:border-color .15s,box-shadow .15s
+}
+input:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.18)}
+input.invalid{border-color:var(--danger);background:var(--danger-50)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:#fff;padding:8px 13px;border-radius:10px;font-weight:600;cursor:pointer;white-space:nowrap;text-decoration:none;color:var(--text);transition:background .15s,border-color .15s}
+.btn:hover{background:var(--line2)}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn.primary:hover{background:var(--primary-d)}
+.btn.danger{color:var(--danger);border-color:#f5c2c2}
+.btn.danger:hover{background:var(--danger-50)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:6px 10px;font-size:13px}
+.btn.block{width:100%;margin:14px 0}
+.btn.suggest{width:100%;margin-top:12px;background:linear-gradient(135deg,#2563eb,#16a34a);border:0;color:#fff;padding:11px}
+.icon-btn{border:0;background:transparent;width:30px;height:30px;border-radius:8px;cursor:pointer;color:var(--muted);flex:none}
+.icon-btn:hover{background:var(--danger-50);color:var(--danger)}
+
+/* ---------- Thẻ danh sách ---------- */
+.card{display:flex;gap:11px;width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:var(--radius);padding:11px 12px;margin-bottom:8px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .1s}
+.card:hover{border-color:#c7d4ea;box-shadow:var(--shadow)}
+.card:active{transform:scale(.995)}
+.card-ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:18px;flex:none}
+.card-ico.store{background:var(--store-50)}.card-ico.customer{background:var(--cust-50)}
+.card-body{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.card-body b{font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.muted{color:var(--muted)}.small{font-size:12px}
+.price-tag{display:inline-block;align-self:flex-start;margin-top:3px;background:var(--store-50);color:#166534;font-weight:600;font-size:12px;padding:2px 8px;border-radius:6px}
+.warn-text{color:var(--warn);font-size:12px;font-weight:500}
+.empty{text-align:center;color:var(--muted);padding:30px 16px}
+.empty .big{font-size:34px;display:block;margin-bottom:6px}
+
+/* ---------- Form ---------- */
+.form-head{position:sticky;top:0;background:var(--panel);z-index:3;padding:14px 0 8px;display:flex;align-items:baseline;justify-content:space-between;gap:8px;border-bottom:1px solid var(--line2);margin-bottom:10px}
+.form-head h2{margin:0;font-size:16px}
+.fld{display:block;margin-bottom:10px;font-size:13px;font-weight:500;color:#374151}
+.fld>input{margin-top:4px}
+.box{border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px 12px;margin:0 0 12px}
+.box legend{font-size:13px;font-weight:600;padding:0 6px;color:#374151}
+.row{display:flex;gap:8px;align-items:center}
+.row+.row{margin-top:8px}
+.row.wrap{flex-wrap:wrap}
+.loc-text{margin-top:8px;font-size:13px;padding:7px 10px;border-radius:8px;background:var(--line2)}
+.loc-text.set{background:var(--primary-50);color:var(--primary-d);font-weight:500}
+.chk{display:flex;align-items:center;gap:8px;font-size:13px;margin-top:8px;cursor:pointer}
+.chk input{width:16px;height:16px;accent-color:var(--primary)}
+.hint{font-size:12px;color:var(--muted);margin:6px 0 0}
+.snap-note:empty{display:none}
+.snap-note{margin-top:4px}
+
+.phead,.prow{display:grid;grid-template-columns:minmax(0,1fr) 74px 104px 30px;gap:6px;align-items:center}
+.phead{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.03em;margin-bottom:4px}
+.prow{margin-bottom:6px}
+.prow input{padding:8px 8px}
+.prow .p-price{text-align:right}
+.prow.dup input,.prow.err input{border-color:var(--warn);background:var(--warn-50)}
+
+.crow{display:grid;grid-template-columns:minmax(0,1fr) 78px auto 30px;gap:6px;align-items:center;margin-bottom:8px}
+.crow select{padding:8px}
+.crow .c-qty{text-align:right;padding:8px}
+.c-unit{font-size:12px;color:var(--muted);min-width:28px}
+.c-info{grid-column:1/-1;margin-top:-2px}
+.c-info:empty{display:none}
+
+.form-actions{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,255,255,.85),#fff 30%);display:flex;gap:8px;align-items:center;padding:12px 0 14px;margin-top:6px;z-index:3}
+.form-actions .sp{flex:1}
+
+/* ---------- Kết quả gợi ý ---------- */
+.suggest-box:empty{display:none}
+.suggest-box{margin-top:12px}
+.method{font-size:12px;padding:8px 10px;border-radius:8px;margin-bottom:10px}
+.method.ok{background:var(--primary-50);color:var(--primary-d)}
+.method.warn{background:var(--warn-50);color:var(--warn)}
+.hl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hl{display:flex;flex-direction:column;gap:3px;text-align:left;border-radius:var(--radius);padding:10px 11px;border:2px solid;background:#fff;cursor:pointer;min-width:0}
+.hl b{font-size:14px;overflow:hidden;text-overflow:ellipsis}
+.hl .hl-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.hl .total{font-weight:700;font-size:15px}
+.hl.near{border-color:#93b4f5;background:var(--primary-50)}.hl.near .hl-label{color:var(--primary-d)}
+.hl.cheap{border-color:#86d9a5;background:var(--store-50)}.hl.cheap .hl-label{color:#15803d}
+.hl.none{cursor:default;border-style:dashed;border-color:#d1d5db;background:#fafafa;color:var(--muted)}
+.alert{background:var(--warn-50);border:1px solid #fde68a;color:#92400e;border-radius:10px;padding:9px 11px;font-size:13px;margin-top:10px}
+.rank-title{font-size:13px;margin:14px 0 6px}
+.rank{list-style:none;margin:0;padding:0}
+.rank-row{display:flex;gap:10px;width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;margin-bottom:6px;cursor:pointer;align-items:flex-start}
+.rank-row:hover{border-color:#c7d4ea;background:#fbfcfe}
+.rank-row.partial{background:#fcfcfd}
+.rk{width:22px;height:22px;border-radius:50%;background:var(--line2);display:grid;place-items:center;font-size:12px;font-weight:700;flex:none;margin-top:1px}
+.rk-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.rk-total{font-weight:700;text-align:right;white-space:nowrap}
+.rk-total small{display:block;font-weight:500;color:var(--muted);font-size:11px}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;margin-left:4px;vertical-align:1px;text-transform:uppercase}
+.badge.near{background:var(--primary);color:#fff}.badge.cheap{background:var(--store);color:#fff}
+.missing{color:var(--danger);font-size:12px}
+.route-legend{font-size:12px;color:var(--muted);margin-top:8px;display:flex;flex-wrap:wrap;gap:4px 12px}
+.route-legend i{display:inline-block;width:18px;height:4px;border-radius:2px;vertical-align:middle;margin-right:4px}
+.loading{padding:14px;text-align:center;color:var(--muted)}
+
+/* ---------- Chi tiết cửa hàng (chế độ xem) ---------- */
+.detail-title{font-size:18px;margin:4px 0 6px}
+.detail p{margin:4px 0}
+.link{color:var(--primary);font-weight:600;text-decoration:none}
+.ptable{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}
+.ptable th,.ptable td{padding:8px 6px;border-bottom:1px solid var(--line2);text-align:left}
+.ptable th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.ptable .num{text-align:right;white-space:nowrap}
+
+/* ---------- Bản đồ ---------- */
+#mapWrap{grid-area:map;position:relative;min-width:0;min-height:0}
+#map{height:100%;min-height:240px;width:100%;background:#e8eef5}
+.leaflet-container{font-family:inherit}
+.notice{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:1000;width:min(460px,calc(100% - 24px));background:#fff;border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.18);border-left:5px solid var(--danger);padding:12px 12px 12px 14px;display:flex;gap:10px;align-items:flex-start}
+.notice b{display:block;margin-bottom:2px}
+.notice p{margin:0;font-size:13px;color:#4b5563}
+.notice .icon-btn{margin-left:auto}
+.legend{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 10px;font-size:12px;box-shadow:var(--shadow);display:flex;gap:10px}
+.leaflet-tooltip{font-family:inherit;font-weight:600;border-radius:8px}
+
+.bdvt-pin{background:none;border:0}
+.pin{width:100%;height:100%;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;border:2px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.3)}
+.pin span{transform:rotate(45deg);font-size:15px;line-height:1}
+.pin-store{background:var(--store)}
+.pin-customer{background:var(--cust)}
+.pin-big{border-width:3px;box-shadow:0 0 0 6px rgba(37,99,235,.25),0 6px 14px rgba(0,0,0,.35)}
+.pin-big span{font-size:21px}
+.pin-big.pin-store{box-shadow:0 0 0 6px rgba(22,163,74,.25),0 6px 14px rgba(0,0,0,.35)}
+.pin-big.pin-customer{box-shadow:0 0 0 6px rgba(249,115,22,.28),0 6px 14px rgba(0,0,0,.35)}
+
+/* ---------- Toast ---------- */
+#toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:5000;background:#1f2937;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.25);transition:opacity .2s,transform .2s;max-width:calc(100vw - 32px)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast.ok{background:#166534}#toast.warn{background:#92400e}#toast.err{background:#991b1b}
+
+/* ---------- Điện thoại ---------- */
+@media (max-width:760px){
+  body{grid-template-columns:minmax(0,1fr);grid-template-rows:42vh minmax(0,1fr);grid-template-areas:"map" "side"}
+  @supports (height:100dvh){ body{grid-template-rows:42dvh minmax(0,1fr)} }
+  #side{border-right:0;border-top:1px solid var(--line);box-shadow:0 -4px 14px rgba(0,0,0,.06)}
+  #map{min-height:0}
+  .side-head{padding:10px 12px 8px}
+  .brand-ico{width:32px;height:32px;font-size:17px}
+  .brand h1{font-size:15px}
+  .legend{display:none}
+  .leaflet-control-attribution{font-size:9px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #toast{bottom:auto;top:12px}
+  .hl-grid{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<aside id="side" aria-label="Danh sách">
+  <header class="side-head">
+    <div class="brand">
+      <span class="brand-ico" aria-hidden="true">🗺️</span>
+      <div style="min-width:0">
+        <h1>Bản đồ Vật tư<span id="modeBadge" class="mode-badge" hidden>QUẢN LÝ</span></h1>
+        <p id="modeText">Tìm cửa hàng vật tư gần &amp; rẻ</p>
+      </div>
+    </div>
+    <span id="sync" class="sync" title="Trạng thái đồng bộ"><i></i><b>Đang kết nối…</b></span>
+  </header>
+
+  <div id="listView" class="view">
+    <nav class="tabs" role="tablist" aria-label="Chọn danh sách">
+      <button type="button" class="tab" role="tab" id="tab1" data-tab="stores" aria-selected="true">Cửa hàng (0)</button>
+      <button type="button" class="tab" role="tab" id="tab2" data-tab="customers" aria-selected="false">Khách hàng (0)</button>
+    </nav>
+    <div id="toolbar" class="toolbar">
+      <input id="search" type="search" placeholder="Tìm theo tên, SĐT, địa chỉ…" aria-label="Tìm kiếm" autocomplete="off">
+      <button type="button" id="btnAdd" class="btn primary">＋ Thêm</button>
+    </div>
+    <div id="filterRow" class="filter-row">
+      <label>Lọc theo sản phẩm
+        <select id="prodFilter" aria-label="Lọc cửa hàng theo sản phẩm"><option value="">Tất cả sản phẩm</option></select>
+      </label>
+    </div>
+    <div id="list" class="list" aria-live="polite"></div>
+  </div>
+
+  <div id="formView" class="view" hidden></div>
+</aside>
+
+<main id="mapWrap">
+  <div id="map" role="application" aria-label="Bản đồ cửa hàng và khách hàng"></div>
+  <div id="notice" class="notice" role="alert" hidden>
+    <div><b id="noticeTitle"></b><p id="noticeText"></p></div>
+    <button type="button" class="icon-btn" id="noticeClose" aria-label="Đóng thông báo">✕</button>
+  </div>
+</main>
+
+<datalist id="dlNames"></datalist>
+<datalist id="dlUnits"></datalist>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function () {
+'use strict';
+
+/* ================= Cấu hình ================= */
+const SUPABASE_URL = 'https://uribtoqxusruyspodhey.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVyaWJ0b3F4dXNydXlzcG9kaGV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0ODM5ODEsImV4cCI6MjEwOTA1OTk4MX0.u2TdlC0X_caBT7PqgLtGQsmSMnSLuSJzefZ3r_Yv1zg';
+const OSRM = 'https://router.project-osrm.org';
+const NOMINATIM = 'https://nominatim.openstreetmap.org/search';
+const DEFAULT_CENTER = [10.9068, 106.7690]; // Dĩ An
+const SNAP_MAX_M = 200;
+const UNITS = ['bao', 'cây', 'm³', 'm²', 'viên', 'kg', 'tấn', 'tấm', 'thùng', 'cuộn', 'mét', 'xe', 'bộ', 'cái'];
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+/* ================= Hàm thuần (có test) ================= */
+const Core = {
+  esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  },
+  clean(s) { return String(s == null ? '' : s).replace(/\s+/g, ' ').trim(); },
+  key(name, unit) { return Core.clean(name).toLowerCase() + '|' + Core.clean(unit).toLowerCase(); },
+  fold(s) {
+    return String(s == null ? '' : s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[đĐ]/g, 'd').toLowerCase();
+  },
+  digits(n) { return String(Math.round(Math.abs(Number(n) || 0))).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); },
+  money(n) { return (Number(n) < 0 ? '-' : '') + Core.digits(n) + 'đ'; },
+  parsePrice(s) { const d = String(s == null ? '' : s).replace(/[^\d]/g, ''); return d === '' ? null : Number(d); },
+  // "1,5" → 1.5 ; "1.5" → 1.5 ; "1.000" → 1000 (kiểu Việt) ; "" → null ; rác → NaN
+  parseQty(s) {
+    let t = String(s == null ? '' : s).replace(/\s/g, '');
+    if (!t) return null;
+    if (/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(t)) t = t.replace(/\./g, '');
+    t = t.replace(',', '.');
+    if (!/^(\d+(\.\d*)?|\.\d+)$/.test(t)) return NaN;
+    return Math.round(parseFloat(t) * 1000) / 1000;
+  },
+  fmtQty(n) {
+    const v = Math.round(Number(n) * 1000) / 1000;
+    const parts = String(v).split('.');
+    return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.') + (parts[1] ? ',' + parts[1] : '');
+  },
+  dist(m) {
+    if (m == null || !isFinite(m)) return '—';
+    if (m < 1000) return Math.round(m) + ' m';
+    return (m / 1000).toFixed(m < 10000 ? 1 : 0).replace('.', ',') + ' km';
+  },
+  dur(s) {
+    if (s == null || !isFinite(s)) return '';
+    const m = Math.max(1, Math.round(s / 60));
+    return m < 60 ? m + ' phút' : Math.floor(m / 60) + ' giờ' + (m % 60 ? ' ' + (m % 60) + ' phút' : '');
+  },
+  date(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    if (isNaN(d)) return '—';
+    const p = n => String(n).padStart(2, '0');
+    return p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear();
+  },
+  haversine(a, b) {
+    const R = 6371000, rad = x => x * Math.PI / 180;
+    const dLat = rad(b.lat - a.lat), dLng = rad(b.lng - a.lng);
+    const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2;
+    return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
+  },
+  // Danh sách tổng: gộp theo tên + đơn vị (không phân biệt hoa thường)
+  catalog(stores) {
+    const m = new Map();
+    for (const s of stores) for (const p of (s.products || [])) {
+      const k = Core.key(p.name, p.unit);
+      let e = m.get(k);
+      if (!e) { e = { key: k, name: Core.clean(p.name), unit: Core.clean(p.unit), min: Infinity, max: -Infinity, count: 0 }; m.set(k, e); }
+      e.min = Math.min(e.min, p.price); e.max = Math.max(e.max, p.price); e.count++;
+    }
+    return [...m.values()].sort((a, b) => a.name.localeCompare(b.name, 'vi') || a.unit.localeCompare(b.unit, 'vi'));
+  },
+  // Tính tiền giỏ hàng tại từng cửa hàng
+  evaluate(stores, cart) {
+    return stores.map(s => {
+      const pm = new Map((s.products || []).map(p => [Core.key(p.name, p.unit), p]));
+      let total = 0; const missing = [];
+      for (const it of cart) {
+        const p = pm.get(it.key);
+        if (p) total += p.price * it.qty; else missing.push(it);
+      }
+      return { store: s, total: Math.round(total), missing, full: missing.length === 0, distance: null, duration: null, approx: false };
+    });
+  },
+  // Chọn gần nhất / rẻ nhất + xếp hạng
+  pick(rows) {
+    const byDist = (a, b) => (a.distance == null ? Infinity : a.distance) - (b.distance == null ? Infinity : b.distance);
+    const full = rows.filter(r => r.full);
+    let nearest = null, nearestFull = true;
+    // Gần nhất: ưu tiên cửa hàng đủ hàng; nếu không có thì lấy cửa hàng gần nhất (kèm cảnh báo thiếu)
+    if (full.length) nearest = full.slice().sort(byDist)[0];
+    else if (rows.length) { nearest = rows.slice().sort(byDist)[0]; nearestFull = false; }
+    const cheapest = full.length ? full.slice().sort((a, b) => a.total - b.total || byDist(a, b))[0] : null;
+    const ranking = rows.slice().sort((a, b) =>
+      (b.full - a.full) || (a.full ? byDist(a, b) : (a.missing.length - b.missing.length || byDist(a, b))));
+    return { nearest, nearestFull, cheapest, ranking };
+  },
+  // Gộp các dòng trùng, bỏ dòng trống
+  normalizeCart(items) {
+    const m = new Map();
+    for (const it of items) {
+      if (!it.key || !(it.qty > 0)) continue;
+      const e = m.get(it.key);
+      if (e) e.qty = Math.round((e.qty + it.qty) * 1000) / 1000;
+      else m.set(it.key, { key: it.key, name: it.name, unit: it.unit, qty: it.qty });
+    }
+    return [...m.values()];
+  }
+};
+const esc = Core.esc, money = Core.money;
+
+/* ================= Trạng thái ================= */
+const S = {
+  mode: (location.hash || '').toLowerCase() === '#quanly' ? 'admin' : 'public',
+  stores: [], customers: [], catalog: [], catMap: new Map(),
+  tab: 'stores', search: '', filterKey: '',
+  editing: null,   // {type:'store'|'customer', id, draft, dirty}
+  detailId: null,  // chi tiết cửa hàng (chế độ xem)
+  lookup: null,    // giỏ hàng tra cứu (chế độ xem)
+  loaded: false, lastLoad: 0
+};
+const isAdmin = () => S.mode === 'admin';
+
+function emptyItem() { return { key: '', name: '', unit: '', qty: null, qtyText: '' }; }
+function newCartDraft() { return { name: '', phone: '', address: '', lat: null, lng: null, snapOn: true, items: [emptyItem()], result: null }; }
+S.lookup = newCartDraft();
+
+/* ================= Tiện ích giao diện ================= */
+let toastTimer = null;
+function toast(msg, type = 'ok') {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.className = 'show ' + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.className = ''; }, type === 'err' ? 4200 : 2800);
+}
+function showNotice(title, text, color) {
+  $('#noticeTitle').textContent = title;
+  $('#noticeText').textContent = text;
+  $('#notice').style.borderLeftColor = color || '';
+  $('#notice').hidden = false;
+}
+$('#noticeClose').addEventListener('click', () => { $('#notice').hidden = true; });
+
+function setSync(state) {
+  const el = $('#sync');
+  const txt = { loading: 'Đang tải…', ok: 'Đã tải', live: 'Trực tuyến', nolive: 'Không tự cập nhật', err: 'Lỗi kết nối' }[state] || state;
+  el.className = 'sync ' + state;
+  el.querySelector('b').textContent = txt;
+  el.title = state === 'live' ? 'Dữ liệu tự cập nhật khi người khác sửa' : txt;
+}
+
+async function fetchJSON(url, ms = 10000) {
+  const ac = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  const timer = ac ? setTimeout(() => ac.abort(), ms) : null;
+  try {
+    const r = await fetch(url, { signal: ac ? ac.signal : undefined, headers: { Accept: 'application/json' } });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return await r.json();
+  } finally { if (timer) clearTimeout(timer); }
+}
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+/* ================= Bản đồ ================= */
+let map = null, hasMap = false, storeLayer, custLayer, routeLayer, editMarker = null;
+const storeMarkers = new Map(), custMarkers = new Map();
+
+function pinIcon(kind, big) {
+  const sz = big ? 46 : 34;
+  return L.divIcon({
+    className: 'bdvt-pin',
+    html: '<div class="pin pin-' + kind + (big ? ' pin-big' : '') + '"><span>' + (kind === 'store' ? '🏪' : '🏠') + '</span></div>',
+    iconSize: [sz, sz], iconAnchor: [sz / 2, Math.round(sz * 1.2)], tooltipAnchor: [0, -Math.round(sz * 1.15)]
+  });
+}
+
+function initMap() {
+  if (typeof L === 'undefined') {
+    showNotice('Không tải được bản đồ',
+      'Thư viện bản đồ (Leaflet) chưa tải được. Kiểm tra kết nối internet, tắt trình chặn quảng cáo cho trang này rồi tải lại (F5). Danh sách bên trái vẫn dùng được.');
+    return;
+  }
+  map = L.map('map', { zoomControl: true, maxZoom: 19 }).setView(DEFAULT_CENTER, 13);
+  hasMap = true;
+
+  const esriStreet = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19,
+    attribution: 'Bản đồ &copy; <a href="https://www.esri.com/" target="_blank" rel="noopener">Esri</a> — Nguồn: Esri, HERE, Garmin, USGS, Intermap, INCREMENT P, NRCan, METI, NGCC, &copy; OpenStreetMap contributors, GIS User Community'
+  });
+  const esriImg = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19,
+    attribution: 'Ảnh vệ tinh &copy; <a href="https://www.esri.com/" target="_blank" rel="noopener">Esri</a> — Nguồn: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, GIS User Community'
+  });
+  const osmFr = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+    maxZoom: 19, subdomains: 'abc',
+    attribution: '&copy; <a href="https://www.openstreetmap.fr/" target="_blank" rel="noopener">OpenStreetMap France</a> | &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">Những người đóng góp OpenStreetMap</a>'
+  });
+  esriStreet.addTo(map);
+  L.control.layers({ 'Đường phố (Esri)': esriStreet, 'Vệ tinh (Esri)': esriImg, 'OpenStreetMap Pháp': osmFr }, null, { position: 'topright' }).addTo(map);
+  L.control.scale({ imperial: false, position: 'bottomright' }).addTo(map);
+
+  // Tự chuyển nền khi lỗi tile liên tiếp
+  let switched = false, warned = false;
+  const watch = (layer, isEsri) => {
+    let errs = 0;
+    layer.on('tileload', () => { errs = 0; });
+    layer.on('tileerror', () => {
+      errs++;
+      if (errs < 6 || !map.hasLayer(layer)) return;
+      if (isEsri && !switched) {
+        switched = true; errs = 0;
+        map.removeLayer(layer); osmFr.addTo(map);
+        toast('Nền Esri bị lỗi — đã tự chuyển sang OpenStreetMap Pháp', 'warn');
+      } else if (!warned) {
+        warned = true;
+        showNotice('Ảnh nền bản đồ không tải được',
+          'Kiểm tra internet, thử chọn nền khác ở nút góc trên bên phải bản đồ, hoặc tải lại trang (F5). Ghim và danh sách vẫn dùng bình thường.', '#f59e0b');
+      }
+    });
+  };
+  watch(esriStreet, true); watch(esriImg, true); watch(osmFr, false);
+  map.on('baselayerchange', () => { warned = false; });
+
+  storeLayer = L.layerGroup().addTo(map);
+  custLayer = L.layerGroup().addTo(map);
+  routeLayer = L.layerGroup().addTo(map);
+
+  const legend = L.control({ position: 'bottomleft' });
+  legend.onAdd = () => {
+    const d = L.DomUtil.create('div', 'legend');
+    d.innerHTML = '<span>🏪 Cửa hàng</span><span>🏠 ' + (isAdmin() ? 'Khách hàng' : 'Vị trí của bạn') + '</span>';
+    return d;
+  };
+  legend.addTo(map);
+
+  map.on('click', e => {
+    const d = clickDraft();
+    if (d) setDraftLocation(d, e.latlng.lat, e.latlng.lng);
+  });
+
+  const fix = () => map.invalidateSize();
+  fix(); setTimeout(fix, 400);
+  window.addEventListener('resize', fix);
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(fix).observe($('#map'));
+}
+
+function storeHas(s, key) { return (s.products || []).find(p => Core.key(p.name, p.unit) === key); }
+
+function renderPins() {
+  if (!hasMap) return;
+  storeLayer.clearLayers(); custLayer.clearLayers(); storeMarkers.clear(); custMarkers.clear();
+  const ed = S.editing, fk = S.filterKey;
+  for (const s of S.stores) {
+    if (ed && ed.type === 'store' && ed.id === s.id) continue;
+    const p = fk ? storeHas(s, fk) : null;
+    if (fk && !p) continue;
+    const m = L.marker([s.lat, s.lng], { icon: pinIcon('store'), keyboard: true, alt: s.name });
+    m.bindTooltip(esc(s.name) + (p ? ' — ' + money(p.price) + '/' + esc(p.unit) : ''), { direction: 'top' });
+    m.on('click', () => onStorePin(s.id, m));
+    storeLayer.addLayer(m); storeMarkers.set(s.id, m);
+  }
+  if (isAdmin()) for (const c of S.customers) {
+    if (ed && ed.type === 'customer' && ed.id === c.id) continue;
+    const m = L.marker([c.lat, c.lng], { icon: pinIcon('customer'), keyboard: true, alt: c.name });
+    m.bindTooltip(esc(c.name), { direction: 'top' });
+    m.on('click', () => onCustPin(c.id, m));
+    custLayer.addLayer(m); custMarkers.set(c.id, m);
+  }
+  placeEditMarker();
+}
+
+function onStorePin(id, m) {
+  if (S.editing) { m.openTooltip(); return; }
+  if (isAdmin()) openStoreForm(id); else openDetail(id);
+}
+function onCustPin(id, m) {
+  if (S.editing) { m.openTooltip(); return; }
+  openCustomerForm(id);
+}
+function focusStore(id) {
+  const s = S.stores.find(x => x.id === id);
+  if (!s || !hasMap) return;
+  map.flyTo([s.lat, s.lng], Math.max(map.getZoom(), 16), { duration: 0.7 });
+  const m = storeMarkers.get(id);
+  if (m) setTimeout(() => m.openTooltip(), 750);
+}
+function fitAll() {
+  if (!hasMap) return;
+  const pts = S.stores.map(s => [s.lat, s.lng]).concat(isAdmin() ? S.customers.map(c => [c.lat, c.lng]) : []);
+  if (pts.length === 1) map.setView(pts[0], 15);
+  else if (pts.length > 1) map.fitBounds(pts, { padding: [40, 40], maxZoom: 15 });
+}
+
+/* ---------- Ghim đang chỉnh (kéo được) ---------- */
+function markerDraft() { return S.editing ? S.editing.draft : (isAdmin() ? null : S.lookup); }
+function clickDraft() {
+  if (S.editing) return S.editing.draft;
+  if (!isAdmin() && S.tab === 'lookup' && !S.detailId) return S.lookup;
+  return null;
+}
+function rootFor(d) {
+  if (S.editing && d === S.editing.draft) return $('#formView');
+  if (d === S.lookup && S.tab === 'lookup' && !S.detailId) return $('#list');
+  return null;
+}
+function removeEditMarker() { if (editMarker && hasMap) map.removeLayer(editMarker); editMarker = null; }
+function placeEditMarker() {
+  if (!hasMap) return;
+  const d = markerDraft();
+  const kind = S.editing && S.editing.type === 'store' ? 'store' : 'customer';
+  if (!d || d.lat == null) { removeEditMarker(); return; }
+  if (editMarker && editMarker._kind !== kind) removeEditMarker();
+  if (!editMarker) {
+    editMarker = L.marker([d.lat, d.lng], { icon: pinIcon(kind, true), draggable: true, autoPan: true, zIndexOffset: 1000 });
+    editMarker._kind = kind;
+    editMarker.bindTooltip(kind === 'store' ? 'Kéo để chỉnh vị trí cửa hàng' : (isAdmin() ? 'Kéo để chỉnh vị trí khách' : 'Vị trí của bạn — kéo để chỉnh'), { direction: 'top' });
+    editMarker.on('dragend', () => {
+      const dd = markerDraft(); if (!dd) return;
+      const ll = editMarker.getLatLng();
+      setDraftLocation(dd, ll.lat, ll.lng);
+    });
+    editMarker.addTo(map);
+  } else editMarker.setLatLng([d.lat, d.lng]);
+}
+
+function updateLocUI(d) {
+  const root = rootFor(d); if (!root) return;
+  const el = root.querySelector('.loc-text'); if (!el) return;
+  if (d.lat == null) { el.textContent = 'Chưa có vị trí — bấm "Đặt vị trí", tìm địa chỉ, hoặc bấm lên bản đồ.'; el.classList.remove('set'); }
+  else { el.textContent = '📍 ' + d.lat.toFixed(6) + ', ' + d.lng.toFixed(6); el.classList.add('set'); }
+}
+function setSnapNote(d, text) {
+  const root = rootFor(d); const el = root && root.querySelector('.snap-note');
+  if (el) el.textContent = text || '';
+}
+
+function setDraftLocation(d, lat, lng, opt = {}) {
+  d.lat = Math.round(lat * 1e7) / 1e7; d.lng = Math.round(lng * 1e7) / 1e7;
+  placeEditMarker(); updateLocUI(d); markDirty(d); invalidateResult(d);
+  if (opt.fly && hasMap) map.flyTo([d.lat, d.lng], Math.max(map.getZoom(), 16), { duration: 0.6 });
+  if (d.snapOn) snapToRoad(d); else setSnapNote(d, '');
+}
+
+let snapToken = 0;
+async function snapToRoad(d) {
+  const tok = ++snapToken, lat = d.lat, lng = d.lng;
+  setSnapNote(d, 'Đang bám vào đường gần nhất…');
+  try {
+    const r = await fetchJSON(OSRM + '/nearest/v1/driving/' + lng + ',' + lat + '?number=1', 8000);
+    if (tok !== snapToken || d.lat !== lat || d.lng !== lng) return;
+    const w = r && r.code === 'Ok' && r.waypoints && r.waypoints[0];
+    if (!w) throw new Error('no waypoint');
+    if (w.distance > SNAP_MAX_M) { setSnapNote(d, 'Không có đường trong ' + SNAP_MAX_M + ' m — giữ nguyên vị trí.'); return; }
+    d.lat = Math.round(w.location[1] * 1e7) / 1e7; d.lng = Math.round(w.location[0] * 1e7) / 1e7;
+    placeEditMarker(); updateLocUI(d);
+    setSnapNote(d, '✓ Đã bám vào ' + (w.name ? w.name : 'đường gần nhất') + ' (dịch ' + Math.round(w.distance) + ' m).');
+  } catch (e) {
+    if (tok === snapToken) setSnapNote(d, 'Không bám được vào đường (OSRM lỗi) — giữ nguyên vị trí đã chọn.');
+  }
+}
+
+function dropPinCenter(d) {
+  if (!hasMap) { toast('Bản đồ chưa sẵn sàng', 'warn'); return; }
+  const c = map.getCenter();
+  if (map.getZoom() < 16) map.setView(c, 16);
+  setDraftLocation(d, c.lat, c.lng);
+}
+function geolocate(d) {
+  if (!navigator.geolocation) { toast('Trình duyệt không hỗ trợ lấy vị trí', 'warn'); return; }
+  toast('Đang lấy vị trí của bạn…', 'ok');
+  navigator.geolocation.getCurrentPosition(
+    p => setDraftLocation(d, p.coords.latitude, p.coords.longitude, { fly: true }),
+    () => toast('Không lấy được vị trí (cần cho phép truy cập vị trí, trang phải chạy qua https)', 'warn'),
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+}
+
+let lastGeo = 0;
+async function doGeocode(d, btn) {
+  const q = Core.clean(d.address);
+  if (!q) { toast('Nhập địa chỉ trước khi bấm Tìm', 'warn'); return; }
+  const old = btn.textContent; btn.disabled = true; btn.textContent = 'Đang tìm…';
+  try {
+    const wait = 1100 - (Date.now() - lastGeo); if (wait > 0) await sleep(wait);
+    lastGeo = Date.now();
+    const r = await fetchJSON(NOMINATIM + '?format=jsonv2&limit=1&countrycodes=vn&accept-language=vi&q=' + encodeURIComponent(q), 10000);
+    if (!Array.isArray(r) || !r.length) { toast('Không tìm được địa chỉ — hãy bấm lên bản đồ để đặt vị trí', 'warn'); return; }
+    setDraftLocation(d, +r[0].lat, +r[0].lon, { fly: true });
+    toast('Đã tìm thấy: ' + String(r[0].display_name || '').split(',').slice(0, 3).join(','), 'ok');
+  } catch (e) {
+    toast('Không tìm được địa chỉ (lỗi mạng) — hãy bấm lên bản đồ để đặt vị trí', 'err');
+  } finally { btn.disabled = false; btn.textContent = old; }
+}
+
+/* ================= Supabase ================= */
+let sb = null;
+function dbErr(e) {
+  const m = (e && (e.message || e.details || e.hint)) || String(e);
+  const code = e && e.code;
+  if (code === '23505' || /duplicate key|products_uq/i.test(m)) return { kind: 'dup', msg: 'Trùng sản phẩm (cùng tên + đơn vị) trong một cửa hàng' };
+  if (code === '42P01' || code === 'PGRST205' || code === 'PGRST202' || /does not exist|schema cache|Could not find/i.test(m)) return { kind: 'schema', msg: 'Chưa tạo cơ sở dữ liệu' };
+  if (/Failed to fetch|NetworkError|Load failed|network/i.test(m)) return { kind: 'net', msg: 'Lỗi mạng — không kết nối được máy chủ' };
+  return { kind: 'other', msg: m };
+}
+
+let loadSeq = 0;
+async function loadData(quiet) {
+  if (!sb) return;
+  const seq = ++loadSeq;
+  if (!quiet) setSync('loading');
+  try {
+    const qs = sb.from('stores').select('id,name,phone,address,lat,lng,price_updated_at,products(id,name,unit,price,sort)').order('name');
+    const qc = isAdmin() ? sb.from('customers').select('id,name,phone,address,lat,lng,customer_items(id,product_name,product_unit,qty,sort)').order('name') : null;
+    const [rs, rc] = await Promise.all([qs, qc || Promise.resolve({ data: [] })]);
+    if (rs.error) throw rs.error;
+    if (rc.error) throw rc.error;
+    if (seq !== loadSeq) return;
+    S.stores = (rs.data || []).map(s => ({
+      ...s, lat: +s.lat, lng: +s.lng, phone: s.phone || '', address: s.address || '',
+      products: (s.products || []).slice().sort((a, b) => a.sort - b.sort).map(p => ({ name: p.name, unit: p.unit, price: Number(p.price) }))
+    }));
+    S.customers = (rc.data || []).map(c => ({
+      ...c, lat: +c.lat, lng: +c.lng, phone: c.phone || '', address: c.address || '',
+      items: (c.customer_items || []).slice().sort((a, b) => a.sort - b.sort).map(i => ({ name: i.product_name, unit: i.product_unit, qty: Number(i.qty) }))
+    }));
+    S.lastLoad = Date.now();
+    if (!chLive) setSync('ok'); else setSync('live');
+    renderAll();
+    if (!S.loaded) { S.loaded = true; fitAll(); }
+    if (S.editing && S.editing.id) {
+      const list = S.editing.type === 'store' ? S.stores : S.customers;
+      if (!list.some(x => x.id === S.editing.id)) toast('Mục bạn đang sửa vừa bị người khác xóa', 'warn');
+    }
+  } catch (e) {
+    if (seq !== loadSeq) return;
+    setSync('err');
+    const er = dbErr(e);
+    if (er.kind === 'schema') showNotice('Chưa tạo cơ sở dữ liệu', 'Mở Supabase → SQL Editor, dán toàn bộ file bandovattu_supabase.sql, bấm Run rồi tải lại trang.');
+    else if (er.kind === 'net') showNotice('Không kết nối được cơ sở dữ liệu', 'Kiểm tra internet rồi tải lại trang (F5).');
+    else showNotice('Lỗi tải dữ liệu', er.msg);
+    renderAll();
+  }
+}
+
+let chLive = false, reloadTimer = null;
+function scheduleReload() { clearTimeout(reloadTimer); reloadTimer = setTimeout(() => loadData(true), 600); }
+function subscribe() {
+  try {
+    let ch = sb.channel('bdvt-' + S.mode);
+    const tables = isAdmin() ? ['stores', 'products', 'customers', 'customer_items'] : ['stores', 'products'];
+    for (const t of tables) ch = ch.on('postgres_changes', { event: '*', schema: 'public', table: t }, scheduleReload);
+    ch.subscribe(st => {
+      if (st === 'SUBSCRIBED') { chLive = true; if (S.loaded) setSync('live'); }
+      else if (st === 'CHANNEL_ERROR' || st === 'TIMED_OUT' || st === 'CLOSED') { chLive = false; if (S.loaded) setSync('nolive'); }
+    });
+  } catch (e) { chLive = false; }
+}
+
+/* ================= Danh sách ================= */
+function rebuildCatalog() {
+  S.catalog = Core.catalog(S.stores);
+  S.catMap = new Map(S.catalog.map(c => [c.key, c]));
+  if (S.filterKey && !S.catMap.has(S.filterKey)) S.filterKey = '';
+}
+function renderDatalists() {
+  const names = [...new Set(S.catalog.map(c => c.name))];
+  $('#dlNames').innerHTML = names.map(n => '<option value="' + esc(n) + '"></option>').join('');
+  const units = [...new Set(UNITS.concat(S.catalog.map(c => c.unit)))];
+  $('#dlUnits').innerHTML = units.map(u => '<option value="' + esc(u) + '"></option>').join('');
+}
+function renderTabs() {
+  const t1 = $('#tab1'), t2 = $('#tab2');
+  t1.textContent = 'Cửa hàng (' + S.stores.length + ')';
+  if (isAdmin()) { t2.dataset.tab = 'customers'; t2.textContent = 'Khách hàng (' + S.customers.length + ')'; }
+  else { t2.dataset.tab = 'lookup'; t2.textContent = '🔎 Tra cứu giỏ hàng'; }
+  t1.setAttribute('aria-selected', String(S.tab === 'stores'));
+  t2.setAttribute('aria-selected', String(S.tab !== 'stores'));
+  $('#toolbar').hidden = S.tab === 'lookup';
+  $('#btnAdd').hidden = !isAdmin();
+  $('#search').placeholder = S.tab === 'customers' ? 'Tìm khách theo tên, SĐT, địa chỉ…' : 'Tìm cửa hàng theo tên, SĐT, địa chỉ…';
+  $('#filterRow').hidden = S.tab !== 'stores' || !S.catalog.length;
+}
+function renderFilter() {
+  const sel = $('#prodFilter');
+  sel.innerHTML = '<option value="">Tất cả sản phẩm</option>' + S.catalog.map(c =>
+    '<option value="' + esc(c.key) + '"' + (c.key === S.filterKey ? ' selected' : '') + '>' + esc(c.name) + ' (' + esc(c.unit) + ') — ' + c.count + ' cửa hàng</option>').join('');
+}
+function matchSearch(o) {
+  const q = Core.fold(Core.clean(S.search));
+  if (!q) return true;
+  return Core.fold([o.name, o.phone, o.address].join(' ')).includes(q);
+}
+function renderList() {
+  const box = $('#list');
+  if (S.tab === 'lookup') { renderLookup(); return; }
+  if (S.tab === 'stores') {
+    let arr = S.stores.filter(matchSearch);
+    const fk = S.filterKey;
+    if (fk) arr = arr.filter(s => storeHas(s, fk)).sort((a, b) => storeHas(a, fk).price - storeHas(b, fk).price);
+    if (!S.stores.length) {
+      box.innerHTML = '<div class="empty"><span class="big">🏪</span>Chưa có cửa hàng nào.' + (isAdmin() ? '<br>Bấm <b>＋ Thêm</b> để tạo cửa hàng đầu tiên.' : '') + '</div>';
+      return;
+    }
+    if (!arr.length) { box.innerHTML = '<div class="empty">Không có cửa hàng phù hợp.</div>'; return; }
+    box.innerHTML = arr.map(s => {
+      const p = fk ? storeHas(s, fk) : null;
+      return '<button type="button" class="card" data-kind="store" data-id="' + esc(s.id) + '">' +
+        '<span class="card-ico store" aria-hidden="true">🏪</span><span class="card-body">' +
+        '<b>' + esc(s.name) + '</b>' +
+        '<span class="muted small">' + (s.phone ? '📞 ' + esc(s.phone) + ' · ' : '') + s.products.length + ' sản phẩm · giá cập nhật ' + Core.date(s.price_updated_at) + '</span>' +
+        (s.address ? '<span class="muted small">' + esc(s.address) + '</span>' : '') +
+        (p ? '<span class="price-tag">' + esc(p.name) + ': ' + money(p.price) + '/' + esc(p.unit) + '</span>' : '') +
+        '</span></button>';
+    }).join('');
+  } else {
+    const arr = S.customers.filter(matchSearch);
+    if (!S.customers.length) { box.innerHTML = '<div class="empty"><span class="big">🏠</span>Chưa có khách hàng nào.<br>Bấm <b>＋ Thêm</b> để tạo khách hàng.</div>'; return; }
+    if (!arr.length) { box.innerHTML = '<div class="empty">Không có khách hàng phù hợp.</div>'; return; }
+    box.innerHTML = arr.map(c => {
+      const gone = c.items.filter(i => !S.catMap.has(Core.key(i.name, i.unit)));
+      return '<button type="button" class="card" data-kind="customer" data-id="' + esc(c.id) + '">' +
+        '<span class="card-ico customer" aria-hidden="true">🏠</span><span class="card-body">' +
+        '<b>' + esc(c.name) + '</b>' +
+        '<span class="muted small">' + (c.phone ? '📞 ' + esc(c.phone) + ' · ' : '') + c.items.length + ' món trong giỏ</span>' +
+        (c.address ? '<span class="muted small">' + esc(c.address) + '</span>' : '') +
+        (gone.length ? '<span class="warn-text">⚠ ' + gone.length + ' món không còn bán</span>' : '') +
+        '</span></button>';
+    }).join('');
+  }
+}
+
+function renderAll() {
+  rebuildCatalog(); renderDatalists(); renderFilter(); renderTabs();
+  if (S.tab === 'lookup') refreshCartUI($('#list'), S.lookup);
+  else renderList();
+  if (S.editing && S.editing.type === 'customer') refreshCartUI($('#formView'), S.editing.draft);
+  if (S.detailId) renderDetail();
+  renderPins();
+}
+
+/* ================= Khối dùng chung: vị trí + giỏ hàng ================= */
+function locHTML(d, legend) {
+  return '<fieldset class="box loc-box"><legend>' + legend + '</legend>' +
+    '<div class="row"><input class="f-addr" placeholder="Nhập địa chỉ rồi bấm Tìm" value="' + esc(d.address) + '" aria-label="Địa chỉ" autocomplete="off">' +
+    '<button type="button" class="btn btn-geo">Tìm</button></div>' +
+    '<div class="row wrap"><button type="button" class="btn btn-drop">📍 Đặt vị trí</button>' +
+    '<button type="button" class="btn ghost btn-me">◎ Vị trí của tôi</button></div>' +
+    '<div class="loc-text"></div>' +
+    '<label class="chk"><input type="checkbox" class="snap-chk"' + (d.snapOn ? ' checked' : '') + '> Tự bám vào đường gần nhất</label>' +
+    '<div class="snap-note muted small"></div>' +
+    '<p class="hint">Mẹo: kéo ghim để chỉnh, hoặc bấm thẳng lên bản đồ.</p></fieldset>';
+}
+function cartOptions(it) {
+  let h = '<option value="">— Chọn sản phẩm —</option>', found = false;
+  for (const c of S.catalog) {
+    const sel = c.key === it.key; if (sel) found = true;
+    h += '<option value="' + esc(c.key) + '"' + (sel ? ' selected' : '') + '>' + esc(c.name) + ' (' + esc(c.unit) + ')</option>';
+  }
+  if (it.key && !found) h += '<option value="' + esc(it.key) + '" selected>' + esc(it.name) + ' (' + esc(it.unit) + ') — không còn bán</option>';
+  return h;
+}
+function cartInfo(it) {
+  if (!it.key) return '';
+  const c = S.catMap.get(it.key);
+  if (!c) return '<span class="warn-text">⚠ Sản phẩm này không còn bán ở cửa hàng nào</span>';
+  return '<span class="muted small">' + c.count + ' cửa hàng bán · ' + (c.min === c.max ? money(c.min) : money(c.min) + ' – ' + money(c.max)) + '/' + esc(c.unit) + '</span>';
+}
+function cartRowHTML(it, i) {
+  return '<div class="crow" data-i="' + i + '">' +
+    '<select class="c-prod" aria-label="Sản phẩm dòng ' + (i + 1) + '">' + cartOptions(it) + '</select>' +
+    '<input class="c-qty' + (Number.isNaN(it.qty) ? ' invalid' : '') + '" inputmode="decimal" placeholder="SL" aria-label="Số lượng dòng ' + (i + 1) + '" value="' + esc(it.qtyText) + '">' +
+    '<span class="c-unit">' + esc(it.unit || '') + '</span>' +
+    '<button type="button" class="icon-btn c-del" aria-label="Xóa món dòng ' + (i + 1) + '" title="Xóa món">✕</button>' +
+    '<div class="c-info">' + cartInfo(it) + '</div></div>';
+}
+function cartHTML(d) {
+  return '<fieldset class="box cart-box"><legend>Danh sách cần mua</legend>' +
+    (S.catalog.length ? '' : '<p class="hint">Chưa có sản phẩm nào — cần thêm cửa hàng có danh mục sản phẩm trước.</p>') +
+    '<div class="crows">' + d.items.map(cartRowHTML).join('') + '</div>' +
+    '<button type="button" class="btn ghost sm c-add">＋ Thêm món</button></fieldset>';
+}
+function rerenderCart(root, d) {
+  const fs = root.querySelector('.cart-box'); if (fs) fs.outerHTML = cartHTML(d);
+}
+// Cập nhật danh sách chọn khi dữ liệu đổi (không phá ô đang gõ)
+function refreshCartUI(root, d) {
+  if (!root || !d) return;
+  $$('.crow', root).forEach(row => {
+    const it = d.items[+row.dataset.i]; if (!it) return;
+    const sel = row.querySelector('.c-prod');
+    if (document.activeElement !== sel) sel.innerHTML = cartOptions(it);
+    row.querySelector('.c-info').innerHTML = cartInfo(it);
+  });
+}
+
+function invalidateResult(d) {
+  if (!d || d.result === undefined) return;
+  d.result = null; suggestToken++;
+  const root = rootFor(d); const box = root && root.querySelector('.suggest-box');
+  if (box) box.innerHTML = '';
+  if (routeLayer) routeLayer.clearLayers();
+}
+function markDirty(d) { if (S.editing && d === S.editing.draft) S.editing.dirty = true; }
+
+/* ================= Tra cứu (chế độ xem) ================= */
+function renderLookup() {
+  const d = S.lookup;
+  $('#list').innerHTML = '<p class="muted small" style="margin:2px 0 10px">Đặt vị trí của bạn và chọn vật tư cần mua — hệ thống gợi ý cửa hàng <b>gần nhất</b> và <b>rẻ nhất</b>.</p>' +
+    locHTML(d, 'Vị trí của bạn') + cartHTML(d) +
+    '<button type="button" class="btn suggest btn-suggest">🔎 Gợi ý cửa hàng</button><div class="suggest-box"></div>';
+  updateLocUI(d);
+  if (d.result) renderResult($('#list').querySelector('.suggest-box'), d.result);
+}
+
+/* ================= Form cửa hàng ================= */
+function prodRowHTML(p, i) {
+  return '<div class="prow" data-i="' + i + '">' +
+    '<input class="p-name" list="dlNames" placeholder="VD: Xi măng Hà Tiên" value="' + esc(p.name) + '" aria-label="Tên sản phẩm dòng ' + (i + 1) + '" autocomplete="off">' +
+    '<input class="p-unit" list="dlUnits" placeholder="bao" value="' + esc(p.unit) + '" aria-label="Đơn vị dòng ' + (i + 1) + '" autocomplete="off">' +
+    '<input class="p-price" inputmode="numeric" placeholder="0" value="' + (p.price == null ? '' : Core.digits(p.price)) + '" aria-label="Giá dòng ' + (i + 1) + '">' +
+    '<button type="button" class="icon-btn p-del" aria-label="Xóa sản phẩm dòng ' + (i + 1) + '" title="Xóa dòng">✕</button></div>';
+}
+function prodBoxHTML(d) {
+  return '<fieldset class="box prod-box"><legend>Danh mục sản phẩm (' + d.products.filter(p => Core.clean(p.name)).length + ')</legend>' +
+    '<div class="phead"><span>Tên sản phẩm</span><span>Đơn vị</span><span style="text-align:right">Giá (đ)</span><span></span></div>' +
+    '<div class="prows">' + d.products.map(prodRowHTML).join('') + '</div>' +
+    '<div class="dup-msg warn-text" hidden></div>' +
+    '<button type="button" class="btn ghost sm p-add" style="margin-top:4px">＋ Thêm sản phẩm</button></fieldset>';
+}
+function showFormView(html) {
+  $('#listView').hidden = true;
+  const fv = $('#formView'); fv.hidden = false; fv.innerHTML = html; fv.scrollTop = 0;
+}
+function openStoreForm(id) {
+  const s = id ? S.stores.find(x => x.id === id) : null;
+  if (id && !s) return;
+  const d = {
+    name: s ? s.name : '', phone: s ? s.phone : '', address: s ? s.address : '',
+    lat: s ? s.lat : null, lng: s ? s.lng : null, snapOn: !s,
+    products: s && s.products.length ? s.products.map(p => ({ ...p })) : [{ name: '', unit: '', price: null }]
+  };
+  S.editing = { type: 'store', id: id || null, draft: d, dirty: false };
+  showFormView(
+    '<div class="form-head"><h2>' + (s ? 'Sửa cửa hàng' : 'Thêm cửa hàng') + '</h2>' +
+    (s ? '<span class="muted small">Giá cập nhật ' + Core.date(s.price_updated_at) + '</span>' : '') + '</div>' +
+    '<label class="fld">Tên cửa hàng *<input class="f-name" value="' + esc(d.name) + '" maxlength="120" autocomplete="off"></label>' +
+    '<label class="fld">Điện thoại<input class="f-phone" type="tel" value="' + esc(d.phone) + '" maxlength="30" autocomplete="off"></label>' +
+    locHTML(d, 'Địa chỉ &amp; vị trí *') + prodBoxHTML(d) +
+    '<div class="form-actions">' + (s ? '<button type="button" class="btn danger btn-delete">Xóa</button>' : '') +
+    '<span class="sp"></span><button type="button" class="btn btn-cancel">Hủy</button><button type="button" class="btn primary btn-save">Lưu</button></div>');
+  updateLocUI(d); renderPins();
+  if (s) focusLatLng(s.lat, s.lng);
+  setTimeout(() => { const f = $('#formView .f-name'); if (f && !s) f.focus(); }, 50);
+}
+function focusLatLng(lat, lng) { if (hasMap) map.flyTo([lat, lng], Math.max(map.getZoom(), 16), { duration: 0.6 }); }
+
+function checkDups(root, d) {
+  const seen = new Map(), dups = new Set();
+  d.products.forEach((p, i) => {
+    if (!Core.clean(p.name) || !Core.clean(p.unit)) return;
+    const k = Core.key(p.name, p.unit);
+    if (seen.has(k)) { dups.add(i); dups.add(seen.get(k)); } else seen.set(k, i);
+  });
+  $$('.prow', root).forEach(r => r.classList.toggle('dup', dups.has(+r.dataset.i)));
+  const msg = root.querySelector('.dup-msg');
+  if (msg) { msg.hidden = !dups.size; msg.textContent = dups.size ? '⚠ Có sản phẩm trùng tên + đơn vị — mỗi sản phẩm chỉ khai báo 1 dòng.' : ''; }
+  return dups.size === 0;
+}
+
+async function saveStore(btn) {
+  const root = $('#formView'), e = S.editing, d = e.draft;
+  $$('.prow.err', root).forEach(r => r.classList.remove('err'));
+  const bad = (i, msg) => {
+    toast(msg, 'warn');
+    const r = root.querySelector('.prow[data-i="' + i + '"]');
+    if (r) { r.classList.add('err'); const inp = r.querySelector('input'); if (inp) inp.focus(); }
+  };
+  const name = Core.clean(d.name);
+  if (!name) { toast('Cần nhập tên cửa hàng', 'warn'); root.querySelector('.f-name').focus(); return; }
+  if (d.lat == null) { toast('Cần đặt vị trí cửa hàng trên bản đồ', 'warn'); return; }
+  const products = [];
+  for (let i = 0; i < d.products.length; i++) {
+    const p = d.products[i], pn = Core.clean(p.name), pu = Core.clean(p.unit);
+    if (!pn && !pu && p.price == null) continue;
+    if (!pn) return bad(i, 'Dòng ' + (i + 1) + ': thiếu tên sản phẩm');
+    if (!pu) return bad(i, '"' + pn + '": thiếu đơn vị tính');
+    if (p.price == null) return bad(i, '"' + pn + '": thiếu giá');
+    products.push({ name: pn, unit: pu, price: p.price });
+  }
+  if (!checkDups(root, d)) { toast('Có sản phẩm bị trùng tên + đơn vị', 'warn'); return; }
+  btn.disabled = true; btn.textContent = 'Đang lưu…';
+  try {
+    const { data, error } = await sb.rpc('save_store', { p: { id: e.id, name, phone: Core.clean(d.phone), address: Core.clean(d.address), lat: d.lat, lng: d.lng, products } });
+    if (error) throw error;
+    toast('Đã lưu cửa hàng "' + name + '"', 'ok');
+    closeForm(true);
+    await loadData(true);
+    if (data) focusStore(data);
+  } catch (err) {
+    const er = dbErr(err);
+    toast(er.kind === 'schema' ? 'Chưa tạo cơ sở dữ liệu — hãy chạy file SQL' : er.msg, 'err');
+    btn.disabled = false; btn.textContent = 'Lưu';
+  }
+}
+
+/* ================= Form khách hàng ================= */
+function openCustomerForm(id) {
+  const c = id ? S.customers.find(x => x.id === id) : null;
+  if (id && !c) return;
+  const d = {
+    name: c ? c.name : '', phone: c ? c.phone : '', address: c ? c.address : '',
+    lat: c ? c.lat : null, lng: c ? c.lng : null, snapOn: !c, result: null,
+    items: c && c.items.length
+      ? c.items.map(i => ({ key: Core.key(i.name, i.unit), name: i.name, unit: i.unit, qty: i.qty, qtyText: Core.fmtQty(i.qty) }))
+      : [emptyItem()]
+  };
+  S.editing = { type: 'customer', id: id || null, draft: d, dirty: false };
+  showFormView(
+    '<div class="form-head"><h2>' + (c ? 'Sửa khách hàng' : 'Thêm khách hàng') + '</h2></div>' +
+    '<label class="fld">Tên khách hàng *<input class="f-name" value="' + esc(d.name) + '" maxlength="120" autocomplete="off"></label>' +
+    '<label class="fld">Điện thoại<input class="f-phone" type="tel" value="' + esc(d.phone) + '" maxlength="30" autocomplete="off"></label>' +
+    locHTML(d, 'Địa chỉ &amp; vị trí *') + cartHTML(d) +
+    '<button type="button" class="btn suggest btn-suggest">🔎 Gợi ý cửa hàng</button><div class="suggest-box"></div>' +
+    '<div class="form-actions">' + (c ? '<button type="button" class="btn danger btn-delete">Xóa</button>' : '') +
+    '<span class="sp"></span><button type="button" class="btn btn-cancel">Hủy</button><button type="button" class="btn primary btn-save">Lưu</button></div>');
+  updateLocUI(d); renderPins();
+  if (c) focusLatLng(c.lat, c.lng);
+  setTimeout(() => { const f = $('#formView .f-name'); if (f && !c) f.focus(); }, 50);
+}
+
+function collectCart(d, strict) {
+  const out = [], seen = new Set();
+  for (const it of d.items) {
+    if (!it.key) { if (strict && it.qtyText.trim()) return { error: 'Có dòng nhập số lượng nhưng chưa chọn sản phẩm' }; continue; }
+    if (!(it.qty > 0)) return { error: 'Số lượng của "' + it.name + '" chưa hợp lệ' };
+    if (strict && seen.has(it.key)) return { error: '"' + it.name + ' (' + it.unit + ')" bị chọn 2 lần — hãy gộp vào 1 dòng' };
+    seen.add(it.key); out.push(it);
+  }
+  return { items: out };
+}
+
+async function saveCustomer(btn) {
+  const root = $('#formView'), e = S.editing, d = e.draft;
+  const name = Core.clean(d.name);
+  if (!name) { toast('Cần nhập tên khách hàng', 'warn'); root.querySelector('.f-name').focus(); return; }
+  if (d.lat == null) { toast('Cần đặt vị trí khách hàng trên bản đồ', 'warn'); return; }
+  const cc = collectCart(d, true);
+  if (cc.error) { toast(cc.error, 'warn'); return; }
+  btn.disabled = true; btn.textContent = 'Đang lưu…';
+  try {
+    const items = cc.items.map(i => ({ product_name: i.name, product_unit: i.unit, qty: i.qty }));
+    const { error } = await sb.rpc('save_customer', { p: { id: e.id, name, phone: Core.clean(d.phone), address: Core.clean(d.address), lat: d.lat, lng: d.lng, items } });
+    if (error) throw error;
+    toast('Đã lưu khách hàng "' + name + '"', 'ok');
+    const lat = d.lat, lng = d.lng;
+    closeForm(true);
+    await loadData(true);
+    focusLatLng(lat, lng);
+  } catch (err) {
+    const er = dbErr(err);
+    toast(er.kind === 'schema' ? 'Chưa tạo cơ sở dữ liệu — hãy chạy file SQL' : er.msg, 'err');
+    btn.disabled = false; btn.textContent = 'Lưu';
+  }
+}
+
+async function deleteCurrent(btn) {
+  const e = S.editing; if (!e || !e.id) return;
+  const isStore = e.type === 'store';
+  const item = (isStore ? S.stores : S.customers).find(x => x.id === e.id);
+  const label = item ? item.name : '';
+  if (!confirm('Xóa ' + (isStore ? 'cửa hàng' : 'khách hàng') + ' "' + label + '"? Thao tác này không hoàn tác được.')) return;
+  btn.disabled = true;
+  try {
+    const { error } = await sb.from(isStore ? 'stores' : 'customers').delete().eq('id', e.id);
+    if (error) throw error;
+    toast('Đã xóa "' + label + '"', 'ok');
+    closeForm(true);
+    await loadData(true);
+  } catch (err) { toast(dbErr(err).msg, 'err'); btn.disabled = false; }
+}
+
+function closeForm(force) {
+  if (!force && S.editing && S.editing.dirty && !confirm('Bỏ các thay đổi chưa lưu?')) return;
+  S.editing = null; suggestToken++;
+  removeEditMarker();
+  if (routeLayer) routeLayer.clearLayers();
+  $('#formView').hidden = true; $('#formView').innerHTML = '';
+  $('#listView').hidden = false;
+  renderList(); renderPins();
+}
+
+/* ================= Chi tiết cửa hàng (chế độ xem) ================= */
+function openDetail(id) {
+  if (!S.stores.some(s => s.id === id)) return;
+  S.detailId = id; renderDetail(); focusStore(id);
+}
+function renderDetail() {
+  const s = S.stores.find(x => x.id === S.detailId);
+  if (!s) { closeDetail(); return; }
+  const tel = s.phone.replace(/[^\d+]/g, '');
+  showFormView('<div class="detail"><div class="form-head"><button type="button" class="btn ghost sm btn-back">← Quay lại</button></div>' +
+    '<h2 class="detail-title">🏪 ' + esc(s.name) + '</h2>' +
+    (s.phone ? '<p><a class="link" href="tel:' + esc(tel) + '">📞 ' + esc(s.phone) + '</a></p>' : '') +
+    (s.address ? '<p class="muted">' + esc(s.address) + '</p>' : '') +
+    '<p class="muted small">Giá cập nhật ' + Core.date(s.price_updated_at) + '</p>' +
+    '<table class="ptable"><thead><tr><th>Sản phẩm</th><th>ĐVT</th><th class="num">Giá</th></tr></thead><tbody>' +
+    (s.products.length ? s.products.map(p => '<tr><td>' + esc(p.name) + '</td><td>' + esc(p.unit) + '</td><td class="num">' + money(p.price) + '</td></tr>').join('')
+      : '<tr><td colspan="3" class="muted">Chưa có sản phẩm</td></tr>') +
+    '</tbody></table>' +
+    '<a class="btn primary block" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=' + s.lat + ',' + s.lng + '">🧭 Chỉ đường (Google Maps)</a></div>');
+}
+function closeDetail() {
+  S.detailId = null;
+  $('#formView').hidden = true; $('#formView').innerHTML = '';
+  $('#listView').hidden = false; renderList();
+}
+
+/* ================= Gợi ý ================= */
+let suggestToken = 0;
+async function osrmTable(o, stores) {
+  const out = new Array(stores.length).fill(null);
+  const CH = 80; let anyOk = false;
+  for (let i = 0; i < stores.length; i += CH) {
+    const part = stores.slice(i, i + CH);
+    const coords = [o.lng + ',' + o.lat].concat(part.map(s => s.lng + ',' + s.lat)).join(';');
+    try {
+      const r = await fetchJSON(OSRM + '/table/v1/driving/' + coords + '?sources=0&annotations=distance,duration', 15000);
+      if (!r || r.code !== 'Ok') throw new Error(r && r.code);
+      part.forEach((s, j) => {
+        const dm = r.distances && r.distances[0] ? r.distances[0][j + 1] : null;
+        const du = r.durations && r.durations[0] ? r.durations[0][j + 1] : null;
+        if (dm != null) { out[i + j] = { distance: dm, duration: du }; anyOk = true; }
+      });
+    } catch (e) { /* phần này sẽ dùng chim bay */ }
+  }
+  return { out, anyOk };
+}
+
+async function runSuggest(d, root, btn) {
+  if (d.lat == null) { toast('Cần đặt vị trí trước khi gợi ý', 'warn'); return; }
+  const cc = collectCart(d, false);
+  if (cc.error) { toast(cc.error, 'warn'); return; }
+  const cart = Core.normalizeCart(cc.items);
+  if (!cart.length) { toast('Giỏ hàng đang trống — hãy chọn sản phẩm và số lượng', 'warn'); return; }
+  const box = root.querySelector('.suggest-box');
+  if (!S.stores.length) { box.innerHTML = '<div class="alert">Chưa có cửa hàng nào trên hệ thống.</div>'; return; }
+  const tok = ++suggestToken;
+  box.innerHTML = '<div class="loading">⏳ Đang tính khoảng cách tới ' + S.stores.length + ' cửa hàng…</div>';
+  btn.disabled = true;
+  const origin = { lat: d.lat, lng: d.lng };
+  const rows = Core.evaluate(S.stores, cart);
+  let res = { out: [], anyOk: false };
+  try { res = await osrmTable(origin, S.stores); } catch (e) { /* bỏ qua */ }
+  btn.disabled = false;
+  if (tok !== suggestToken) return;
+  let approxCount = 0;
+  rows.forEach((r, i) => {
+    const o = res.out[i];
+    if (o) { r.distance = o.distance; r.duration = o.duration; }
+    else { r.distance = Core.haversine(origin, r.store); r.duration = null; r.approx = true; approxCount++; }
+  });
+  const picked = Core.pick(rows);
+  d.result = { cart, origin, method: res.anyOk ? 'osrm' : 'haversine', approxCount, ...picked };
+  renderResult(box, d.result);
+  if (box.scrollIntoView) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  drawRoutes(d.result, tok);
+}
+
+function rowDist(r) {
+  return r.approx ? '≈ ' + Core.dist(r.distance) + ' (chim bay)' : Core.dist(r.distance) + (r.duration != null ? ' · ' + Core.dur(r.duration) : '');
+}
+function missText(r) { return r.missing.map(m => m.name + ' (' + m.unit + ')').join(', '); }
+
+function renderResult(box, R) {
+  const n = R.nearest, c = R.cheapest;
+  let h = '';
+  if (R.method === 'osrm') {
+    h += '<div class="method ok">🛣️ Khoảng cách theo <b>đường đi thực tế</b> (OSRM)' +
+      (R.approxCount ? ' — ' + R.approxCount + ' cửa hàng không tìm được đường, tạm dùng đường chim bay.' : '.') + '</div>';
+  } else {
+    h += '<div class="method warn">⚠️ Không gọi được OSRM — đang dùng <b>đường chim bay (Haversine)</b>, khoảng cách chỉ gần đúng.</div>';
+  }
+  h += '<div class="hl-grid">';
+  if (n) {
+    h += '<button type="button" class="hl near" data-store="' + esc(n.store.id) + '"><span class="hl-label">📍 Gần nhất</span>' +
+      '<b>' + esc(n.store.name) + '</b><span class="small">' + rowDist(n) + '</span>' +
+      '<span class="total">' + money(n.total) + (n.full ? '' : '<span class="small muted"> (chưa đủ)</span>') + '</span>' +
+      (n.full ? '' : '<span class="missing">Thiếu: ' + esc(missText(n)) + '</span>') + '</button>';
+  }
+  if (c) {
+    h += '<button type="button" class="hl cheap" data-store="' + esc(c.store.id) + '"><span class="hl-label">💰 Rẻ nhất (cả giỏ hàng)</span>' +
+      '<b>' + esc(c.store.name) + '</b><span class="small">' + rowDist(c) + '</span>' +
+      '<span class="total">' + money(c.total) + '</span></button>';
+  } else {
+    h += '<div class="hl none"><span class="hl-label">💰 Rẻ nhất (cả giỏ hàng)</span><span class="small">Không có cửa hàng nào bán đủ cả giỏ hàng.</span></div>';
+  }
+  h += '</div>';
+  if (!c) {
+    const sold = new Set();
+    S.stores.forEach(s => s.products.forEach(p => sold.add(Core.key(p.name, p.unit))));
+    const nowhere = R.cart.filter(i => !sold.has(i.key));
+    h += '<div class="alert"><b>Không cửa hàng nào bán đủ mọi món.</b> ' +
+      (nowhere.length ? 'Không nơi nào bán: ' + esc(nowhere.map(i => i.name + ' (' + i.unit + ')').join(', ')) + '.'
+        : 'Món nào cũng có nơi bán, nhưng mỗi cửa hàng đều thiếu ít nhất 1 món — xem chi tiết bên dưới.') + '</div>';
+  } else if (n && c && n.store.id === c.store.id) {
+    h += '<p class="hint">✨ Cửa hàng này vừa gần nhất vừa rẻ nhất.</p>';
+  }
+  h += '<div class="route-legend"><span><i style="background:#2563eb"></i>tới gần nhất</span><span><i style="background:#16a34a"></i>tới rẻ nhất</span><span><i style="background:repeating-linear-gradient(90deg,#64748b 0 5px,transparent 5px 9px)"></i>đường thẳng (không lấy được tuyến)</span></div>';
+  h += '<h4 class="rank-title">Xếp hạng tất cả cửa hàng (' + R.ranking.length + ')</h4><ol class="rank">';
+  R.ranking.forEach((r, i) => {
+    const isN = n && n.store.id === r.store.id, isC = c && c.store.id === r.store.id;
+    h += '<li><button type="button" class="rank-row' + (r.full ? '' : ' partial') + '" data-store="' + esc(r.store.id) + '">' +
+      '<span class="rk">' + (i + 1) + '</span><span class="rk-main"><span><b>' + esc(r.store.name) + '</b>' +
+      (isN ? '<span class="badge near">gần nhất</span>' : '') + (isC ? '<span class="badge cheap">rẻ nhất</span>' : '') + '</span>' +
+      '<span class="muted small">' + rowDist(r) + '</span>' +
+      (r.full ? '' : '<span class="missing">Thiếu: ' + esc(missText(r)) + '</span>') + '</span>' +
+      '<span class="rk-total">' + money(r.total) + (r.full ? '' : '<small>chưa đủ hàng</small>') + '</span></button></li>';
+  });
+  h += '</ol>';
+  box.innerHTML = h;
+}
+
+async function routeTo(o, s, color) {
+  try {
+    const r = await fetchJSON(OSRM + '/route/v1/driving/' + o.lng + ',' + o.lat + ';' + s.lng + ',' + s.lat + '?overview=full&geometries=geojson', 12000);
+    if (!r || r.code !== 'Ok' || !r.routes || !r.routes.length) throw new Error('no route');
+    return { coords: r.routes[0].geometry.coordinates.map(p => [p[1], p[0]]), color, real: true };
+  } catch (e) {
+    return { coords: [[o.lat, o.lng], [s.lat, s.lng]], color, real: false };
+  }
+}
+async function drawRoutes(R, tok) {
+  if (!hasMap) return;
+  routeLayer.clearLayers();
+  const o = R.origin, jobs = [];
+  if (R.nearest) jobs.push(routeTo(o, R.nearest.store, '#2563eb'));
+  if (R.cheapest && (!R.nearest || R.cheapest.store.id !== R.nearest.store.id)) jobs.push(routeTo(o, R.cheapest.store, '#16a34a'));
+  const same = R.cheapest && R.nearest && R.cheapest.store.id === R.nearest.store.id;
+  const lines = await Promise.all(jobs);
+  if (tok !== suggestToken) return;
+  const pts = [[o.lat, o.lng]];
+  let fake = false;
+  lines.forEach(l => {
+    if (l.real) {
+      L.polyline(l.coords, { color: '#fff', weight: 9, opacity: 0.85 }).addTo(routeLayer);
+      L.polyline(l.coords, { color: l.color, weight: 5, opacity: 0.95 }).addTo(routeLayer);
+      if (same) L.polyline(l.coords, { color: '#16a34a', weight: 2, opacity: 1 }).addTo(routeLayer);
+    } else {
+      fake = true;
+      L.polyline(l.coords, { color: l.color, weight: 4, opacity: 0.9, dashArray: '8 8' }).addTo(routeLayer);
+    }
+    pts.push(...l.coords);
+  });
+  if (fake) toast('Không lấy được tuyến đường thật — đang hiện đường thẳng nét đứt', 'warn');
+  if (pts.length > 1) map.fitBounds(pts, { padding: [50, 50], maxZoom: 16 });
+}
+
+/* ================= Sự kiện (ủy quyền) ================= */
+function ctx(el) {
+  if (el.closest('#formView')) return S.editing ? { root: $('#formView'), d: S.editing.draft } : null;
+  if (el.closest('#list') && S.tab === 'lookup') return { root: $('#list'), d: S.lookup };
+  return null;
+}
+
+document.addEventListener('click', ev => {
+  const t = ev.target.closest('button'); if (!t) return;
+  const cx = ctx(t);
+
+  if (t.classList.contains('tab')) { switchTab(t.dataset.tab); return; }
+  if (t.id === 'btnAdd') { S.tab === 'customers' ? openCustomerForm(null) : openStoreForm(null); return; }
+  if (t.classList.contains('card')) {
+    const id = t.dataset.id;
+    if (t.dataset.kind === 'store') { if (isAdmin()) openStoreForm(id); else openDetail(id); }
+    else openCustomerForm(id);
+    return;
+  }
+  if (t.dataset.store) { focusStore(t.dataset.store); return; }
+  if (t.classList.contains('btn-back')) { closeDetail(); return; }
+  if (t.classList.contains('btn-cancel')) { closeForm(false); return; }
+  if (t.classList.contains('btn-save')) { S.editing.type === 'store' ? saveStore(t) : saveCustomer(t); return; }
+  if (t.classList.contains('btn-delete')) { deleteCurrent(t); return; }
+  if (!cx) return;
+  const { root, d } = cx;
+
+  if (t.classList.contains('btn-drop')) dropPinCenter(d);
+  else if (t.classList.contains('btn-me')) geolocate(d);
+  else if (t.classList.contains('btn-geo')) doGeocode(d, t);
+  else if (t.classList.contains('btn-suggest')) runSuggest(d, root, t);
+  else if (t.classList.contains('c-add')) {
+    d.items.push(emptyItem()); rerenderCart(root, d); markDirty(d);
+    const rows = $$('.crow', root); rows[rows.length - 1].querySelector('select').focus();
+  } else if (t.classList.contains('c-del')) {
+    d.items.splice(+t.closest('.crow').dataset.i, 1);
+    if (!d.items.length) d.items.push(emptyItem());
+    rerenderCart(root, d); markDirty(d); invalidateResult(d);
+  } else if (t.classList.contains('p-add')) {
+    d.products.push({ name: '', unit: '', price: null });
+    root.querySelector('.prod-box').outerHTML = prodBoxHTML(d); checkDups(root, d); markDirty(d);
+    const rows = $$('.prow', root); rows[rows.length - 1].querySelector('input').focus();
+  } else if (t.classList.contains('p-del')) {
+    d.products.splice(+t.closest('.prow').dataset.i, 1);
+    if (!d.products.length) d.products.push({ name: '', unit: '', price: null });
+    root.querySelector('.prod-box').outerHTML = prodBoxHTML(d); checkDups(root, d); markDirty(d);
+  }
+});
+
+document.addEventListener('input', ev => {
+  const t = ev.target;
+  if (t.id === 'search') { S.search = t.value; renderList(); return; }
+  const cx = ctx(t); if (!cx) return;
+  const { root, d } = cx;
+  if (t.classList.contains('f-name')) { d.name = t.value; markDirty(d); }
+  else if (t.classList.contains('f-phone')) { d.phone = t.value; markDirty(d); }
+  else if (t.classList.contains('f-addr')) { d.address = t.value; markDirty(d); }
+  else if (t.classList.contains('c-qty')) {
+    const it = d.items[+t.closest('.crow').dataset.i];
+    it.qtyText = t.value; it.qty = Core.parseQty(t.value);
+    t.classList.toggle('invalid', Number.isNaN(it.qty) || it.qty === 0);
+    markDirty(d); invalidateResult(d);
+  } else if (t.classList.contains('p-name') || t.classList.contains('p-unit') || t.classList.contains('p-price')) {
+    const p = d.products[+t.closest('.prow').dataset.i];
+    if (t.classList.contains('p-name')) p.name = t.value;
+    else if (t.classList.contains('p-unit')) p.unit = t.value;
+    else p.price = Core.parsePrice(t.value);
+    t.closest('.prow').classList.remove('err');
+    checkDups(root, d); markDirty(d);
+  }
+});
+
+document.addEventListener('change', ev => {
+  const t = ev.target;
+  if (t.id === 'prodFilter') { S.filterKey = t.value; renderList(); renderPins(); return; }
+  const cx = ctx(t); if (!cx) return;
+  const { root, d } = cx;
+  if (t.classList.contains('snap-chk')) { d.snapOn = t.checked; if (!t.checked) setSnapNote(d, ''); else if (d.lat != null) snapToRoad(d); }
+  else if (t.classList.contains('c-prod')) {
+    const row = t.closest('.crow'), it = d.items[+row.dataset.i];
+    const c = S.catMap.get(t.value);
+    if (c) { it.key = c.key; it.name = c.name; it.unit = c.unit; }
+    else if (!t.value) { it.key = ''; it.name = ''; it.unit = ''; }
+    row.querySelector('.c-unit').textContent = it.unit;
+    row.querySelector('.c-info').innerHTML = cartInfo(it);
+    if (it.key && !it.qtyText) { it.qtyText = '1'; it.qty = 1; row.querySelector('.c-qty').value = '1'; }
+    markDirty(d); invalidateResult(d);
+  } else if (t.classList.contains('p-name')) {
+    // Tự điền đơn vị nếu tên này chỉ có 1 đơn vị trong danh sách tổng
+    const p = d.products[+t.closest('.prow').dataset.i];
+    if (!Core.clean(p.unit)) {
+      const units = S.catalog.filter(c => c.name.toLowerCase() === Core.clean(p.name).toLowerCase());
+      if (units.length === 1) { p.unit = units[0].unit; t.closest('.prow').querySelector('.p-unit').value = p.unit; checkDups(root, d); }
+    }
+  }
+});
+
+document.addEventListener('focusout', ev => {
+  const t = ev.target;
+  if (t.classList && t.classList.contains('p-price')) {
+    const v = Core.parsePrice(t.value); t.value = v == null ? '' : Core.digits(v);
+  } else if (t.classList && t.classList.contains('c-qty')) {
+    const v = Core.parseQty(t.value);
+    if (v > 0) { t.value = Core.fmtQty(v); const cx = ctx(t); if (cx) cx.d.items[+t.closest('.crow').dataset.i].qtyText = t.value; }
+  }
+});
+
+document.addEventListener('keydown', ev => {
+  if (ev.key === 'Enter' && ev.target.classList && ev.target.classList.contains('f-addr')) {
+    ev.preventDefault();
+    const btn = ev.target.parentElement.querySelector('.btn-geo'); if (btn && !btn.disabled) btn.click();
+  }
+});
+
+function switchTab(tab) {
+  if (S.tab === tab) return;
+  S.tab = tab; S.search = ''; $('#search').value = '';
+  renderTabs(); renderList(); placeEditMarker();
+  $('#list').scrollTop = 0;
+}
+
+window.addEventListener('hashchange', () => {
+  const m = (location.hash || '').toLowerCase() === '#quanly' ? 'admin' : 'public';
+  if (m !== S.mode) location.reload();
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && sb && Date.now() - S.lastLoad > 60000) loadData(true);
+});
+
+/* ================= Khởi động ================= */
+function start() {
+  if (isAdmin()) {
+    $('#modeBadge').hidden = false;
+    $('#modeText').textContent = 'Quản lý cửa hàng & khách hàng';
+  } else {
+    $('#modeText').textContent = 'Tìm cửa hàng vật tư gần & rẻ';
+  }
+  initMap();
+  renderAll();
+  if (typeof supabase === 'undefined' || !supabase.createClient) {
+    setSync('err');
+    if (!hasMap) showNotice('Không tải được bản đồ và dữ liệu', 'Thư viện bản đồ (Leaflet) và dữ liệu (Supabase) đều chưa tải được. Kiểm tra kết nối internet, tắt trình chặn quảng cáo cho trang này rồi tải lại (F5).');
+    else showNotice('Không tải được thư viện dữ liệu', 'Thư viện Supabase chưa tải được. Kiểm tra internet, tắt trình chặn quảng cáo cho trang này rồi tải lại (F5).');
+    return;
+  }
+  sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
+  loadData();
+  subscribe();
+}
+
+window.BDVT = { Core, S, _test: { getMap: () => map, renderAll, openStoreForm, openCustomerForm, runSuggest, closeForm, switchTab, loadData } };
+start();
+})();
+</script>
+</body>
+</html>
