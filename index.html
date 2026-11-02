@@ -149,6 +149,90 @@ input.pr-price{text-align:right;padding:7px 8px}
 .np-form .fld{margin-bottom:8px}
 .np-form .row{margin-bottom:6px}
 
+/* ---------- Nhập danh sách cửa hàng ---------- */
+.steps{display:flex;gap:6px;margin:0 0 12px;font-size:12px}
+.steps span{flex:1;text-align:center;padding:6px 4px;border-radius:8px;background:var(--line2);color:var(--muted);font-weight:600}
+.steps span.on{background:var(--primary-50);color:var(--primary-d)}
+.steps span.done{background:var(--store-50);color:#166534}
+.dropzone{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:18px 12px;border:2px dashed #c7d4ea;border-radius:12px;background:#f8fbff;cursor:pointer;text-align:center;transition:border-color .15s,background .15s}
+.dropzone:hover,.dropzone.over{border-color:var(--primary);background:var(--primary-50)}
+.dropzone:focus-within{outline:3px solid var(--primary);outline-offset:2px}
+.dropzone input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.dz-ico{font-size:26px;line-height:1}
+.imp-fname{font-size:12px;color:var(--primary-d);font-weight:600}
+.or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;margin:10px 0}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+textarea.imp-paste{display:block;width:100%;min-height:96px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:13px;resize:vertical;background:#fff}
+textarea.imp-paste:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.18)}
+.colmap{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;margin:8px 0 12px}
+.colmap label{font-size:12px;font-weight:600;color:#374151}
+.colmap select{margin-top:3px;padding:7px 8px;font-size:13px}
+.prev-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.imp-prev{width:100%;min-width:420px;border-collapse:collapse;font-size:12px}
+.imp-prev th,.imp-prev td{padding:6px 7px;border-bottom:1px solid var(--line2);text-align:left;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.imp-prev tr:last-child td{border-bottom:0}
+.imp-prev th{font-size:11px;color:var(--muted);background:#f8fafc}
+.imp-prev .ok{color:#15803d;font-weight:600}.imp-prev .warn{color:var(--warn);font-weight:600}
+.imp-sum{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.imp-sum span{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--line2);color:#475569}
+.imp-sum .ok{background:var(--store-50);color:#166534}.imp-sum .warn{background:var(--warn-50);color:#92400e}.imp-sum .bad{background:var(--danger-50);color:#b91c1c}.imp-sum .dup{background:#f3e8ff;color:#6d28d9}
+.imp-filter{display:flex;gap:4px;margin-bottom:8px}
+.imp-filter button{flex:1;border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px;font:inherit;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer}
+.imp-filter button[aria-pressed="true"]{background:var(--primary-50);border-color:#c7d4ea;color:var(--primary-d)}
+.prog-box{border:1px solid var(--line);border-radius:10px;padding:9px 11px;margin-bottom:10px;background:#fff}
+.prog-box .row{justify-content:space-between;font-size:12px}
+.prog{height:8px;background:var(--line2);border-radius:99px;overflow:hidden;margin:6px 0 2px}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2563eb,#16a34a);transition:width .3s}
+.imp-row{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;background:#fff;overflow:hidden;transition:box-shadow .2s,border-color .2s}
+.imp-row.off{background:#fafafa}
+.imp-row.off .imp-main{opacity:.6}
+.imp-row.flash{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.25)}
+.imp-row.placing{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.25);background:var(--primary-50)}
+.imp-chk{display:grid;place-items:center;padding:0 9px;border-right:1px solid var(--line2);cursor:pointer}
+.imp-chk input{width:17px;height:17px;accent-color:var(--primary);cursor:pointer}
+.imp-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;text-align:left;border:0;background:transparent;padding:8px 10px;cursor:pointer;font:inherit;color:inherit}
+.imp-top{display:flex;gap:6px;align-items:baseline;min-width:0}
+.imp-no{flex:none;font-size:11px;font-weight:700;color:var(--muted);min-width:20px}
+.imp-top b{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.imp-st{font-size:12px;font-weight:600}
+.imp-st.ok{color:#15803d}.imp-st.ok2{color:var(--primary-d)}.imp-st.warn{color:var(--warn)}.imp-st.bad{color:var(--danger)}.imp-st.wait{color:var(--muted)}
+.imp-dup{font-size:12px;font-weight:600;color:#6d28d9}
+.imp-place{align-self:center;margin-right:8px;flex:none}
+.imp-pin{background:none;border:0}
+.ip{width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3);background:#2563eb;transition:transform .15s}
+.ip span{transform:rotate(45deg);color:#fff;font-size:11px;font-weight:700;line-height:1;letter-spacing:-.02em}
+.ip-coord,.ip-manual{background:#0d9488}.ip-approx,.ip-odd{background:#d97706}.ip-off{background:#94a3b8}
+.imp-pin:hover .ip,.ip.hot{transform:rotate(-45deg) scale(1.2)}
+
+/* ---------- Nhập bảng giá ---------- */
+.pi-for{margin:0 0 10px;font-size:13px;background:var(--primary-50);color:var(--primary-d);padding:7px 10px;border-radius:8px}
+.layout-opts{display:grid;gap:6px;margin:0 0 10px}
+.layout-opts label{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer;font-size:13px;font-weight:600;background:#fff}
+.layout-opts label.on{border-color:#93b4f5;background:var(--primary-50)}
+.layout-opts input{margin-top:3px;accent-color:var(--primary);flex:none}
+.layout-opts small{display:block;color:var(--muted);font-size:12px;font-weight:400}
+.wide-map{display:grid;gap:6px;margin:0 0 12px}
+.wide-map label{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:8px;align-items:center;font-size:12px;font-weight:600;color:#374151}
+.wide-map label span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wide-map select{padding:6px 8px;font-size:13px}
+.sec-title{font-size:13px;margin:14px 0 6px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.pi-store,.pi-prod{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-bottom:6px;background:#fff;display:flex;flex-direction:column;gap:5px}
+.pi-store.off,.pi-prod.off{background:#fafafa}
+.pi-store select,.pi-prod select{padding:6px 8px;font-size:13px}
+.pi-line{display:flex;gap:6px;align-items:baseline;min-width:0}
+.pi-line b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.pi-diff{display:flex;flex-wrap:wrap;gap:4px}
+.pi-diff span{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--line2);color:#475569}
+.pi-diff .new{background:var(--store-50);color:#166534}.pi-diff .chg{background:var(--primary-50);color:var(--primary-d)}.pi-diff .del{background:var(--danger-50);color:#b91c1c}
+.pi-st{font-size:12px;font-weight:600}
+.pi-st.ok{color:#15803d}.pi-st.new{color:var(--primary-d)}.pi-st.warn{color:var(--warn)}.pi-st.skip{color:var(--muted)}
+.pi-errs{margin-top:10px;font-size:12px;border:1px solid #fde68a;background:var(--warn-50);border-radius:10px;padding:8px 10px}
+.pi-errs summary{cursor:pointer;font-weight:600;color:#92400e}
+.pi-errs ul{margin:6px 0 0;padding-left:18px;max-height:180px;overflow:auto}
+.pi-errs li{margin:2px 0;color:#7c2d12}
+.link-btn{border:0;background:none;color:var(--primary);font:inherit;font-weight:600;cursor:pointer;padding:0;text-decoration:underline}
+.np-actions{display:flex;flex-wrap:wrap;gap:6px}
+
 /* ---------- Tab Danh mục ---------- */
 .cat-grp{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:14px 2px 6px;font-weight:700;font-size:13px;color:#334155}
 .cat-grp:first-child{margin-top:2px}
@@ -380,6 +464,7 @@ body.panel-off .panel-toggle .pt-ico{transform:rotate(180deg)}
     </nav>
     <div id="toolbar" class="toolbar">
       <input id="search" type="search" placeholder="Tìm theo tên, SĐT, địa chỉ…" aria-label="Tìm kiếm" autocomplete="off">
+      <button type="button" id="btnImport" class="btn" title="Nhập danh sách cửa hàng từ Excel / CSV" hidden>⇪ Nhập</button>
       <button type="button" id="btnAdd" class="btn primary">＋ Thêm</button>
     </div>
     <div id="filterRow" class="filter-row">
@@ -526,6 +611,198 @@ const Core = {
       }
       return { store: s, total: Math.round(total), missing, full: missing.length === 0, distance: null, duration: null, approx: false };
     });
+  },
+  // ---------- Nhập danh sách: đọc tọa độ / bảng / cột ----------
+  inVN(lat, lng) { return lat >= 8 && lat <= 23.6 && lng >= 102 && lng <= 110; },
+  fixLL(lat, lng, src) {
+    if (!isFinite(lat) || !isFinite(lng)) return null;
+    if ((Math.abs(lat) > 90 && Math.abs(lng) <= 90) || (Core.inVN(lng, lat) && !Core.inVN(lat, lng))) { const t = lat; lat = lng; lng = t; }
+    if (Math.abs(lat) > 90 || Math.abs(lng) > 180 || (lat === 0 && lng === 0)) return null;
+    return { lat: Math.round(lat * 1e7) / 1e7, lng: Math.round(lng * 1e7) / 1e7, src, odd: !Core.inVN(lat, lng) };
+  },
+  parseNum(v) {
+    let t = String(v == null ? '' : v).trim().replace(/\s/g, '');
+    if (!t) return NaN;
+    if (t.indexOf('.') < 0) t = t.replace(',', '.');
+    return /^-?\d+(\.\d+)?$/.test(t) ? Number(t) : NaN;
+  },
+  // Đọc tọa độ từ: link Google Maps (!3d…!4d…, ?q=, @lat,lng), "10.9, 106.7", độ-phút-giây
+  parseLoc(raw) {
+    let t = String(raw == null ? '' : raw).trim();
+    if (!t) return null;
+    try { t = decodeURIComponent(t.replace(/\+/g, ' ')); } catch (e) { /* giữ nguyên */ }
+    const N = '(-?\\d{1,3}(?:\\.\\d+)?)';
+    let m;
+    if ((m = t.match(new RegExp('!3d' + N + '!4d' + N)))) return Core.fixLL(+m[1], +m[2], 'link');
+    if ((m = t.match(new RegExp('[?&](?:q|query|ll|sll|destination|daddr|center)=(?:loc:)?' + N + '\\s*,\\s*' + N)))) return Core.fixLL(+m[1], +m[2], 'link');
+    if ((m = t.match(new RegExp('@' + N + ',' + N)))) return Core.fixLL(+m[1], +m[2], 'link');
+    if (/(maps\.app\.goo\.gl|goo\.gl\/maps|g\.co\/kgs|maps\.google\.[a-z.]+\/\?cid=)/i.test(t)) return { short: true };
+    // Link tìm kiếm (…/maps/search/?api=1&query=Tên+địa+chỉ, …/maps/place/Tên) → không có tọa độ, chỉ có chữ
+    const raw0 = String(raw);
+    if (/(https?:\/\/|www\.|maps\.)/i.test(raw0) && /google|goo\.gl|maps/i.test(raw0)) {
+      const sm = raw0.match(/[?&](?:q|query|destination|daddr)=([^&#]+)/i) || raw0.match(/\/maps\/(?:search|place)\/([^/@?#]+)/i);
+      let txt = '';
+      if (sm) { try { txt = decodeURIComponent(sm[1].replace(/\+/g, ' ')); } catch (e) { txt = sm[1]; } }
+      return { search: Core.clean(txt) };
+    }
+    const D = '(\\d{1,3})\\s*°\\s*(?:(\\d{1,2}(?:[.,]\\d+)?)\\s*[\'′’]\\s*)?(?:(\\d{1,2}(?:[.,]\\d+)?)\\s*(?:"|″|”|\'\')\\s*)?([NSns])';
+    const E = '(\\d{1,3})\\s*°\\s*(?:(\\d{1,2}(?:[.,]\\d+)?)\\s*[\'′’]\\s*)?(?:(\\d{1,2}(?:[.,]\\d+)?)\\s*(?:"|″|”|\'\')\\s*)?([EWew])';
+    if ((m = t.match(new RegExp(D + '[\\s,;]*' + E)))) {
+      const f = (d, mi, se, h) => (+d + (+String(mi || 0).replace(',', '.')) / 60 + (+String(se || 0).replace(',', '.')) / 3600) * (/[SWsw]/.test(h) ? -1 : 1);
+      return Core.fixLL(f(m[1], m[2], m[3], m[4]), f(m[5], m[6], m[7], m[8]), 'coord');
+    }
+    if ((m = t.match(/(-?\d{1,3}\.\d+)\s*[,;]\s*(-?\d{1,3}\.\d+)/)) || (m = t.match(/(-?\d{1,3}\.\d{3,})\s+(-?\d{1,3}\.\d{3,})/)))
+      return Core.fixLL(+m[1], +m[2], 'coord');
+    if ((m = t.match(/(-?\d{1,3},\d{3,})\s*;\s*(-?\d{1,3},\d{3,})/)) || (m = t.match(/(-?\d{1,3},\d{3,})\s+(-?\d{1,3},\d{3,})/)))
+      return Core.fixLL(+m[1].replace(',', '.'), +m[2].replace(',', '.'), 'coord');
+    return null;
+  },
+  // CSV / TSV / dán từ Excel → mảng dòng (tự nhận dấu phân cách, hỗ trợ ngoặc kép)
+  parseDelimited(text) {
+    text = String(text || '').replace(/^﻿/, '');
+    const first = text.split(/\r?\n/).find(l => l.trim()) || '';
+    const count = (l, c) => { let n = 0, q = false; for (const ch of l) { if (ch === '"') q = !q; else if (!q && ch === c) n++; } return n; };
+    let delim = '\t';
+    for (const c of ['\t', ';', ',']) if (count(first, c) > count(first, delim)) delim = c;
+    const rows = []; let row = [], cell = '', q = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (q) { if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += ch; }
+      else if (ch === '"' && cell.trim() === '') { q = true; cell = ''; }
+      else if (ch === delim) { row.push(cell); cell = ''; }
+      else if (ch === '\n' || ch === '\r') { if (ch === '\r' && text[i + 1] === '\n') i++; row.push(cell); rows.push(row); row = []; cell = ''; }
+      else cell += ch;
+    }
+    if (cell !== '' || row.length) { row.push(cell); rows.push(row); }
+    return rows.map(r => r.map(c => c.replace(/\s+/g, ' ').trim())).filter(r => r.some(Boolean));
+  },
+  IMP_PATS: {
+    lat: /^(lat|latitude|vi do)\b/, lng: /^(lng|lon|long|longitude|kinh do)\b/,
+    coord: /(toa do|link|map|google|vi tri|dinh vi|location|coord|gps|ban do)/,
+    phone: /(sdt|so dt|dien thoai|phone|tel|di dong|lien he|hotline|zalo)/,
+    address: /(dia chi|address|^dc$)/, name: /(^ten|cua hang|name|store|dai ly|shop|don vi)/
+  },
+  headKey(h) { return Core.fold(h).replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim(); },
+  isHeaderRow(row) {
+    if (!row || !row.length) return false;
+    const hits = row.filter(h => h && Object.values(Core.IMP_PATS).some(p => p.test(Core.headKey(h)))).length;
+    const data = row.filter(h => h && (Core.parseLoc(h) || /^[\d\s.+()-]{9,}$/.test(h))).length;
+    return hits > 0 && data === 0;
+  },
+  // Đoán cột: theo tên tiêu đề trước, rồi theo nội dung
+  guessCols(head, rows) {
+    const res = { combo: -1, name: -1, address: -1, phone: -1, coord: -1, lat: -1, lng: -1 }, used = new Set();
+    // Tiêu đề vừa là tên vừa là địa chỉ (VD "Tên cửa hàng + địa chỉ") → cột gộp
+    if (head) {
+      const ci = head.findIndex(h => h && Core.IMP_PATS.name.test(Core.headKey(h)) && Core.IMP_PATS.address.test(Core.headKey(h)));
+      if (ci >= 0) { res.combo = ci; used.add(ci); }
+    }
+    if (head) for (const k of ['lat', 'lng', 'coord', 'phone', 'address', 'name']) {
+      const i = head.findIndex((h, j) => !used.has(j) && h && Core.IMP_PATS[k].test(Core.headKey(h)));
+      if (i >= 0) { res[k] = i; used.add(i); }
+    }
+    const ncol = Math.max(0, ...rows.map(r => r.length), head ? head.length : 0);
+    const sample = rows.slice(0, 40);
+    const vals = j => sample.map(r => r[j] || '').filter(Boolean);
+    const ratio = (j, fn) => { const v = vals(j); return v.length ? v.filter(fn).length / v.length : 0; };
+    const isPhone = v => /^[\d\s.+()-]{8,}$/.test(v) && v.replace(/\D/g, '').length >= 9 && v.replace(/\D/g, '').length <= 12;
+    for (let j = 0; j < ncol; j++) {
+      if (used.has(j)) continue;
+      if (res.coord < 0 && ratio(j, v => { const p = Core.parseLoc(v); return !!(p && (p.lat != null || p.short || p.search != null)); }) > 0.5) { res.coord = j; used.add(j); }
+      else if (res.phone < 0 && ratio(j, isPhone) > 0.5) { res.phone = j; used.add(j); }
+    }
+    const textCols = [];
+    for (let j = 0; j < ncol; j++) if (!used.has(j) && ratio(j, v => /[^\d\s.,+()-]/.test(v)) > 0.5) textCols.push(j);
+    if (res.address < 0) {
+      const avg = j => { const v = vals(j); return v.length ? v.reduce((a, x) => a + x.length, 0) / v.length : 0; };
+      const cand = textCols.filter(j => j !== res.name && ratio(j, v => v.includes(',')) > 0.3).sort((a, b) => avg(b) - avg(a))[0];
+      if (cand != null) { res.address = cand; used.add(cand); }
+    }
+    if (res.name < 0 && res.combo < 0) { const c = textCols.find(j => !used.has(j)); if (c != null) { res.name = c; used.add(c); } }
+    // Không có cột địa chỉ riêng mà cột tên dạng "Tên - số nhà, đường, phường…" → coi là cột gộp
+    if (res.combo < 0 && res.address < 0 && res.name >= 0 && ratio(res.name, v => !!Core.splitNameAddr(v).address) > 0.6) { res.combo = res.name; res.name = -1; }
+    return res;
+  },
+  // "Cửa Hàng Sắt Thép – VLXD Ngọc Lương - 382 Nguyễn An Ninh, An Bình, Dĩ An" → tên + địa chỉ
+  // Tách ở dấu " - " đầu tiên mà phần sau giống địa chỉ; "–" (gạch dài) trong tên được giữ nguyên
+  splitNameAddr(v) {
+    const t = Core.clean(v);
+    const addrLike = x => x.includes(',') || /^(số\s*)?\d|^(đường|đ\.|khu|kp|ấp|tổ|thôn|quốc lộ|ql|tỉnh lộ|đt\s*\d|lô|hẻm|ngõ|kiệt)/i.test(x);
+    for (const sep of [' - ', ' – ', ' — ', ' | ']) {
+      let from = 0, idx;
+      while ((idx = t.indexOf(sep, from)) >= 0) {
+        const left = t.slice(0, idx).trim(), right = t.slice(idx + sep.length).trim();
+        if (left && right && addrLike(right)) return { name: left, address: right };
+        from = idx + sep.length;
+      }
+    }
+    const m = t.match(/^([^,\d][^,]*?),\s*((?:số\s*)?\d.*)$/i);
+    if (m) return { name: m[1].trim(), address: m[2].trim() };
+    return { name: t, address: '' };
+  },
+  // Chuẩn hóa địa chỉ để tìm: mở viết tắt, bỏ "Tđc"
+  normAddr(a) {
+    return (' ' + Core.clean(a) + ' ')
+      .replace(/([\s,])[ĐđDd]\.\s*/g, '$1Đường ')
+      .replace(/([\s,])QL\.?\s*(\d)/gi, '$1Quốc lộ $2')
+      .replace(/([\s,])KP\.?\s+/gi, '$1Khu phố ')
+      .replace(/([\s,])P\.\s*/g, '$1Phường ').replace(/([\s,])Q\.\s*/g, '$1Quận ')
+      .replace(/([\s,])TX\.?\s+/gi, '$1Thị xã ').replace(/([\s,])TP\.?\s+/gi, '$1Thành phố ')
+      .replace(/\s+T[đĐ][cC](?=[\s,])/g, '')
+      .replace(/\s+/g, ' ').replace(/\s+,/g, ',').trim();
+  },
+  // Các câu tìm, từ chi tiết đến tổng quát. level: house = có thể tới số nhà, street = tới tên đường, area = tới phường / thị xã
+  addrTries(addr, name) {
+    const parts0 = Core.normAddr(addr).split(',').map(x => x.trim()).filter(Boolean);
+    if (!parts0.length) return [];
+    const isProv = x => /^(tinh |tp\.? ?|thanh pho )?(binh duong|ho chi minh|hcm|dong nai|viet nam|vietnam)$/.test(Core.fold(x).replace(/\./g, '. ').replace(/\s+/g, ' ').trim()) || /^tp\.?\s*hcm$/i.test(x);
+    const strip = x => x.replace(/^(phường|xã|thị xã|thị trấn|thành phố|quận|huyện)\s+/i, '').trim();
+    let core = parts0.filter(x => !isProv(x));
+    if (core.length > 1 && /^(số\s*)?[\d/]+[a-z]?$/i.test(core[0])) core = [core[0] + ' ' + core[1], ...core.slice(2)];
+    const first = core[0] || '';
+    const rest = core.slice(1).map(strip).filter((x, i, a) => x && Core.fold(x) !== Core.fold(a[i - 1] || ''));
+    const last = rest[rest.length - 1] || '';
+    const street = first.replace(/^(số\s*)?[\d/]+[a-z]?\s+/i, '').trim();
+    const T = [[parts0.join(', '), 'house'], [[first, ...rest].join(', '), 'house']];
+    if (rest.length >= 2) T.push([[first, last].join(', '), 'house']);
+    if (name && last) T.push([Core.clean(name) + ', ' + last, 'house']);
+    if (street && street !== first) T.push([[street, last].filter(Boolean).join(', '), 'street']);
+    if (rest.length) T.push([rest.join(', '), 'area']);
+    if (rest.length > 1) T.push([last, 'area']);
+    const seen = new Set();
+    return T.filter(([q]) => { const k = Core.fold(q); if (!q || seen.has(k)) return false; seen.add(k); return true; });
+  },
+  // Giá kiểu Việt Nam: "95.000đ", "95,000", "350k", "1,2tr", "1.250.000 VNĐ/bao" → số đồng; ô trống → null; chữ → NaN
+  parseVND(v) {
+    if (typeof v === 'number') return isFinite(v) ? Math.round(v) : NaN;
+    let t = Core.fold(String(v == null ? '' : v)).replace(/\s+/g, '').replace(/\/.*$/, '').replace(/(vnd|dong|d)$/, '');
+    if (!t || /^[-–—]+$/.test(t)) return null;
+    let m;
+    if ((m = t.match(/^(\d+(?:[.,]\d+)?)(k|nghin|ngan)$/))) return Math.round(parseFloat(m[1].replace(',', '.')) * 1000);
+    if ((m = t.match(/^(\d+(?:[.,]\d+)?)(tr|trieu)$/))) return Math.round(parseFloat(m[1].replace(',', '.')) * 1e6);
+    if (!/^\d[\d.,]*$/.test(t)) return NaN;
+    if (/^\d+[.,]\d{1,2}$/.test(t)) return Math.round(parseFloat(t.replace(',', '.')));
+    return Number(t.replace(/[.,]/g, ''));
+  },
+  UNIT_ALIAS: { m3: 'm³', mkhoi: 'm³', metkhoi: 'm³', khoi: 'm³', m2: 'm²', metvuong: 'm²', cay: 'cây', vien: 'viên', bao: 'bao',
+    kg: 'kg', ki: 'kg', ky: 'kg', kilogam: 'kg', tan: 'tấn', tam: 'tấm', thung: 'thùng', cuon: 'cuộn', m: 'mét', met: 'mét', md: 'mét',
+    xe: 'xe', bo: 'bộ', cai: 'cái', chiec: 'chiếc', hop: 'hộp', lit: 'lít', l: 'lít', can: 'can', goi: 'gói' },
+  normUnit(u) { const c = Core.clean(u); return Core.UNIT_ALIAS[Core.fold(c).replace(/[\s.]/g, '')] || c; },
+  prodKey(name, unit) { return Core.fold(Core.clean(name)) + '|' + Core.fold(Core.normUnit(unit)); },
+  // Độ giống tên sản phẩm (để gợi ý): trùng từ khóa, phạt nếu khác số (D10 ≠ D16)
+  simName(a, b) {
+    const tk = x => Core.fold(x).replace(/([a-z])(\d)/g, '$1 $2').replace(/(\d)([a-z])/g, '$1 $2').split(/[^a-z0-9]+/).filter(Boolean);
+    const A = new Set(tk(a)), B = new Set(tk(b));
+    if (!A.size || !B.size) return 0;
+    let inter = 0; A.forEach(x => { if (B.has(x)) inter++; });
+    let sc = inter / (A.size + B.size - inter);
+    const na = [...A].filter(x => /^\d+$/.test(x)).sort().join(','), nb = [...B].filter(x => /^\d+$/.test(x)).sort().join(',');
+    if (na && nb && na !== nb) sc *= 0.5;
+    return sc;
+  },
+  normPhone(v) {
+    const t = String(v == null ? '' : v).trim();
+    return /^[35789]\d{8}$/.test(t) ? '0' + t : t;
   },
   // Chọn gần nhất / rẻ nhất + xếp hạng
   pick(rows) {
@@ -755,6 +1032,7 @@ function initMap() {
       singleTimer = setTimeout(() => { lastTap = null; clearLookupPin(); }, 460);
       return;
     }
+    if (S.editing && S.editing.type === 'import') { impMapClick(e.latlng); return; }
     const d = clickDraft();
     if (d) setDraftLocation(d, e.latlng.lat, e.latlng.lng);
   });
@@ -845,9 +1123,10 @@ function fitAll() {
 }
 
 /* ---------- Ghim đang chỉnh (kéo được) ---------- */
-function markerDraft() { return S.editing ? (S.editing.type === 'cat' ? null : S.editing.draft) : (isAdmin() ? null : S.lookup); }
+const noDraftPin = () => !!S.editing && (S.editing.type === 'cat' || S.editing.type === 'import' || S.editing.type === 'pimport');
+function markerDraft() { return S.editing ? (noDraftPin() ? null : S.editing.draft) : (isAdmin() ? null : S.lookup); }
 function clickDraft() {
-  if (S.editing) return S.editing.type === 'cat' ? null : S.editing.draft;
+  if (S.editing) return noDraftPin() ? null : S.editing.draft;
   if (!isAdmin() && S.tab === 'lookup' && !S.detailId) return S.lookup;
   return null;
 }
@@ -1067,6 +1346,9 @@ function renderTabs() {
   [t1, t2, t3].forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab === S.tab)));
   $('#toolbar').hidden = S.tab === 'lookup';
   $('#btnAdd').hidden = !isAdmin();
+  $('#btnImport').hidden = !(isAdmin() && (S.tab === 'stores' || S.tab === 'catalog'));
+  $('#btnImport').textContent = S.tab === 'catalog' ? '⇪ Nhập giá' : '⇪ Nhập';
+  $('#btnImport').title = S.tab === 'catalog' ? 'Nhập bảng giá sản phẩm của các cửa hàng từ Excel / CSV' : 'Nhập danh sách cửa hàng từ Excel / CSV';
   $('#search').placeholder = S.tab === 'customers' ? 'Tìm khách theo tên, SĐT, địa chỉ…'
     : S.tab === 'catalog' ? 'Tìm sản phẩm theo tên, nhóm, quy cách…' : 'Tìm cửa hàng theo tên, SĐT, địa chỉ…';
   $('#filterRow').hidden = S.tab !== 'stores' || !S.catalog.length;
@@ -1237,7 +1519,8 @@ function ptGroupsHTML(d) {
   return h;
 }
 function newProdHTML(d) {
-  if (!d.np) return '<div class="np"><button type="button" class="btn ghost sm np-open">＋ Tạo sản phẩm mới</button></div>';
+  if (!d.np) return '<div class="np"><div class="np-actions"><button type="button" class="btn ghost sm np-open">＋ Tạo sản phẩm mới</button>' +
+    (S.editing && S.editing.type === 'store' && S.editing.id ? '<button type="button" class="btn ghost sm pt-import" title="Nhập bảng giá của cửa hàng này từ Excel / CSV">⇪ Nhập giá từ file</button>' : '') + '</div></div>';
   return '<div class="np"><div class="np-form"><b class="np-title">Tạo sản phẩm mới (thêm vào danh mục chung)</b>' +
     '<label class="fld">Nhóm<input class="np-grp" list="dlGroups" value="' + esc(d.np.grp) + '" placeholder="VD: Xi măng (bỏ trống = Khác)" autocomplete="off"></label>' +
     '<label class="fld">Tên sản phẩm *<input class="np-name" value="' + esc(d.np.name) + '" placeholder="VD: Xi măng Vicem Hà Tiên Xây Tô" maxlength="120" autocomplete="off"></label>' +
@@ -1460,7 +1743,8 @@ function handleWriteErr(er) {
 }
 
 function closeForm(force) {
-  if (!force && S.editing && S.editing.dirty && !confirm('Bỏ các thay đổi chưa lưu?')) return;
+  if (!force && S.editing && S.editing.dirty && !confirm(S.editing.type === 'import' ? 'Bỏ danh sách đang nhập?' : 'Bỏ các thay đổi chưa lưu?')) return;
+  if (S.editing && S.editing.type === 'import') impCleanup(S.editing.draft);
   S.editing = null; suggestToken++;
   removeEditMarker();
   if (routeLayer) routeLayer.clearLayers();
@@ -1578,6 +1862,842 @@ async function saveCat(btn) {
     if (er.kind === 'dup') toast(er.msg, 'warn'); else handleWriteErr(er);
     btn.disabled = false; btn.textContent = 'Lưu';
   }
+}
+
+/* ================= Nhập danh sách cửa hàng (quản lý) ================= */
+const XLSX_URL = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+let xlsxP = null;
+function loadXLSX() {
+  if (window.XLSX) return Promise.resolve(window.XLSX);
+  if (!xlsxP) xlsxP = new Promise((res, rej) => {
+    const sc = document.createElement('script');
+    sc.src = XLSX_URL; sc.async = true;
+    sc.onload = () => (window.XLSX ? res(window.XLSX) : rej(new Error('XLSX')));
+    sc.onerror = () => { xlsxP = null; rej(new Error('XLSX')); };
+    document.head.appendChild(sc);
+  });
+  return xlsxP;
+}
+// Đọc sheet đầu tiên; ô có hyperlink Google Maps thì lấy luôn link
+function sheetRows(X, wb) {
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  if (!ws || !ws['!ref']) return [];
+  const R = X.utils.decode_range(ws['!ref']), out = [];
+  for (let r = R.s.r; r <= R.e.r; r++) {
+    const row = [];
+    for (let c = R.s.c; c <= R.e.c; c++) {
+      const cell = ws[X.utils.encode_cell({ r, c })];
+      let v = cell ? String(cell.w != null ? cell.w : (cell.v != null ? cell.v : '')) : '';
+      const link = cell && cell.l && cell.l.Target;
+      if (link && /google|goo\.gl|maps|g\.co/i.test(link) && !Core.parseLoc(v)) v = (v ? v + ' ' : '') + link;
+      row.push(v.replace(/\s+/g, ' ').trim());
+    }
+    out.push(row);
+  }
+  return out.filter(r => r.some(Boolean));
+}
+const IMP_FIELDS = [['combo', 'Tên + địa chỉ (chung 1 cột)'], ['name', 'Tên cửa hàng *'], ['address', 'Địa chỉ'], ['phone', 'Điện thoại'], ['coord', 'Tọa độ / link Google Maps'], ['lat', 'Vĩ độ (lat)'], ['lng', 'Kinh độ (lng)']];
+const colName = j => { let s = ''; j++; while (j > 0) { const m = (j - 1) % 26; s = String.fromCharCode(65 + m) + s; j = Math.floor((j - 1) / 26); } return s; };
+const geoCache = new Map();
+
+function openImport() {
+  const imp = { step: 1, raw: [], hasHead: false, cols: null, rows: [], fname: '', paste: '', filter: 'all',
+    running: false, stop: false, placing: -1, layer: null, markers: new Map(), prog: null, skipped: 0 };
+  S.editing = { type: 'import', id: null, draft: imp, dirty: false };
+  renderImport();
+}
+function stepsHTML(n) {
+  return '<div class="steps" aria-label="Các bước">' + ['1. Chọn file', '2. Chọn cột', '3. Kiểm tra &amp; lưu']
+    .map((t, i) => '<span class="' + (i + 1 === n ? 'on' : i + 1 < n ? 'done' : '') + '"' + (i + 1 === n ? ' aria-current="step"' : '') + '>' + t + '</span>').join('') + '</div>';
+}
+function renderImport() {
+  const imp = S.editing.draft;
+  const head = '<div class="form-head"><h2>Nhập danh sách cửa hàng</h2><span class="muted small">Bước ' + imp.step + '/3</span></div>' + stepsHTML(imp.step);
+  let body = '', act = '';
+  if (imp.step === 1) {
+    body = '<p class="hint" style="margin:0 0 10px">File <b>Excel</b> (.xlsx, .xls), <b>CSV</b>, hoặc dán từ Excel / Google Sheets. Cần ít nhất cột <b>Tên</b>. Vị trí lấy từ cột <b>tọa độ / link Google Maps</b>; dòng nào không có sẽ tự tìm theo <b>địa chỉ</b>.</p>' +
+      '<label class="dropzone"><input type="file" class="imp-file" accept=".xlsx,.xls,.csv,.tsv,.txt" aria-label="Chọn file danh sách cửa hàng">' +
+      '<span class="dz-ico" aria-hidden="true">📄</span><b>Chọn file</b><span class="muted small">hoặc kéo thả file vào đây</span>' +
+      '<span class="imp-fname">' + esc(imp.fname) + '</span></label>' +
+      '<div class="or">hoặc dán bảng</div>' +
+      '<textarea class="imp-paste" placeholder="Trong Excel: chọn vùng có tiêu đề → Ctrl+C → bấm vào đây → Ctrl+V" aria-label="Dán bảng danh sách cửa hàng">' + esc(imp.paste) + '</textarea>' +
+      '<button type="button" class="btn ghost sm imp-sample" style="margin-top:8px">⬇ Tải file mẫu (.csv)</button>' +
+      '<p class="hint" style="margin-top:12px">Cần nhập <b>bảng giá sản phẩm</b> cho các cửa hàng? <button type="button" class="link-btn pi-open">Nhập bảng giá từ file →</button></p>';
+    act = '<span class="sp"></span><button type="button" class="btn btn-cancel">Hủy</button><button type="button" class="btn primary imp-next1">Tiếp tục →</button>';
+  } else if (imp.step === 2) {
+    body = colMapHTML(imp);
+    act = '<button type="button" class="btn imp-back">← Quay lại</button><span class="sp"></span><button type="button" class="btn btn-cancel">Hủy</button><button type="button" class="btn primary imp-go">Tìm vị trí →</button>';
+  } else {
+    body = '<div class="imp-sum"></div><div class="prog-box" hidden></div>' +
+      '<div class="imp-filter" role="group" aria-label="Lọc danh sách"><button type="button" data-f="all" aria-pressed="' + (imp.filter === 'all') + '">Tất cả</button>' +
+      '<button type="button" data-f="check" aria-pressed="' + (imp.filter === 'check') + '">Cần xem lại</button></div>' +
+      '<div class="imp-list"></div>' +
+      '<p class="hint">Ghim số trên bản đồ = số dòng. Kéo ghim để chỉnh vị trí · Ghim <b style="color:#d97706">cam</b> là gần đúng · Bấm "Đặt ghim" rồi bấm lên bản đồ cho dòng chưa có vị trí. Bảng giá nhập sau trong từng cửa hàng.</p>';
+    act = '<button type="button" class="btn imp-back">← Chọn cột</button><span class="sp"></span><button type="button" class="btn btn-cancel">Hủy</button><button type="button" class="btn primary btn-save">Lưu</button>';
+  }
+  showFormView(head + body + '<div class="form-actions">' + act + '</div>');
+  if (imp.step === 3) { renderImpList(); renderImpSummary(); renderImpProgress(); syncImpMarkers(); }
+}
+
+/* ---------- Bước 1: đọc file / dán ---------- */
+async function decodeText(buf) {
+  let t = new TextDecoder('utf-8').decode(buf);
+  if (t.includes('�')) { try { t = new TextDecoder('windows-1258').decode(buf); } catch (e) { /* giữ utf-8 */ } }
+  return t;
+}
+async function readImpFile(file) {
+  const kind = S.editing && S.editing.type;
+  const imp = kind === 'import' || kind === 'pimport' ? S.editing.draft : null;
+  if (!imp || !file) return;
+  const ext = (file.name.split('.').pop() || '').toLowerCase();
+  const fz = $('#formView .imp-fname'); if (fz) fz.textContent = 'Đang đọc ' + file.name + '…';
+  try {
+    const buf = await file.arrayBuffer();
+    let rows;
+    if (ext === 'xlsx' || ext === 'xls' || ext === 'xlsm') {
+      let X;
+      try { X = await loadXLSX(); } catch (e) { throw new Error('Không tải được bộ đọc Excel (cần internet). Có thể mở file Excel → chọn vùng → Ctrl+C → dán vào ô bên dưới.'); }
+      rows = sheetRows(X, X.read(new Uint8Array(buf), { type: 'array', cellDates: false }));
+    } else rows = Core.parseDelimited(await decodeText(buf));
+    imp.fname = file.name;
+    if (kind === 'pimport') piStartMapping(imp, rows); else startMapping(imp, rows);
+  } catch (e) {
+    if (fz) fz.textContent = '';
+    toast(e && e.message && !/^XLSX$/.test(e.message) ? e.message : 'Không đọc được file — thử lưu lại dạng .xlsx hoặc .csv', 'err');
+  }
+}
+function startMapping(imp, rows) {
+  if (!rows.length) { toast('Không thấy dữ liệu trong danh sách', 'warn'); return; }
+  if (rows.length > 3001) { toast('Danh sách quá dài — mỗi lần nhập tối đa 3.000 dòng', 'warn'); return; }
+  imp.raw = rows; imp.hasHead = Core.isHeaderRow(rows[0]);
+  imp.cols = Core.guessCols(imp.hasHead ? rows[0] : null, imp.hasHead ? rows.slice(1) : rows);
+  imp.step = 2; S.editing.dirty = true;
+  renderImport();
+}
+function downloadSample() {
+  const csv = '﻿Tên cửa hàng,Địa chỉ,Điện thoại,Tọa độ / link Google Maps\n' +
+    'Cửa hàng mẫu A,"Đường Trần Hưng Đạo, Dĩ An, Bình Dương",0909000001,"10.9052, 106.7701"\n' +
+    'Cửa hàng mẫu B,"Đường Kha Vạn Cân, Linh Đông, Thủ Đức",0909000002,https://www.google.com/maps/place/@10.8521,106.755,17z\n' +
+    'Cửa hàng mẫu C,"Đường số 9, Linh Tây, Thủ Đức, TP.HCM",0909000003,\n';
+  try {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'mau_danh_sach_cua_hang.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  } catch (e) { toast('Trình duyệt không cho tải file mẫu', 'warn'); }
+}
+
+/* ---------- Bước 2: chọn cột ---------- */
+function impData(imp) { return imp.hasHead ? imp.raw.slice(1) : imp.raw; }
+function colMapHTML(imp) {
+  const head = imp.hasHead ? imp.raw[0] : null, data = impData(imp);
+  const ncol = Math.max(...imp.raw.map(r => r.length));
+  const opt = (sel) => '<option value="-1">— Không có —</option>' + Array.from({ length: ncol }, (_, j) => {
+    const label = head && head[j] ? head[j] : (data.find(r => r[j]) || [])[j] || '';
+    return '<option value="' + j + '"' + (j === sel ? ' selected' : '') + '>Cột ' + colName(j) + (label ? ': ' + esc(label.length > 28 ? label.slice(0, 27) + '…' : label) : '') + '</option>';
+  }).join('');
+  const c = imp.cols, prev = data.slice(0, 5);
+  const locOf = r => impLoc(imp, r);
+  let ready = 0, need = 0, none = 0;
+  for (const r of data) { const na = impNA(imp, r); if (!na.name) continue; const l = locOf(r); if (l && l.lat != null) ready++; else if (na.address) need++; else none++; }
+  return '<p class="hint" style="margin:0 0 8px">' + (imp.fname ? '📄 <b>' + esc(imp.fname) + '</b> · ' : '') + data.length + ' dòng dữ liệu. Kiểm tra app đã nhận đúng cột chưa:</p>' +
+    '<label class="chk" style="margin:0 0 8px"><input type="checkbox" class="imp-head"' + (imp.hasHead ? ' checked' : '') + '> Dòng đầu là tiêu đề cột</label>' +
+    '<div class="colmap">' + IMP_FIELDS.map(([k, l]) => '<label>' + l + '<select class="imp-col" data-k="' + k + '">' + opt(c[k]) + '</select></label>').join('') + '</div>' +
+    '<div class="imp-sum"><span class="ok">' + ready + ' có sẵn tọa độ</span><span>' + need + ' sẽ tìm theo địa chỉ</span>' + (none ? '<span class="bad">' + none + ' thiếu cả vị trí lẫn địa chỉ</span>' : '') + '</div>' +
+    '<div class="prev-wrap"><table class="imp-prev"><thead><tr><th>Tên</th><th>Địa chỉ</th><th>Điện thoại</th><th>Vị trí</th></tr></thead><tbody>' +
+    prev.map(r => {
+      const l = locOf(r), na = impNA(imp, r);
+      const loc = l && l.lat != null ? '<span class="ok">✓ ' + l.lat.toFixed(5) + ', ' + l.lng.toFixed(5) + '</span>'
+        : l && l.short ? '<span class="warn">link rút gọn → tìm theo địa chỉ</span>'
+        : l && l.search != null ? '<span class="warn">link tìm kiếm (không có tọa độ) → tìm theo địa chỉ</span>' : '<span class="muted">—</span>';
+      return '<tr><td title="' + esc(na.name) + '">' + esc(na.name) + '</td><td title="' + esc(na.address) + '">' + esc(na.address) + '</td><td>' + (c.phone >= 0 ? esc(Core.normPhone(r[c.phone])) : '') + '</td><td>' + loc + '</td></tr>';
+    }).join('') + '</tbody></table></div>' +
+    (c.name < 0 && c.combo < 0 ? '<p class="warn-text" style="margin-top:8px">⚠ Cần chọn cột Tên cửa hàng (hoặc cột Tên + địa chỉ).</p>' : '') +
+    (c.combo >= 0 ? '<p class="hint" style="margin-top:8px">Cột "Tên + địa chỉ" được tách ở dấu " - " đầu tiên đứng trước số nhà / tên đường — xem cột Tên và Địa chỉ ở bảng trên để kiểm tra.</p>' : '');
+}
+function impNA(imp, r) {
+  const c = imp.cols;
+  let name = c.name >= 0 ? Core.clean(r[c.name]) : '', address = c.address >= 0 ? Core.clean(r[c.address]) : '';
+  if (c.combo >= 0) { const sp = Core.splitNameAddr(r[c.combo]); if (!name) name = sp.name; if (!address) address = sp.address; }
+  return { name: name.slice(0, 120), address };
+}
+function impLoc(imp, r) {
+  const c = imp.cols;
+  if (c.lat >= 0 && c.lng >= 0) {
+    const l = Core.fixLL(Core.parseNum(r[c.lat]), Core.parseNum(r[c.lng]), 'coord');
+    if (l) return l;
+  }
+  return c.coord >= 0 ? Core.parseLoc(r[c.coord]) : null;
+}
+
+/* ---------- Bước 3: dựng danh sách, tìm vị trí, trùng lặp ---------- */
+function buildImpRows(imp) {
+  const c = imp.cols, out = [], seen = new Map();
+  let no = 0; imp.skipped = 0;
+  for (const r of impData(imp)) {
+    no++;
+    const { name, address } = impNA(imp, r);
+    if (!name) { imp.skipped++; continue; }
+    const row = { no, name, address, phone: Core.normPhone(c.phone >= 0 ? r[c.phone] : ''),
+      lat: null, lng: null, st: 'none', note: '', dup: '', sel: true };
+    const l = impLoc(imp, r);
+    if (l && l.lat != null) { row.lat = l.lat; row.lng = l.lng; row.st = l.odd ? 'odd' : 'coord'; row.note = l.src === 'link' ? 'từ link Google Maps' : ''; }
+    else {
+      if (l && l.short) row.note = 'Link rút gọn không đọc được tọa độ';
+      else if (l && l.search != null) row.note = 'Link Google Maps dạng tìm kiếm, không có tọa độ';
+      row.st = row.address ? 'pending' : 'none';
+    }
+    const k = Core.fold(name) + '|' + Core.fold(row.address);
+    if (seen.has(k)) { row.dup = 'Trùng với dòng ' + seen.get(k) + ' trong file'; row.sel = false; } else seen.set(k, no);
+    impCheckDup(row);
+    out.push(row);
+  }
+  imp.rows = out;
+}
+function impCheckDup(row) {
+  if (row.dup) return;
+  const ph = row.phone.replace(/\D/g, '');
+  const hit = S.stores.find(s => {
+    if (ph.length >= 9 && s.phone.replace(/\D/g, '') === ph) return true;
+    if (Core.fold(Core.clean(s.name)) !== Core.fold(row.name)) return false;
+    return row.lat == null ? !!row.address && Core.fold(Core.clean(s.address)) === Core.fold(row.address) : Core.haversine(s, row) < 300;
+  });
+  if (hit) { row.dup = 'Đã có trên bản đồ: "' + hit.name + '"'; row.sel = false; }
+}
+function startReview(imp) {
+  if (imp.cols.name < 0 && imp.cols.combo < 0) { toast('Cần chọn cột Tên cửa hàng (hoặc cột Tên + địa chỉ)', 'warn'); const s = $('#formView .imp-col[data-k="name"]'); if (s) s.focus(); return; }
+  buildImpRows(imp);
+  if (!imp.rows.length) { toast('Không có dòng nào có tên cửa hàng', 'warn'); return; }
+  imp.step = 3; imp.filter = 'all';
+  renderImport();
+  if (imp.skipped) toast('Bỏ qua ' + imp.skipped + ' dòng không có tên cửa hàng', 'warn');
+  if (imp.rows.some(r => r.st === 'pending' && r.sel)) runGeocode(imp); else fitImport(imp);
+}
+async function geocodeAddr(addr, name) {
+  const tries = Core.addrTries(addr, name);
+  for (const [q0, level] of tries) {
+    const q = /vi[eệ]t\s*nam/i.test(q0) ? q0 : q0 + ', Việt Nam';
+    let hit;
+    if (geoCache.has(q)) hit = geoCache.get(q);
+    else {
+      const wait = 1100 - (Date.now() - lastGeo); if (wait > 0) await sleep(wait);
+      lastGeo = Date.now();
+      const r = await fetchJSON(NOMINATIM + '?format=jsonv2&limit=1&countrycodes=vn&accept-language=vi&q=' + encodeURIComponent(q), 12000);
+      hit = Array.isArray(r) && r[0] ? { lat: +r[0].lat, lng: +r[0].lon, rank: +r[0].place_rank || 0 } : null;
+      geoCache.set(q, hit);
+    }
+    if (hit) return { ...hit, rank: level === 'area' ? Math.min(hit.rank, 25) : level === 'street' ? Math.min(hit.rank, 27) : hit.rank };
+  }
+  return null;
+}
+// Nhiều cửa hàng tìm ra cùng 1 điểm (VD tâm "Dĩ An", hoặc đường chưa có số nhà) → xòe ra quanh điểm đó để kéo được từng ghim
+function impSpread(imp, r) {
+  const same = imp.rows.filter(x => x !== r && x.lat != null && x.baseLat != null && Math.abs(x.baseLat - r.lat) < 1e-6 && Math.abs(x.baseLng - r.lng) < 1e-6).length;
+  r.baseLat = r.lat; r.baseLng = r.lng;
+  if (!same) return;
+  const ang = same * 2.39996, rad = 0.0006 * Math.sqrt(same);   // xoắn ốc, ~65m mỗi vòng
+  r.lat = Math.round((r.lat + rad * Math.sin(ang)) * 1e7) / 1e7;
+  r.lng = Math.round((r.lng + rad * Math.cos(ang)) * 1e7) / 1e7;
+}
+async function runGeocode(imp) {
+  if (imp.running) return;
+  imp.running = true; imp.stop = false;
+  const todo = imp.rows.filter(r => r.st === 'pending' && r.sel);
+  let netErr = 0;
+  imp.prog = { done: 0, total: todo.length, t0: Date.now() };
+  renderImpProgress(); renderImpSummary();
+  for (let k = 0; k < todo.length; k++) {
+    if (imp.stop || !S.editing || S.editing.draft !== imp) break;
+    const r = todo[k];
+    try {
+      const g = await geocodeAddr(r.address, r.name);
+      netErr = 0;
+      if (g) {
+        r.lat = Math.round(g.lat * 1e7) / 1e7; r.lng = Math.round(g.lng * 1e7) / 1e7;
+        r.st = g.rank >= 28 ? 'geo' : 'approx';
+        r.note = g.rank >= 28 ? '' : g.rank >= 26 ? 'chỉ tìm được tới tên đường' : 'chỉ tìm được tới phường / thị xã';
+        impSpread(imp, r);
+        impCheckDup(r);
+      }
+      else { r.st = 'none'; r.note = (r.note ? r.note + ' · ' : '') + 'Không tìm được địa chỉ'; }
+    } catch (e) {
+      r.st = 'pending'; r.note = 'Lỗi mạng — sẽ thử lại khi bấm "Tìm tiếp"';
+      if (++netErr >= 3) { toast('Không kết nối được dịch vụ tìm địa chỉ — đã dừng. Kiểm tra internet rồi bấm "Tìm tiếp".', 'err'); break; }
+    }
+    if (!S.editing || S.editing.draft !== imp) break;
+    imp.prog.done = k + 1;
+    updateImpRow(imp, r); syncImpMarker(imp, r); renderImpProgress(); renderImpSummary();
+  }
+  imp.running = false;
+  if (S.editing && S.editing.draft === imp) { renderImpProgress(); renderImpSummary(); fitImport(imp); }
+}
+
+/* ---------- Hiển thị danh sách nhập ---------- */
+const ST_LABEL = {
+  coord: ['ok', '✓ Có sẵn tọa độ'], geo: ['ok2', '✓ Tìm theo địa chỉ — nên xem lại ghim'], approx: ['warn', '≈ Gần đúng — kéo ghim tới đúng cửa hàng'],
+  odd: ['warn', '⚠ Tọa độ nằm ngoài Việt Nam — kiểm tra lại'], manual: ['ok', '✓ Đã đặt / chỉnh tay'], none: ['bad', '✗ Chưa có vị trí'], pending: ['wait', '… Đang chờ tìm theo địa chỉ']
+};
+const needsCheck = r => r.dup || ['approx', 'odd', 'none'].includes(r.st);
+function impRowHTML(imp, r) {
+  const [cls, lab] = ST_LABEL[r.st] || ST_LABEL.none;
+  const i = imp.rows.indexOf(r);
+  return '<div class="imp-row' + (r.sel ? '' : ' off') + (imp.placing === i ? ' placing' : '') + '" data-i="' + i + '">' +
+    '<label class="imp-chk" title="Chọn để lưu"><input type="checkbox" class="imp-sel"' + (r.sel ? ' checked' : '') + ' aria-label="Lưu ' + esc(r.name) + '"></label>' +
+    '<button type="button" class="imp-main" data-i="' + i + '"><span class="imp-top"><span class="imp-no">' + r.no + '</span><b>' + esc(r.name) + '</b></span>' +
+    (r.address ? '<span class="meta">📍 ' + esc(r.address) + '</span>' : '') + (r.phone ? '<span class="meta">📞 ' + esc(r.phone) + '</span>' : '') +
+    '<span class="imp-st ' + cls + '">' + (imp.placing === i ? '👆 Bấm lên bản đồ để đặt vị trí…' : r.st === 'pending' && !r.sel ? '… Chưa tìm vị trí (đang bỏ qua — tick để tìm)' : lab) + (r.note ? ' <span class="muted">· ' + esc(r.note) + '</span>' : '') + '</span>' +
+    (r.dup ? '<span class="imp-dup">⧉ ' + esc(r.dup) + ' — mặc định bỏ qua</span>' : '') + '</button>' +
+    (r.lat == null && (r.st !== 'pending' || !r.sel) ? '<button type="button" class="btn sm imp-place" data-i="' + i + '">📍 Đặt ghim</button>' : '') + '</div>';
+}
+function renderImpList() {
+  const imp = S.editing.draft, box = $('#formView .imp-list'); if (!box) return;
+  const rows = imp.filter === 'check' ? imp.rows.filter(needsCheck) : imp.rows;
+  box.innerHTML = rows.length ? rows.map(r => impRowHTML(imp, r)).join('') : '<div class="empty">Không có dòng nào cần xem lại 👍</div>';
+}
+function updateImpRow(imp, r) {
+  const i = imp.rows.indexOf(r), el = $('#formView .imp-row[data-i="' + i + '"]');
+  if (!el) return;
+  // Giữ con trỏ bàn phím sau khi vẽ lại dòng
+  const a = document.activeElement, keep = a && el.contains(a) ? ['imp-sel', 'imp-place', 'imp-main'].find(c => a.classList.contains(c)) : null;
+  el.outerHTML = impRowHTML(imp, r);
+  if (keep) { const n = $('#formView .imp-row[data-i="' + i + '"] .' + keep) || $('#formView .imp-row[data-i="' + i + '"] .imp-main'); if (n) n.focus(); }
+}
+function impCounts(imp) {
+  const c = { total: imp.rows.length, ok: 0, approx: 0, none: 0, pending: 0, dup: 0, save: 0 };
+  for (const r of imp.rows) {
+    if (r.st === 'pending') { if (r.sel) c.pending++; else c.none++; }
+    else if (r.lat == null) c.none++;
+    else if (r.st === 'approx' || r.st === 'odd') c.approx++;
+    else c.ok++;
+    if (r.dup) c.dup++;
+    if (r.sel && r.lat != null) c.save++;
+  }
+  return c;
+}
+function renderImpSummary() {
+  const imp = S.editing.draft, box = $('#formView .imp-sum'); if (!box || imp.step !== 3) return;
+  const c = impCounts(imp);
+  box.innerHTML = '<span>' + c.total + ' cửa hàng</span><span class="ok">✓ ' + c.ok + ' có vị trí</span>' +
+    (c.approx ? '<span class="warn">≈ ' + c.approx + ' gần đúng</span>' : '') + (c.none ? '<span class="bad">✗ ' + c.none + ' chưa có vị trí</span>' : '') +
+    (c.pending ? '<span>… ' + c.pending + ' đang chờ</span>' : '') + (c.dup ? '<span class="dup">⧉ ' + c.dup + ' trùng</span>' : '');
+  const btn = $('#formView .btn-save');
+  if (btn) { btn.textContent = 'Lưu ' + c.save + ' cửa hàng'; btn.disabled = imp.running || !c.save; }
+}
+function renderImpProgress() {
+  const imp = S.editing.draft, box = $('#formView .prog-box'); if (!box) return;
+  const p = imp.prog, left = imp.rows.filter(r => r.st === 'pending' && r.sel).length;
+  if (imp.running && p) {
+    const per = p.done ? (Date.now() - p.t0) / 1000 / p.done : 2.5;
+    const sec = Math.max(0, Math.round((p.total - p.done) * per));
+    box.hidden = false;
+    box.innerHTML = '<div class="row"><b>Đang tìm vị trí theo địa chỉ ' + p.done + '/' + p.total + '</b><span class="muted">còn khoảng ' + (sec >= 60 ? Math.ceil(sec / 60) + ' phút' : sec + ' giây') + '</span></div>' +
+      '<div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="' + p.total + '" aria-valuenow="' + p.done + '"><i style="width:' + (p.total ? Math.round(p.done / p.total * 100) : 0) + '%"></i></div>' +
+      '<div class="row"><span class="muted small">Dịch vụ miễn phí giới hạn 1 địa chỉ / giây</span><button type="button" class="btn sm imp-stop">Dừng</button></div>';
+  } else if (left) {
+    box.hidden = false;
+    box.innerHTML = '<div class="row"><span>Còn <b>' + left + '</b> dòng chưa tìm vị trí.</span><button type="button" class="btn sm primary imp-resume">Tìm tiếp</button></div>';
+  } else box.hidden = true;
+}
+
+/* ---------- Ghim nhập trên bản đồ ---------- */
+function impIcon(r) {
+  const cls = !r.sel ? 'off' : r.st;
+  return L.divIcon({ className: 'imp-pin', html: '<div class="ip ip-' + cls + '"><span>' + r.no + '</span></div>', iconSize: [28, 28], iconAnchor: [14, 36], tooltipAnchor: [0, -34] });
+}
+function syncImpMarker(imp, r) {
+  if (!hasMap) return;
+  if (!imp.layer) imp.layer = L.layerGroup().addTo(map);
+  let m = imp.markers.get(r);
+  if (r.lat == null) { if (m) { imp.layer.removeLayer(m); imp.markers.delete(r); } return; }
+  if (!m) {
+    m = L.marker([r.lat, r.lng], { icon: impIcon(r), draggable: true, autoPan: true, riseOnHover: true, keyboard: true, alt: r.name });
+    m.bindTooltip(r.no + '. ' + esc(r.name), { direction: 'top' });
+    m.on('dragend', () => {
+      const ll = m.getLatLng();
+      r.lat = Math.round(ll.lat * 1e7) / 1e7; r.lng = Math.round(ll.lng * 1e7) / 1e7; r.st = 'manual';
+      updateImpRow(imp, r); renderImpSummary(); m.setIcon(impIcon(r));
+    });
+    m.on('click', () => flashImpRow(imp, r));
+    imp.markers.set(r, m); imp.layer.addLayer(m);
+  } else { m.setLatLng([r.lat, r.lng]); m.setIcon(impIcon(r)); }
+}
+function syncImpMarkers() { const imp = S.editing.draft; imp.rows.forEach(r => syncImpMarker(imp, r)); }
+function fitImport(imp) {
+  if (!hasMap) return;
+  const pts = imp.rows.filter(r => r.lat != null).map(r => [r.lat, r.lng]);
+  if (pts.length === 1) map.setView(pts[0], 16);
+  else if (pts.length > 1) map.flyToBounds(pts, { padding: [40, 40], maxZoom: 16, duration: 0.6 });
+}
+function flashImpRow(imp, r) {
+  if (imp.filter === 'check' && !needsCheck(r)) { imp.filter = 'all'; $$('#formView .imp-filter button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.f === 'all'))); renderImpList(); }
+  const el = $('#formView .imp-row[data-i="' + imp.rows.indexOf(r) + '"]');
+  if (!el) return;
+  if (el.scrollIntoView) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1400);
+}
+function impMapClick(latlng) {
+  const imp = S.editing.draft;
+  if (imp.step !== 3 || imp.placing < 0) return;
+  const r = imp.rows[imp.placing];
+  imp.placing = -1;
+  r.lat = Math.round(latlng.lat * 1e7) / 1e7; r.lng = Math.round(latlng.lng * 1e7) / 1e7; r.st = 'manual';
+  if (!r.dup) impCheckDup(r);
+  updateImpRow(imp, r); syncImpMarker(imp, r); renderImpSummary();
+  toast('Đã đặt vị trí cho "' + r.name + '" — kéo ghim số ' + r.no + ' nếu cần chỉnh', 'ok');
+}
+function impStartPlace(imp, i) {
+  const prev = imp.placing;
+  imp.placing = prev === i ? -1 : i;
+  if (prev >= 0 && imp.rows[prev]) updateImpRow(imp, imp.rows[prev]);
+  updateImpRow(imp, imp.rows[i]);
+  if (imp.placing >= 0) toast('Bấm lên bản đồ để đặt vị trí cho "' + imp.rows[i].name + '"', 'ok');
+}
+function impCleanup(imp) {
+  imp.stop = true;
+  if (imp.layer && hasMap) map.removeLayer(imp.layer);
+  imp.layer = null; imp.markers = new Map();
+}
+async function saveImport(btn) {
+  const imp = S.editing.draft;
+  if (imp.running) { toast('Đang tìm vị trí — đợi xong hoặc bấm "Dừng"', 'warn'); return; }
+  const sel = imp.rows.filter(r => r.sel), ready = sel.filter(r => r.lat != null);
+  if (!ready.length) { toast('Chưa có cửa hàng nào được chọn và có vị trí', 'warn'); return; }
+  const miss = sel.length - ready.length;
+  if (miss && !confirm(miss + ' cửa hàng đã chọn nhưng chưa có vị trí sẽ bị bỏ qua. Lưu ' + ready.length + ' cửa hàng?')) return;
+  btn.disabled = true;
+  let saved = 0;
+  try {
+    for (let i = 0; i < ready.length; i += 200) {
+      const chunk = ready.slice(i, i + 200);
+      btn.textContent = 'Đang lưu ' + (i + chunk.length) + '/' + ready.length + '…';
+      const { error } = await sb.from('stores').insert(chunk.map(r => ({ name: r.name, phone: r.phone, address: r.address, lat: r.lat, lng: r.lng })));
+      if (error) throw error;
+      saved += chunk.length;
+      chunk.forEach(r => { r.sel = false; r.saved = true; });
+    }
+    toast('Đã thêm ' + saved + ' cửa hàng lên bản đồ — mở từng cửa hàng để nhập bảng giá', 'ok');
+    closeForm(true);
+    await loadData(true);
+    fitAll();
+  } catch (err) {
+    const er = dbErr(err);
+    if (saved) { toast('Đã lưu ' + saved + '/' + ready.length + ' cửa hàng rồi gặp lỗi: ' + er.msg + ' — bấm Lưu để thử tiếp phần còn lại', 'err'); renderImpList(); syncImpMarkers(); renderImpSummary(); }
+    else handleWriteErr(er);
+    btn.disabled = false; renderImpSummary();
+  }
+}
+
+/* ================= Nhập bảng giá sản phẩm (quản lý) ================= */
+// 3 kiểu bảng: "long" = mỗi dòng 1 giá (có cột Cửa hàng) · "wide" = mỗi cột là 1 cửa hàng · "single" = 1 cửa hàng
+const PI_PATS = {
+  sphone: /(sdt|so dt|dien thoai|phone|tel)/,
+  store: /(cua hang|store|dai ly|shop|nha cung cap|ncc)/,
+  unit: /(don vi|dvt|^dv$|unit)/,
+  grp: /(nhom|loai|danh muc|category|group)/,
+  spec: /(quy cach|spec)/,
+  name: /(san pham|mat hang|hang hoa|vat tu|vat lieu|ten hang|ten sp|product|item|^ten$|^ten )/,
+  price: /(gia|price)/
+};
+// Tìm cửa hàng theo SĐT, tên trùng khớp, hoặc tên cửa hàng nằm trong nhãn (VD cột "Giá VLXD An Phú")
+function matchStore(label, phone) {
+  const ph = String(phone || '').replace(/\D/g, '');
+  if (ph.length >= 9) { const s = S.stores.find(x => x.phone.replace(/\D/g, '') === ph); if (s) return s; }
+  const f = Core.fold(Core.clean(label)); if (!f) return null;
+  const exact = S.stores.filter(x => Core.fold(Core.clean(x.name)) === f);
+  if (exact.length === 1) return exact[0];
+  if (exact.length > 1) return null;
+  const inLabel = S.stores.filter(x => { const n = Core.fold(Core.clean(x.name)); return n.length >= 4 && f.includes(n); })
+    .sort((a, b) => b.name.length - a.name.length);
+  if (inLabel.length) return inLabel[0];
+  const inName = f.length >= 5 ? S.stores.filter(x => Core.fold(Core.clean(x.name)).includes(f)) : [];
+  return inName.length === 1 ? inName[0] : null;
+}
+const storeOpts = sel => S.stores.slice().sort((a, b) => a.name.localeCompare(b.name, 'vi'))
+  .map(x => '<option value="' + esc(x.id) + '"' + (x.id === sel ? ' selected' : '') + '>' + esc(x.name) + '</option>').join('');
+const piHead = P => (P.hasHead ? P.raw[0] : null);
+const piData = P => (P.hasHead ? P.raw.slice(1) : P.raw);
+
+function openPriceImport(storeId) {
+  const P = { step: 1, raw: [], hasHead: false, fname: '', paste: '', layout: 'long', cols: null, wmap: {}, storeId: storeId || '',
+    replace: false, entries: [], errors: [], empty: 0, prods: [], smaps: [], filter: 'all', returnTo: storeId || null };
+  S.editing = { type: 'pimport', id: null, draft: P, dirty: false };
+  renderPImport();
+}
+function piIsHeader(row) {
+  if (!row || !row.length) return false;
+  const hits = row.filter(h => h && (Object.values(PI_PATS).some(p => p.test(Core.headKey(h))) || matchStore(h))).length;
+  const nums = row.filter(h => /^[\d\s.,]+\s*(k|đ|d|vnđ|vnd)?$/i.test(String(h || '').trim()) && Core.parseVND(h) > 0).length;
+  return hits > 0 && nums === 0;
+}
+function piGuess(P) {
+  const head = piHead(P), data = piData(P), sample = data.slice(0, 40);
+  const ncol = Math.max(0, ...P.raw.map(r => r.length));
+  const c = { store: -1, sphone: -1, name: -1, unit: -1, price: -1, grp: -1, spec: -1 }, used = new Set();
+  const filled = j => sample.map(r => r[j]).filter(x => x != null && String(x).trim() !== '');
+  const priceRatio = j => { const v = filled(j); return v.length ? v.filter(x => Core.parseVND(x) > 0).length / v.length : 0; };
+  P.wmap = {};
+  if (head) head.forEach((h, j) => { const st = h && matchStore(h); if (st && priceRatio(j) >= 0.5) { P.wmap[j] = st.id; used.add(j); } });
+  if (head) for (const k of ['sphone', 'store', 'unit', 'grp', 'spec', 'name', 'price']) {
+    const i = head.findIndex((h, j) => !used.has(j) && h && PI_PATS[k].test(Core.headKey(h)));
+    if (i >= 0) { c[k] = i; used.add(i); }
+  }
+  const isUnit = x => !!Core.UNIT_ALIAS[Core.fold(x).replace(/[\s.]/g, '')] || S.cat.some(k => Core.fold(k.unit) === Core.fold(Core.clean(x)));
+  if (c.unit < 0) for (let j = 0; j < ncol; j++) {
+    if (used.has(j)) continue;
+    const v = filled(j); if (v.length && v.filter(isUnit).length / v.length > 0.6) { c.unit = j; used.add(j); break; }
+  }
+  if (c.price < 0 && !Object.keys(P.wmap).length) for (let j = ncol - 1; j >= 0; j--) {
+    if (!used.has(j) && priceRatio(j) > 0.6) { c.price = j; used.add(j); break; }
+  }
+  for (let j = 0; j < ncol && c.name < 0; j++) {
+    if (used.has(j)) continue;
+    const v = filled(j); if (!v.length) continue;
+    if (v.filter(x => /[a-zà-ỹđ]/i.test(x) && !(Core.parseVND(x) > 0)).length / v.length <= 0.6) continue;
+    if (c.store < 0 && v.filter(x => matchStore(x)).length / v.length > 0.6) { c.store = j; used.add(j); continue; }
+    c.name = j; used.add(j);
+  }
+  P.cols = c;
+  P.layout = Object.keys(P.wmap).length && c.store < 0 ? 'wide' : c.store >= 0 ? 'long' : 'single';
+  if (P.layout === 'single' && !P.storeId && S.stores.length === 1) P.storeId = S.stores[0].id;
+}
+function piStartMapping(P, rows) {
+  if (!rows.length) { toast('Không thấy dữ liệu trong bảng', 'warn'); return; }
+  if (rows.length > 20001) { toast('Bảng quá dài — mỗi lần nhập tối đa 20.000 dòng', 'warn'); return; }
+  P.raw = rows; P.hasHead = piIsHeader(rows[0]);
+  piGuess(P);
+  P.step = 2; S.editing.dirty = true;
+  renderPImport();
+}
+
+/* ---------- Đọc các dòng giá theo kiểu bảng đã chọn ---------- */
+function piBuild(P) {
+  const c = P.cols, off = P.hasHead ? 2 : 1, E = [], errs = [];
+  let empty = 0;
+  const targetsOf = r => {
+    if (P.layout === 'wide') return Object.entries(P.wmap).filter(([, sid]) => sid).map(([j, sid]) => ({ storeId: sid, raw: r[+j] }));
+    if (P.layout === 'long') return [{ label: Core.clean(c.store >= 0 ? r[c.store] : ''), phone: c.sphone >= 0 ? String(r[c.sphone] || '') : '', raw: c.price >= 0 ? r[c.price] : '' }];
+    return [{ storeId: P.storeId, raw: c.price >= 0 ? r[c.price] : '' }];
+  };
+  piData(P).forEach((r, i) => {
+    const line = i + off, name = Core.clean(c.name >= 0 ? r[c.name] : '');
+    if (!name) { if (r.some(x => String(x || '').trim())) errs.push({ line, msg: 'thiếu tên sản phẩm' }); return; }
+    const unit = c.unit >= 0 ? Core.normUnit(r[c.unit]) : '';
+    for (const tg of targetsOf(r)) {
+      const v = Core.parseVND(tg.raw);
+      if (v == null) { if (P.layout !== 'wide') empty++; continue; }
+      if (!(v > 0)) { errs.push({ line, msg: '"' + name + '": giá "' + String(tg.raw).trim() + '" không đọc được' }); continue; }
+      if (P.layout === 'long' && !tg.label && !tg.phone.trim()) { errs.push({ line, msg: '"' + name + '": thiếu tên cửa hàng' }); continue; }
+      E.push({ line, name, unit, grp: Core.clean(c.grp >= 0 ? r[c.grp] : ''), spec: Core.clean(c.spec >= 0 ? r[c.spec] : ''), price: v,
+        pkey: Core.prodKey(name, unit), label: tg.label || '', phone: tg.phone || '', storeId: tg.storeId || '',
+        skey: P.layout === 'long' ? Core.fold(tg.label) + '|' + tg.phone.replace(/\D/g, '') : '' });
+    }
+  });
+  P.entries = E; P.errors = errs; P.empty = empty;
+}
+// Khớp sản phẩm với danh mục, cửa hàng với bản đồ (giữ lựa chọn tay của người dùng)
+function piResolve(P) {
+  const km = new Map(S.cat.map(c => [Core.prodKey(c.name, c.unit), c]));
+  const oldP = new Map((P.prods || []).map(p => [p.pkey, p])), prods = new Map();
+  for (const e of P.entries) {
+    if (prods.has(e.pkey)) { prods.get(e.pkey).n++; continue; }
+    let hit = km.get(e.pkey) || null, unit = e.unit;
+    if (!hit && !unit) { const same = S.cat.filter(c => Core.fold(Core.clean(c.name)) === Core.fold(e.name)); if (same.length === 1) { hit = same[0]; unit = hit.unit; } }
+    const p = { pkey: e.pkey, name: e.name, unit, grp: e.grp || (hit ? hit.grp : ''), spec: e.spec, auto: hit ? hit.id : (unit ? '__new' : '__bad'), n: 1 };
+    const o = oldP.get(e.pkey);
+    p.userSet = !!(o && o.userSet);
+    p.act = p.userSet ? o.act : (p.auto === '__bad' ? '__skip' : p.auto);
+    if (p.act !== '__new' && p.act !== '__skip' && !S.catById.has(p.act)) { p.act = p.auto === '__bad' ? '__skip' : p.auto; p.userSet = false; }
+    prods.set(e.pkey, p);
+  }
+  P.prods = [...prods.values()];
+  P.smaps = [];
+  if (P.layout === 'long') {
+    const oldS = new Map((P.smapsOld || []).map(x => [x.skey, x])), sm = new Map();
+    for (const e of P.entries) {
+      if (sm.has(e.skey)) { sm.get(e.skey).n++; continue; }
+      const st = matchStore(e.label, e.phone), o = oldS.get(e.skey);
+      sm.set(e.skey, { skey: e.skey, label: e.label, phone: e.phone, auto: st ? st.id : '', sel: o && o.userSet ? o.sel : (st ? st.id : ''), userSet: !!(o && o.userSet), n: 1 });
+    }
+    P.smaps = [...sm.values()];
+    P.smapsOld = P.smaps;
+  }
+}
+// Kế hoạch lưu: giá mới cho từng cửa hàng + các món cần thêm vào danh mục
+function piPlan(P) {
+  const prodBy = new Map(P.prods.map(p => [p.pkey, p])), smBy = new Map(P.smaps.map(x => [x.skey, x]));
+  const per = new Map(); let dup = 0;
+  for (const e of P.entries) {
+    const sid = P.layout === 'long' ? (smBy.get(e.skey) || {}).sel : e.storeId;
+    const p = prodBy.get(e.pkey);
+    if (!sid || !p || p.act === '__skip') continue;
+    const k = p.act === '__new' ? 'new:' + p.pkey : p.act;
+    let g = per.get(sid); if (!g) per.set(sid, g = new Map());
+    if (g.has(k)) dup++;
+    g.set(k, e.price);
+  }
+  const stores = [];
+  for (const [sid, g] of per) {
+    const st = S.stores.find(x => x.id === sid); if (!st) continue;
+    const cur = new Map(st.products.map(p => [p.cid, p.price]));
+    let add = 0, chg = 0, same = 0;
+    for (const [k, v] of g) { if (k.startsWith('new:') || !cur.has(k)) add++; else if (cur.get(k) !== v) chg++; else same++; }
+    const del = P.replace ? [...cur.keys()].filter(k => !g.has(k)).length : 0;
+    stores.push({ st, g, add, chg, same, del });
+  }
+  stores.sort((a, b) => a.st.name.localeCompare(b.st.name, 'vi'));
+  const newProds = P.prods.filter(p => p.act === '__new' && stores.some(x => x.g.has('new:' + p.pkey)));
+  return { stores, newProds, dup };
+}
+
+/* ---------- Giao diện ---------- */
+function renderPImport(focusSel) {
+  const P = S.editing.draft;
+  const head = '<div class="form-head"><h2>Nhập bảng giá sản phẩm</h2><span class="muted small">Bước ' + P.step + '/3</span></div>' + stepsHTML(P.step);
+  const st = P.storeId && P.returnTo ? S.stores.find(x => x.id === P.storeId) : null;
+  let body = st ? '<p class="pi-for">Cho cửa hàng: <b>' + esc(st.name) + '</b></p>' : '', act = '';
+  if (P.step === 1) {
+    body += '<p class="hint" style="margin:0 0 10px">File <b>Excel</b>, <b>CSV</b> hoặc dán từ Excel / Google Sheets. Nhận 3 kiểu bảng:<br>' +
+      '• <b>Mỗi dòng 1 giá</b>: Cửa hàng | Sản phẩm | Đơn vị | Giá (thêm Nhóm, Quy cách nếu có)<br>' +
+      '• <b>Bảng ngang</b>: Sản phẩm | Đơn vị | mỗi cột tiếp theo là giá của 1 cửa hàng<br>' +
+      '• <b>Một cửa hàng</b>: Sản phẩm | Đơn vị | Giá<br>Món chưa có trong danh mục sẽ được thêm vào danh mục chung.</p>' +
+      '<label class="dropzone"><input type="file" class="imp-file" accept=".xlsx,.xls,.csv,.tsv,.txt" aria-label="Chọn file bảng giá">' +
+      '<span class="dz-ico" aria-hidden="true">📊</span><b>Chọn file bảng giá</b><span class="muted small">hoặc kéo thả file vào đây</span>' +
+      '<span class="imp-fname">' + esc(P.fname) + '</span></label>' +
+      '<div class="or">hoặc dán bảng</div>' +
+      '<textarea class="imp-paste" placeholder="Trong Excel: chọn vùng có tiêu đề → Ctrl+C → bấm vào đây → Ctrl+V" aria-label="Dán bảng giá">' + esc(P.paste) + '</textarea>' +
+      '<button type="button" class="btn ghost sm pi-sample" style="margin-top:8px">⬇ Tải file mẫu (.csv)</button>';
+    act = '<span class="sp"></span><button type="button" class="btn btn-cancel">Hủy</button><button type="button" class="btn primary pi-next1">Tiếp tục →</button>';
+  } else if (P.step === 2) {
+    body += piMapHTML(P);
+    act = '<button type="button" class="btn pi-back">← Quay lại</button><span class="sp"></span><button type="button" class="btn btn-cancel">Hủy</button><button type="button" class="btn primary pi-go">Kiểm tra →</button>';
+  } else {
+    body += '<div class="imp-sum pi-sum"></div>' +
+      '<label class="chk" style="margin:0 0 4px"><input type="checkbox" class="pi-replace"' + (P.replace ? ' checked' : '') + '> Thay toàn bộ bảng giá: xóa các món cũ của cửa hàng mà file không có</label>' +
+      '<h3 class="sec-title"><span>Cửa hàng</span><span class="muted small pi-scount"></span></h3><div class="pi-stores"></div>' +
+      '<h3 class="sec-title"><span>Sản phẩm</span><span class="muted small pi-pcount"></span></h3>' +
+      '<div class="imp-filter pi-filter" role="group" aria-label="Lọc sản phẩm"><button type="button" data-f="all" aria-pressed="' + (P.filter === 'all') + '">Tất cả</button>' +
+      '<button type="button" data-f="check" aria-pressed="' + (P.filter === 'check') + '">Món mới / cần xem</button></div>' +
+      '<div class="pi-prods"></div><div class="pi-errbox"></div>';
+    act = '<button type="button" class="btn pi-back">← Chọn cột</button><span class="sp"></span><button type="button" class="btn btn-cancel">Hủy</button><button type="button" class="btn primary btn-save">Lưu</button>';
+  }
+  showFormView(head + body + '<div class="form-actions">' + act + '</div>');
+  if (P.step === 3) piRefresh(P);
+  if (focusSel) { const el = $('#formView ' + focusSel); if (el) el.focus(); }
+}
+function piMapHTML(P) {
+  const head = piHead(P), data = piData(P), ncol = Math.max(...P.raw.map(r => r.length)), c = P.cols, L = P.layout;
+  const lab = j => { const l = head && head[j] ? head[j] : (data.find(r => r[j]) || [])[j] || ''; return 'Cột ' + colName(j) + (l ? ': ' + esc(l.length > 26 ? l.slice(0, 25) + '…' : l) : ''); };
+  const opt = sel => '<option value="-1">— Không có —</option>' + Array.from({ length: ncol }, (_, j) => '<option value="' + j + '"' + (j === sel ? ' selected' : '') + '>' + lab(j) + '</option>').join('');
+  const radio = (v, t, sub) => '<label class="' + (L === v ? 'on' : '') + '"><input type="radio" name="pi-layout" class="pi-layout" value="' + v + '"' + (L === v ? ' checked' : '') + '><span>' + t + '<small>' + sub + '</small></span></label>';
+  const fields = L === 'long' ? [['store', 'Cửa hàng *'], ['sphone', 'SĐT cửa hàng'], ['name', 'Sản phẩm *'], ['unit', 'Đơn vị'], ['price', 'Giá *'], ['grp', 'Nhóm'], ['spec', 'Quy cách']]
+    : L === 'wide' ? [['name', 'Sản phẩm *'], ['unit', 'Đơn vị'], ['grp', 'Nhóm'], ['spec', 'Quy cách']]
+    : [['name', 'Sản phẩm *'], ['unit', 'Đơn vị'], ['price', 'Giá *'], ['grp', 'Nhóm'], ['spec', 'Quy cách']];
+  let h = '<p class="hint" style="margin:0 0 8px">' + (P.fname ? '📄 <b>' + esc(P.fname) + '</b> · ' : '') + data.length + ' dòng dữ liệu. Kiểm tra kiểu bảng và cột:</p>' +
+    '<label class="chk" style="margin:0 0 8px"><input type="checkbox" class="pi-head"' + (P.hasHead ? ' checked' : '') + '> Dòng đầu là tiêu đề cột</label>' +
+    '<div class="layout-opts" role="radiogroup" aria-label="Kiểu bảng">' + radio('long', 'Mỗi dòng 1 giá', 'có cột Cửa hàng') +
+    radio('wide', 'Bảng ngang', 'mỗi cột là giá của 1 cửa hàng') + radio('single', 'Một cửa hàng', 'chỉ có Sản phẩm, Đơn vị, Giá') + '</div>';
+  if (L === 'single') h += '<label class="fld">Áp dụng cho cửa hàng *<select class="pi-store1"><option value="">— Chọn cửa hàng —</option>' + storeOpts(P.storeId) + '</select></label>';
+  h += '<div class="colmap">' + fields.map(([k, l]) => '<label>' + l + '<select class="pi-col" data-k="' + k + '">' + opt(c[k]) + '</select></label>').join('') + '</div>';
+  if (L === 'wide') {
+    const used = new Set([c.name, c.unit, c.grp, c.spec].filter(j => j >= 0));
+    const cand = Array.from({ length: ncol }, (_, j) => j).filter(j => !used.has(j));
+    h += '<p class="hint" style="margin:0 0 6px">Mỗi cột giá ứng với cửa hàng nào:</p><div class="wide-map">' +
+      cand.map(j => '<label><span>' + lab(j) + '</span><select class="pi-wide" data-j="' + j + '" aria-label="Cửa hàng của ' + lab(j) + '"><option value="">— Bỏ qua cột này —</option>' + storeOpts(P.wmap[j] || '') + '</select></label>').join('') + '</div>';
+  }
+  piBuild(P);
+  const miss = piMissing(P);
+  const sName = e => { const id = e.storeId || (matchStore(e.label, e.phone) || {}).id, st = id && S.stores.find(x => x.id === id); return st ? esc(st.name) : '<span class="warn">' + esc(e.label || '?') + ' (chưa khớp)</span>'; };
+  h += '<div class="imp-sum"><span class="ok">' + P.entries.length + ' giá đọc được</span>' + (P.errors.length ? '<span class="bad">' + P.errors.length + ' dòng lỗi</span>' : '') +
+    (P.empty ? '<span>' + P.empty + ' dòng trống giá</span>' : '') + '</div>';
+  h += '<div class="prev-wrap"><table class="imp-prev"><thead><tr><th>Cửa hàng</th><th>Sản phẩm</th><th>ĐVT</th><th>Giá</th></tr></thead><tbody>' +
+    (P.entries.slice(0, 6).map(e => '<tr><td>' + sName(e) + '</td><td>' + esc(e.name) + '</td><td>' + esc(e.unit) + '</td><td class="ok">' + money(e.price) + '</td></tr>').join('') ||
+      '<tr><td colspan="4" class="muted">Chưa đọc được giá nào — kiểm tra lại kiểu bảng và cột.</td></tr>') + '</tbody></table></div>' +
+    (miss ? '<p class="warn-text" style="margin-top:8px">⚠ ' + miss + '</p>' : '');
+  return h;
+}
+function piMissing(P) {
+  const c = P.cols;
+  if (c.name < 0) return 'Cần chọn cột Sản phẩm.';
+  if (P.layout === 'long' && c.store < 0 && c.sphone < 0) return 'Cần chọn cột Cửa hàng.';
+  if (P.layout !== 'wide' && c.price < 0) return 'Cần chọn cột Giá.';
+  if (P.layout === 'wide' && !Object.values(P.wmap).some(Boolean)) return 'Cần gán ít nhất 1 cột giá cho cửa hàng.';
+  if (P.layout === 'single' && !P.storeId) return 'Cần chọn cửa hàng áp dụng.';
+  return '';
+}
+function piGo(P) {
+  const miss = piMissing(P);
+  if (miss) { toast(miss, 'warn'); return; }
+  piBuild(P);
+  if (!P.entries.length) { toast('Chưa đọc được giá nào — kiểm tra lại kiểu bảng và cột', 'warn'); return; }
+  piResolve(P);
+  P.step = 3; P.filter = 'all';
+  renderPImport();
+}
+const piNeedsCheck = p => p.auto === '__new' || p.auto === '__bad' || p.act !== p.auto;
+function piProdOptions(p) {
+  const cand = p.auto === '__new' || p.auto === '__bad'
+    ? S.cat.filter(c => !p.unit || Core.fold(c.unit) === Core.fold(p.unit)).map(c => ({ c, s: Core.simName(p.name, c.name) })).filter(x => x.s >= 0.4).sort((a, b) => b.s - a.s).slice(0, 3)
+    : [];
+  let h = p.unit ? '<option value="__new"' + (p.act === '__new' ? ' selected' : '') + '>＋ Tạo món mới: ' + esc(p.name) + ' (' + esc(p.unit) + ')</option>' : '';
+  if (cand.length) h += '<optgroup label="Gợi ý gần giống">' + cand.map(x => '<option value="' + esc(x.c.id) + '"' + (p.act === x.c.id ? ' selected' : '') + '>' + esc(x.c.name) + ' (' + esc(x.c.unit) + ')</option>').join('') + '</optgroup>';
+  const shown = new Set(cand.map(x => x.c.id));
+  let g = null;
+  for (const c of Core.sortCat(S.cat, S.grpRank)) {
+    if (shown.has(c.id)) continue;
+    if (c.grp !== g) { if (g !== null) h += '</optgroup>'; g = c.grp; h += '<optgroup label="' + esc(g) + '">'; }
+    h += '<option value="' + esc(c.id) + '"' + (p.act === c.id ? ' selected' : '') + '>' + esc(c.name) + ' (' + esc(c.unit) + ')' + (c.hidden ? ' — đã ẩn' : '') + '</option>';
+  }
+  if (g !== null) h += '</optgroup>';
+  return h + '<option value="__skip"' + (p.act === '__skip' ? ' selected' : '') + '>— Bỏ qua món này —</option>';
+}
+function piProdStatus(p) {
+  if (p.act === '__skip') return p.auto === '__bad' ? ['warn', '⚠ Không có đơn vị và không khớp danh mục — chọn món tương ứng hoặc bỏ qua'] : ['skip', '— Bỏ qua, không nhập giá món này'];
+  if (p.act === '__new') {
+    const near = S.cat.some(c => (!p.unit || Core.fold(c.unit) === Core.fold(p.unit)) && Core.simName(p.name, c.name) >= 0.4);
+    return ['new', '＋ Món mới — sẽ thêm vào danh mục, nhóm "' + (Core.clean(p.grp) || 'Khác') + '"' + (near ? '<br><span class="pi-st warn">ⓘ Danh mục có món gần giống — mở ô chọn xem "Gợi ý" để tránh tạo trùng</span>' : '')];
+  }
+  if (p.act === p.auto) return ['ok', '✓ Khớp danh mục'];
+  return ['ok', '↪ Gán vào món có sẵn trong danh mục'];
+}
+function piRefresh(P, onlyStores) {
+  const root = $('#formView'); if (!root || P.step !== 3) return;
+  const plan = piPlan(P);
+  const nMatch = P.prods.filter(p => p.act !== '__new' && p.act !== '__skip').length, nNew = P.prods.filter(p => p.act === '__new').length;
+  const nSkip = P.prods.filter(p => p.act === '__skip').length, nStoreMiss = P.smaps.filter(x => !x.sel).length;
+  root.querySelector('.pi-sum').innerHTML = '<span>' + P.entries.length + ' giá</span><span class="ok">' + plan.stores.length + ' cửa hàng</span>' +
+    '<span class="ok">✓ ' + nMatch + ' món khớp</span>' + (nNew ? '<span>＋ ' + nNew + ' món mới</span>' : '') + (nSkip ? '<span class="warn">' + nSkip + ' món bỏ qua</span>' : '') +
+    (nStoreMiss ? '<span class="bad">' + nStoreMiss + ' cửa hàng chưa khớp</span>' : '') + (P.errors.length ? '<span class="bad">' + P.errors.length + ' dòng lỗi</span>' : '');
+  const diff = x => !x ? '<span>Chưa có giá nào được nhập</span>' : (x.add ? '<span class="new">＋ ' + x.add + ' món mới</span>' : '') + (x.chg ? '<span class="chg">↻ ' + x.chg + ' đổi giá</span>' : '') +
+    (x.same ? '<span>= ' + x.same + ' giữ nguyên</span>' : '') + (x.del ? '<span class="del">− ' + x.del + ' sẽ xóa</span>' : '');
+  const byId = new Map(plan.stores.map(x => [x.st.id, x]));
+  let sh;
+  if (P.layout === 'long') {
+    sh = P.smaps.map(m => '<div class="pi-store' + (m.sel ? '' : ' off') + '"><div class="pi-line"><b>' + esc(m.label || m.phone) + '</b><span class="muted small">' + m.n + ' giá</span></div>' +
+      '<span class="pi-st ' + (m.sel ? 'ok' : 'warn') + '">' + (m.sel ? (m.sel === m.auto ? '✓ Khớp cửa hàng trên bản đồ' : '↪ Gán vào cửa hàng đã chọn') : '⚠ Không tìm thấy trên bản đồ — chọn cửa hàng hoặc bỏ qua') + '</span>' +
+      '<select class="pi-smap" data-k="' + esc(m.skey) + '" aria-label="Cửa hàng cho ' + esc(m.label) + '"><option value="">— Bỏ qua cửa hàng này —</option>' + storeOpts(m.sel) + '</select>' +
+      (m.sel ? '<div class="pi-diff">' + diff(byId.get(m.sel)) + '</div>' : '') + '</div>').join('');
+  } else {
+    sh = plan.stores.map(x => '<div class="pi-store"><div class="pi-line"><b>' + esc(x.st.name) + '</b><span class="muted small">' + x.g.size + ' giá</span></div><div class="pi-diff">' + diff(x) + '</div></div>').join('') ||
+      '<div class="empty">Chưa có cửa hàng nào nhận giá.</div>';
+  }
+  root.querySelector('.pi-stores').innerHTML = sh;
+  root.querySelector('.pi-scount').textContent = plan.stores.length + ' cửa hàng sẽ cập nhật';
+  if (!onlyStores) {
+    const list = P.filter === 'check' ? P.prods.filter(piNeedsCheck) : P.prods;
+    root.querySelector('.pi-prods').innerHTML = list.map(p => {
+      const [cls, lab] = piProdStatus(p);
+      return '<div class="pi-prod' + (p.act === '__skip' ? ' off' : '') + '"><div class="pi-line"><b>' + esc(p.name) + '</b><span class="muted small">' + (p.unit ? esc(p.unit) + ' · ' : '') + p.n + ' giá</span></div>' +
+        '<span class="pi-st ' + cls + '">' + lab + '</span>' +
+        '<select class="pi-map" data-k="' + esc(p.pkey) + '" aria-label="Món trong danh mục cho ' + esc(p.name) + '">' + piProdOptions(p) + '</select></div>';
+    }).join('') || '<div class="empty">Không có món nào cần xem lại 👍</div>';
+    root.querySelector('.pi-pcount').textContent = P.prods.length + ' món';
+    const errs = P.errors.slice(0, 200);
+    root.querySelector('.pi-errbox').innerHTML = P.errors.length || P.empty || plan.dup
+      ? '<details class="pi-errs"><summary>⚠ ' + [P.errors.length ? P.errors.length + ' dòng lỗi (bỏ qua)' : '', P.empty ? P.empty + ' dòng trống giá' : '', plan.dup ? plan.dup + ' giá trùng (lấy dòng sau)' : ''].filter(Boolean).join(' · ') + '</summary>' +
+        (errs.length ? '<ul>' + errs.map(e => '<li>Dòng ' + e.line + ': ' + esc(e.msg) + '</li>').join('') + '</ul>' : '') + '</details>' : '';
+  }
+  const btn = root.querySelector('.btn-save');
+  if (btn) { btn.textContent = 'Lưu giá cho ' + plan.stores.length + ' cửa hàng'; btn.disabled = !plan.stores.length; }
+}
+function piSample() {
+  const st = S.stores.slice(0, 2).map(x => x.name), cat = Core.sortCat(S.cat.filter(c => !c.hidden), S.grpRank).slice(0, 3);
+  const s1 = st[0] || 'Tên cửa hàng A', s2 = st[1] || 'Tên cửa hàng B';
+  const items = cat.length ? cat.map(c => [c.name, c.unit, c.grp]) : [['Xi măng Hà Tiên PCB40', 'bao', 'Xi măng'], ['Cát xây tô (hạt mịn)', 'm³', 'Cát'], ['Thép Hòa Phát D10', 'cây', 'Thép thanh vằn']];
+  const q = v => '"' + String(v).replace(/"/g, '""') + '"';
+  let csv = '﻿Cửa hàng,Sản phẩm,Đơn vị,Giá,Nhóm\n';
+  items.forEach((it, i) => { csv += [q(s1), q(it[0]), q(it[1]), 90000 + i * 10000, q(it[2])].join(',') + '\n'; });
+  items.forEach((it, i) => { csv += [q(s2), q(it[0]), q(it[1]), 88000 + i * 10000, q(it[2])].join(',') + '\n'; });
+  try {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'mau_bang_gia.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  } catch (e) { toast('Trình duyệt không cho tải file mẫu', 'warn'); }
+}
+function piClick(t, P) {
+  if (t.classList.contains('pi-next1')) {
+    if (Core.clean(P.paste)) { P.fname = ''; piStartMapping(P, Core.parseDelimited(P.paste)); }
+    else toast('Chọn file hoặc dán bảng giá trước', 'warn');
+  } else if (t.classList.contains('pi-sample')) piSample();
+  else if (t.classList.contains('pi-back')) { P.step--; renderPImport(); }
+  else if (t.classList.contains('pi-go')) piGo(P);
+  else if (t.closest('.pi-filter')) {
+    P.filter = t.dataset.f; $$('#formView .pi-filter button').forEach(b => b.setAttribute('aria-pressed', String(b === t))); piRefresh(P);
+  }
+}
+function piChange(t, P) {
+  const cls = (t.className.match(/\bpi-[a-z0-9]+/) || [''])[0];
+  if (cls === 'pi-head') { P.hasHead = t.checked; piGuess(P); renderPImport('.pi-head'); }
+  else if (cls === 'pi-layout') { P.layout = t.value; renderPImport('.pi-layout[value="' + t.value + '"]'); }
+  else if (cls === 'pi-col') { P.cols[t.dataset.k] = +t.value; renderPImport('.pi-col[data-k="' + t.dataset.k + '"]'); }
+  else if (cls === 'pi-wide') { P.wmap[t.dataset.j] = t.value; renderPImport('.pi-wide[data-j="' + t.dataset.j + '"]'); }
+  else if (cls === 'pi-store1') { P.storeId = t.value; renderPImport('.pi-store1'); }
+  else if (cls === 'pi-replace') { P.replace = t.checked; piRefresh(P, true); }
+  else if (cls === 'pi-map' || cls === 'pi-smap') {
+    const k = t.dataset.k, list = cls === 'pi-map' ? P.prods : P.smaps, it = list.find(x => (cls === 'pi-map' ? x.pkey : x.skey) === k);
+    if (!it) return;
+    if (cls === 'pi-map') it.act = t.value; else it.sel = t.value;
+    it.userSet = true;
+    piRefresh(P);
+    const again = Array.from(document.querySelectorAll('#formView .' + cls)).find(x => x.dataset.k === k);
+    if (again) again.focus();
+  }
+}
+async function piSave(btn) {
+  const P = S.editing.draft, plan = piPlan(P);
+  if (!plan.stores.length) { toast('Chưa có cửa hàng nào nhận được giá — kiểm tra phần Cửa hàng', 'warn'); return; }
+  const delN = plan.stores.reduce((a, x) => a + x.del, 0);
+  if (delN && !confirm('Sẽ XÓA ' + delN + ' món cũ (không có trong file) khỏi bảng giá của ' + plan.stores.filter(x => x.del).length + ' cửa hàng. Tiếp tục?')) return;
+  btn.disabled = true;
+  const idOf = new Map();
+  if (plan.newProds.length) {
+    btn.textContent = 'Đang thêm ' + plan.newProds.length + ' món vào danh mục…';
+    try {
+      const next = new Map();
+      const rows = plan.newProds.map(p => {
+        const g = Core.clean(p.grp) || 'Khác', s0 = next.has(g) ? next.get(g) : nextSort(g);
+        next.set(g, s0 + 1);
+        return { grp: g, name: Core.clean(p.name).slice(0, 120), unit: Core.clean(p.unit), spec: Core.clean(p.spec), sort: s0 };
+      });
+      const { data, error } = await sb.from('catalog').insert(rows).select(CAT_COLS);
+      if (error) throw error;
+      (data || []).forEach(c => idOf.set(Core.prodKey(c.name, c.unit), c.id));
+    } catch (err) {
+      const er = dbErr(err);
+      if (er.kind === 'dup') {
+        toast('Danh mục vừa có thêm món trùng tên — đã tải lại, kiểm tra rồi bấm Lưu lần nữa', 'warn');
+        await loadData(true); piBuild(P); piResolve(P); piRefresh(P);
+      } else { handleWriteErr(er); piRefresh(P); }
+      return;
+    }
+  }
+  const order = new Map(Core.sortCat(S.cat, S.grpRank).map((c, i) => [c.id, i]));
+  let done = 0, add = 0, chg = 0;
+  try {
+    for (const x of plan.stores) {
+      btn.textContent = 'Đang lưu giá cửa hàng ' + (done + 1) + '/' + plan.stores.length + '…';
+      const base = P.replace ? new Map() : new Map(x.st.products.map(p => [p.cid, p.price]));
+      for (const [k, v] of x.g) { const cid = k.startsWith('new:') ? idOf.get(k.slice(4)) : k; if (cid) base.set(cid, v); }
+      const products = [...base].sort((a, b) => (order.has(a[0]) ? order.get(a[0]) : 1e9) - (order.has(b[0]) ? order.get(b[0]) : 1e9))
+        .map(([cid, price]) => ({ catalog_id: cid, price }));
+      const { error } = await sb.rpc('save_store', { p: { id: x.st.id, name: x.st.name, phone: x.st.phone, address: x.st.address, lat: x.st.lat, lng: x.st.lng, products } });
+      if (error) throw error;
+      done++; add += x.add; chg += x.chg;
+    }
+  } catch (err) {
+    const er = dbErr(err);
+    if (er.kind === 'auth') { handleWriteErr(er); return; }
+    toast('Đã lưu ' + done + '/' + plan.stores.length + ' cửa hàng rồi gặp lỗi: ' + er.msg + ' — bấm Lưu để thử tiếp', 'err');
+    await loadData(true); piBuild(P); piResolve(P); piRefresh(P);
+    return;
+  }
+  toast('Đã cập nhật giá cho ' + done + ' cửa hàng: ' + add + ' món mới, ' + chg + ' món đổi giá' + (plan.newProds.length ? ' · thêm ' + plan.newProds.length + ' món vào danh mục' : ''), 'ok');
+  const back = P.returnTo;
+  closeForm(true);
+  await loadData(true);
+  if (back && S.stores.some(x => x.id === back)) openStoreForm(back);
 }
 
 /* ================= Chi tiết cửa hàng (chế độ xem) ================= */
@@ -1761,6 +2881,7 @@ document.addEventListener('click', ev => {
   const cx = ctx(t);
 
   if (t.classList.contains('tab')) { switchTab(t.dataset.tab); return; }
+  if (t.id === 'btnImport') { S.tab === 'catalog' ? openPriceImport() : openImport(); return; }
   if (t.id === 'btnAdd') { S.tab === 'customers' ? openCustomerForm(null) : S.tab === 'catalog' ? openCatForm(null) : openStoreForm(null); return; }
   if (t.classList.contains('cat-main')) { openCatForm(t.dataset.cid); return; }
   if (t.classList.contains('mv-btn')) { moveCat(t.dataset.cid, +t.dataset.dir); return; }
@@ -1773,10 +2894,41 @@ document.addEventListener('click', ev => {
   if (t.dataset.store) { focusStore(t.dataset.store); return; }
   if (t.classList.contains('btn-back')) { closeDetail(); return; }
   if (t.classList.contains('btn-cancel')) { closeForm(false); return; }
-  if (t.classList.contains('btn-save')) { const k = S.editing.type; k === 'store' ? saveStore(t) : k === 'cat' ? saveCat(t) : saveCustomer(t); return; }
+  if (t.classList.contains('btn-save')) { const k = S.editing.type; k === 'store' ? saveStore(t) : k === 'cat' ? saveCat(t) : k === 'import' ? saveImport(t) : k === 'pimport' ? piSave(t) : saveCustomer(t); return; }
   if (t.classList.contains('btn-delete')) { deleteCurrent(t); return; }
   if (!cx) return;
   const { root, d } = cx;
+
+  if (S.editing && S.editing.type === 'pimport') { piClick(t, d, root); return; }
+  if (t.classList.contains('pt-import')) {
+    if (S.editing.dirty && !confirm('Cửa hàng đang có thay đổi chưa lưu. Bỏ thay đổi để nhập bảng giá từ file?')) return;
+    const sid = S.editing.id; closeForm(true); openPriceImport(sid); return;
+  }
+  if (S.editing && S.editing.type === 'import') {
+    const imp = d;
+    if (t.classList.contains('pi-open')) { if (imp.paste && !confirm('Bỏ dữ liệu đang dán?')) return; closeForm(true); openPriceImport(); return; }
+    if (t.classList.contains('imp-next1')) {
+      if (Core.clean(imp.paste)) { imp.fname = ''; startMapping(imp, Core.parseDelimited(imp.paste)); }
+      else toast('Chọn file hoặc dán bảng danh sách trước', 'warn');
+    } else if (t.classList.contains('imp-sample')) downloadSample();
+    else if (t.classList.contains('imp-back')) { impCleanup(imp); imp.step--; renderImport(); }
+    else if (t.classList.contains('imp-go')) startReview(imp);
+    else if (t.classList.contains('imp-stop')) { imp.stop = true; }
+    else if (t.classList.contains('imp-resume')) runGeocode(imp);
+    else if (t.closest('.imp-filter')) {
+      imp.filter = t.dataset.f; $$('.imp-filter button', root).forEach(b => b.setAttribute('aria-pressed', String(b === t))); renderImpList();
+    } else if (t.classList.contains('imp-place')) impStartPlace(imp, +t.dataset.i);
+    else if (t.classList.contains('imp-main')) {
+      const r = imp.rows[+t.dataset.i];
+      if (r.lat != null) {
+        goTo(r.lat, r.lng, 17);
+        imp.markers.forEach(x => x.setZIndexOffset(0));
+        const m = imp.markers.get(r); if (m) { m.setZIndexOffset(2000); setTimeout(() => m.openTooltip(), 400); }
+      }
+      else if (r.st !== 'pending' || !r.sel) impStartPlace(imp, +t.dataset.i);
+    }
+    return;
+  }
 
   if (t.classList.contains('btn-drop')) dropPinCenter(d);
   else if (t.classList.contains('btn-me')) geolocate(d);
@@ -1820,6 +2972,8 @@ document.addEventListener('input', ev => {
     it.qtyText = t.value; it.qty = Core.parseQty(t.value);
     t.classList.toggle('invalid', Number.isNaN(it.qty) || it.qty === 0);
     markDirty(d); invalidateResult(d);
+  } else if (t.classList.contains('imp-paste')) {
+    d.paste = t.value; if (t.value.trim()) S.editing.dirty = true;
   } else if (t.classList.contains('pr-price')) {
     const row = t.closest('.pr'), cid = row.dataset.cid, v = Core.parsePrice(t.value);
     if (v == null) d.prices.delete(cid); else d.prices.set(cid, v);
@@ -1849,6 +3003,19 @@ document.addEventListener('change', ev => {
     row.querySelector('.c-info').innerHTML = cartInfo(it);
     if (it.key && !it.qtyText) { it.qtyText = '1'; it.qty = 1; row.querySelector('.c-qty').value = '1'; }
     markDirty(d); invalidateResult(d);
+  } else if (S.editing && S.editing.type === 'pimport' && /\bpi-/.test(t.className)) {
+    piChange(t, d);
+  } else if (t.classList.contains('imp-file')) {
+    readImpFile(t.files && t.files[0]); t.value = '';
+  } else if (t.classList.contains('imp-head')) {
+    d.hasHead = t.checked; d.cols = Core.guessCols(d.hasHead ? d.raw[0] : null, impData(d)); renderImport();
+  } else if (t.classList.contains('imp-col')) {
+    d.cols[t.dataset.k] = +t.value; const k = t.dataset.k; renderImport(); const s2 = $('#formView .imp-col[data-k="' + k + '"]'); if (s2) s2.focus();
+  } else if (t.classList.contains('imp-sel')) {
+    const r = d.rows[+t.closest('.imp-row').dataset.i]; r.sel = t.checked;
+    t.closest('.imp-row').classList.toggle('off', !r.sel); syncImpMarker(d, r);
+    updateImpRow(d, r); renderImpSummary(); renderImpProgress();
+    if (r.sel && r.st === 'pending' && !d.running) runGeocode(d);
   } else if (t.classList.contains('k-hidden')) {
     d.hidden = t.checked; markDirty(d);
   }
@@ -1865,6 +3032,9 @@ document.addEventListener('focusout', ev => {
 });
 
 document.addEventListener('keydown', ev => {
+  if (ev.key === 'Escape' && S.editing && S.editing.type === 'import' && S.editing.draft.placing >= 0) {
+    const imp = S.editing.draft, i = imp.placing; imp.placing = -1; updateImpRow(imp, imp.rows[i]); return;
+  }
   if (ev.key === 'Enter' && ev.target.closest && ev.target.closest('.np-form')) {
     ev.preventDefault();
     const b = ev.target.closest('.np-form').querySelector('.np-save'); if (b && !b.disabled) b.click();
@@ -1881,6 +3051,18 @@ document.addEventListener('keydown', ev => {
     ev.preventDefault();
     const btn = ev.target.parentElement.querySelector('.btn-geo'); if (btn && !btn.disabled) btn.click();
   }
+});
+
+// Kéo thả file vào ô chọn file
+document.addEventListener('dragover', ev => {
+  const z = ev.target.closest && ev.target.closest('.dropzone'); if (!z) return;
+  ev.preventDefault(); z.classList.add('over');
+});
+document.addEventListener('dragleave', ev => { const z = ev.target.closest && ev.target.closest('.dropzone'); if (z) z.classList.remove('over'); });
+document.addEventListener('drop', ev => {
+  const z = ev.target.closest && ev.target.closest('.dropzone'); if (!z) return;
+  ev.preventDefault(); z.classList.remove('over');
+  const f = ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files[0]; if (f) readImpFile(f);
 });
 
 function switchTab(tab) {
@@ -2086,7 +3268,7 @@ async function start() {
   if (sess) enterAdmin(sess); else showLogin();
 }
 
-window.BDVT = { Core, S, _test: { getMap: () => map, logout, setPanel, renderAll, openStoreForm, openCustomerForm, runSuggest, closeForm, switchTab, loadData } };
+window.BDVT = { Core, S, _test: { getMap: () => map, openImport, openPriceImport, readImpFile, startMapping, logout, setPanel, renderAll, openStoreForm, openCustomerForm, runSuggest, closeForm, switchTab, loadData } };
 start();
 })();
 </script>
