@@ -221,6 +221,8 @@ body.panel-off .panel-toggle .pt-ico{transform:rotate(180deg)}
 
 /* ---------- Nút chọn nền bản đồ ---------- */
 .base-switch{display:flex;flex-direction:column;gap:2px;background:#fff;padding:5px;border-radius:12px;box-shadow:var(--shadow)}
+.base-list{display:flex;flex-direction:column;gap:2px}
+.base-cur{display:none}
 .base-btn{display:flex;flex-direction:column;align-items:center;gap:4px;width:66px;white-space:nowrap;padding:5px 2px 6px;border:0;background:transparent;border-radius:9px;cursor:pointer;font:inherit;font-size:11px;font-weight:600;line-height:1.1;color:#475569;transition:background .15s,color .15s}
 .base-btn:hover{background:var(--line2)}
 .base-btn .ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(15,23,42,.08);transition:box-shadow .15s,transform .1s}
@@ -275,8 +277,16 @@ body.panel-off .panel-toggle .pt-ico{transform:rotate(180deg)}
   .brand-ico{width:32px;height:32px;font-size:17px}
   .brand h1{font-size:15px}
   .legend{display:none}
-  .base-switch{flex-direction:row;padding:4px}
-  .base-btn{width:56px;font-size:10px;padding:4px 1px 5px}
+  .base-switch{padding:4px;gap:0}
+  .base-cur{display:flex;flex-direction:column;align-items:center;gap:2px;width:58px;padding:3px 0 2px;border:0;background:transparent;border-radius:9px;cursor:pointer;color:#475569}
+  .base-cur .ico{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(15,23,42,.08)}
+  .base-cur .ico svg{width:17px;height:17px}
+  .base-cur .caret{transition:transform .2s ease;line-height:0}
+  .base-switch.open .base-cur .caret{transform:rotate(180deg)}
+  .base-cur:active .ico{transform:scale(.93)}
+  .base-list{max-height:0;overflow:hidden;opacity:0;visibility:hidden;transition:max-height .22s ease,opacity .18s ease,visibility 0s .22s}
+  .base-switch.open .base-list{max-height:240px;opacity:1;visibility:visible;margin-top:4px;padding-top:4px;border-top:1px solid var(--line2);transition:max-height .22s ease,opacity .18s ease}
+  .base-btn{width:58px;font-size:10px;padding:4px 0 5px}
   .base-btn .ico{width:30px;height:30px;border-radius:9px}
   .base-btn .ico svg{width:16px;height:16px}
   .leaflet-control-attribution{font-size:9px;line-height:1.35}
@@ -538,6 +548,7 @@ async function fetchJSON(url, ms = 10000) {
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 /* ================= Bản đồ ================= */
+let setBaseMenu = () => false;
 let map = null, hasMap = false, storeLayer, custLayer, routeLayer, editMarker = null;
 const storeMarkers = new Map(), custMarkers = new Map();
 
@@ -587,23 +598,46 @@ function initMap() {
       icon: SV('<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/>') }
   };
   let baseBox = null;
+  // Điện thoại: khối chọn nền thu gọn thành 1 icon, bấm để xổ xuống
+  setBaseMenu = open => {
+    if (!baseBox) return false;
+    const was = baseBox.classList.contains('open');
+    baseBox.classList.toggle('open', open);
+    baseBox.querySelector('.base-cur').setAttribute('aria-expanded', String(open));
+    return was;
+  };
+  document.addEventListener('pointerdown', e => { if (baseBox && !baseBox.contains(e.target)) setBaseMenu(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setBaseMenu(false); });
   function setBase(k) {
     if (!BASES[k]) return;
     for (const b of Object.values(BASES)) if (b.layer !== BASES[k].layer && map.hasLayer(b.layer)) map.removeLayer(b.layer);
     if (!map.hasLayer(BASES[k].layer)) BASES[k].layer.addTo(map);
     curBase = k; warned = false;
-    if (baseBox) $$('.base-btn', baseBox).forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.base === k)));
+    if (baseBox) {
+      $$('.base-btn', baseBox).forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.base === k)));
+      const cur = baseBox.querySelector('.base-cur');
+      cur.querySelector('.ico').className = 'ico ico-' + k;
+      cur.querySelector('.ico').innerHTML = BASES[k].icon;
+      cur.title = 'Nền bản đồ: ' + BASES[k].title + ' — bấm để đổi';
+    }
   }
   const BaseCtl = L.Control.extend({
     options: { position: 'topright' },
     onAdd() {
       const box = L.DomUtil.create('div', 'base-switch');
       box.setAttribute('role', 'group'); box.setAttribute('aria-label', 'Chọn nền bản đồ');
-      box.innerHTML = Object.entries(BASES).map(([k, b]) =>
+      box.innerHTML =
+        '<button type="button" class="base-cur" aria-expanded="false" aria-controls="baseList" aria-label="Chọn nền bản đồ">' +
+        '<span class="ico"></span><span class="caret"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button>' +
+        '<div class="base-list" id="baseList">' + Object.entries(BASES).map(([k, b]) =>
         '<button type="button" class="base-btn" data-base="' + k + '" title="' + b.title + '" aria-label="' + b.title + '" aria-pressed="false">' +
-        '<span class="ico ico-' + k + '">' + b.icon + '</span><span class="lbl">' + b.label + '</span></button>').join('');
+        '<span class="ico ico-' + k + '">' + b.icon + '</span><span class="lbl">' + b.label + '</span></button>').join('') + '</div>';
       L.DomEvent.disableClickPropagation(box); L.DomEvent.disableScrollPropagation(box);
-      box.addEventListener('click', e => { const t = e.target.closest('.base-btn'); if (t) setBase(t.dataset.base); });
+      box.addEventListener('click', e => {
+        if (e.target.closest('.base-cur')) { setBaseMenu(!box.classList.contains('open')); return; }
+        const t = e.target.closest('.base-btn');
+        if (t) { setBase(t.dataset.base); setBaseMenu(false); }
+      });
       baseBox = box;
       return box;
     }
@@ -650,6 +684,7 @@ function initMap() {
   // Bấm 1 lần (trang xem) → xóa ghim vị trí của bạn (chờ xem có phải nhấp đúp không rồi mới xóa)
   let lastTap = null, singleTimer = null;
   map.on('click', e => {
+    if (setBaseMenu(false)) return;
     if (!isAdmin()) {
       const now = Date.now();
       clearTimeout(singleTimer);
