@@ -120,13 +120,53 @@ input.invalid{border-color:var(--danger);background:var(--danger-50)}
 .snap-note:empty{display:none}
 .snap-note{margin-top:4px}
 
-.phead,.prow{display:grid;grid-template-columns:minmax(0,1fr) 74px 104px 30px;gap:6px;align-items:center}
-.phead{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.03em;margin-bottom:4px}
-.prow{margin-bottom:6px}
-.prow input{padding:8px 8px}
-.prow .p-price{text-align:right}
-.prow.dup input,.prow.err input{border-color:var(--warn);background:var(--warn-50)}
+/* ---------- Bảng giá theo danh mục ---------- */
+.price-box legend .pt-total{font-weight:500;color:var(--muted)}
+.pt-q{margin-bottom:2px}
+.pg{border:1px solid var(--line);border-radius:10px;margin-bottom:6px;overflow:hidden;background:#fff}
+.pg-head{display:flex;align-items:center;gap:8px;width:100%;padding:9px 10px;border:0;background:#f8fafc;cursor:pointer;font:inherit;font-weight:600;text-align:left;color:var(--text)}
+.pg-head:hover{background:var(--primary-50)}
+.pg-caret{display:grid;place-items:center;color:var(--muted);transition:transform .2s}
+.pg.open .pg-caret{transform:rotate(90deg)}
+.pg-name{flex:1;min-width:0}
+.pg-cnt{font-size:12px;font-weight:600;color:var(--muted);background:#fff;border:1px solid var(--line);padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pg-cnt.has{color:#166534;background:var(--store-50);border-color:#bbf7d0}
+.pg:not(.open) .pg-body{display:none}
+.pg-body{padding:4px 8px 6px;border-top:1px solid var(--line2)}
+.pr{display:grid;grid-template-columns:minmax(0,1fr) 108px 44px;gap:6px;align-items:center;padding:4px 2px;border-bottom:1px dashed var(--line2)}
+.pr:last-child{border-bottom:0}
+.pr-name{font-size:13px;line-height:1.3;min-width:0;overflow-wrap:anywhere}
+.pr-name small{display:block;color:var(--muted);font-size:11px}
+input.pr-price{text-align:right;padding:7px 8px}
+.pr.on input.pr-price{border-color:#86d9a5;background:var(--store-50);font-weight:600}
+.pr.err input.pr-price{border-color:var(--warn);background:var(--warn-50)}
+.pr-unit{font-size:11px;color:var(--muted);white-space:nowrap}
+.tag-hidden{display:inline-block;font-size:10px;font-weight:700;color:#92400e;background:var(--warn-50);border:1px solid #fde68a;border-radius:5px;padding:0 5px;margin-left:4px;vertical-align:1px}
+.np{margin-top:8px}
+.np-form{border:1px dashed #93b4f5;background:#f8fbff;border-radius:10px;padding:10px 10px 4px}
+.np-title{display:block;margin-bottom:8px;font-size:13px}
+.np-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.np-form .fld{margin-bottom:8px}
+.np-form .row{margin-bottom:6px}
 
+/* ---------- Tab Danh mục ---------- */
+.cat-grp{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:14px 2px 6px;font-weight:700;font-size:13px;color:#334155}
+.cat-grp:first-child{margin-top:2px}
+.catrow{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:var(--radius);background:#fff;margin-bottom:6px;overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.catrow:hover{border-color:#c7d4ea;box-shadow:var(--shadow)}
+.catrow.is-hidden{background:#fafafa}
+.catrow.is-hidden .cat-main b{color:var(--muted)}
+.cat-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;text-align:left;border:0;background:transparent;padding:9px 12px;cursor:pointer;font:inherit;color:inherit}
+.cat-main b{font-weight:600}
+.cat-move{display:flex;flex-direction:column;border-left:1px solid var(--line2)}
+.mv-btn{flex:1;width:36px;border:0;background:transparent;color:var(--muted);cursor:pointer;display:grid;place-items:center}
+.mv-btn:hover:not(:disabled){background:var(--primary-50);color:var(--primary)}
+.mv-btn:disabled{opacity:.25;cursor:default}
+.mv-btn+.mv-btn{border-top:1px solid var(--line2)}
+.usage{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
+.usage span{font-size:12px;font-weight:600;background:var(--line2);color:#475569;padding:4px 10px;border-radius:999px}
+.usage span.on{background:var(--store-50);color:#166534}
+.ptable .pt-grp td{background:var(--line2);font-weight:700;font-size:12px;color:#475569;padding:6px}
 .crow{display:grid;grid-template-columns:minmax(0,1fr) 78px auto 30px;gap:6px;align-items:center;margin-bottom:8px}
 .crow select{padding:8px}
 .crow .c-qty{text-align:right;padding:8px}
@@ -336,6 +376,7 @@ body.panel-off .panel-toggle .pt-ico{transform:rotate(180deg)}
     <nav class="tabs" role="tablist" aria-label="Chọn danh sách">
       <button type="button" class="tab" role="tab" id="tab1" data-tab="stores" aria-selected="true">Cửa hàng (0)</button>
       <button type="button" class="tab" role="tab" id="tab2" data-tab="customers" aria-selected="false">Khách hàng (0)</button>
+      <button type="button" class="tab" role="tab" id="tab3" data-tab="catalog" aria-selected="false" hidden>Danh mục (0)</button>
     </nav>
     <div id="toolbar" class="toolbar">
       <input id="search" type="search" placeholder="Tìm theo tên, SĐT, địa chỉ…" aria-label="Tìm kiếm" autocomplete="off">
@@ -361,7 +402,7 @@ body.panel-off .panel-toggle .pt-ico{transform:rotate(180deg)}
   </div>
 </main>
 
-<datalist id="dlNames"></datalist>
+<datalist id="dlGroups"></datalist>
 <datalist id="dlUnits"></datalist>
 <div id="login" role="dialog" aria-modal="true" aria-labelledby="loginTitle" hidden>
   <form id="loginForm" class="login-card" novalidate>
@@ -445,21 +486,39 @@ const Core = {
     const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2;
     return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
   },
-  // Danh sách tổng: gộp theo tên + đơn vị (không phân biệt hoa thường)
-  catalog(stores) {
+  // Thứ tự nhóm: nhóm có "sort" nhỏ nhất đứng trước, nhóm "Khác" luôn cuối
+  grpRank(cat) {
+    const r = new Map();
+    for (const c of cat || []) {
+      const v = c.grp === 'Khác' ? 1e9 : Number(c.sort) || 0;
+      if (!r.has(c.grp) || v < r.get(c.grp)) r.set(c.grp, v);
+    }
+    return r;
+  },
+  sortCat(list, rank) {
+    const rk = g => (rank && rank.has(g) ? rank.get(g) : (g === 'Khác' ? 1e9 : 1e8));
+    return list.slice().sort((a, b) => (rk(a.grp) - rk(b.grp)) || String(a.grp).localeCompare(String(b.grp), 'vi') ||
+      ((Number(a.sort) || 0) - (Number(b.sort) || 0)) || String(a.name).localeCompare(String(b.name), 'vi'));
+  },
+  // Các món ĐANG CÓ cửa hàng bán (theo mã danh mục) + giá thấp/cao nhất, xếp theo nhóm
+  catalog(stores, cat) {
+    const byId = new Map((cat || []).map(c => [c.id, c]));
     const m = new Map();
     for (const s of stores) for (const p of (s.products || [])) {
-      const k = Core.key(p.name, p.unit);
-      let e = m.get(k);
-      if (!e) { e = { key: k, name: Core.clean(p.name), unit: Core.clean(p.unit), min: Infinity, max: -Infinity, count: 0 }; m.set(k, e); }
+      let e = m.get(p.cid);
+      if (!e) {
+        const c = byId.get(p.cid) || { grp: p.grp || 'Khác', name: p.name, unit: p.unit, sort: 1e9 };
+        e = { key: p.cid, grp: c.grp, name: c.name, unit: c.unit, sort: c.sort, min: Infinity, max: -Infinity, count: 0 };
+        m.set(p.cid, e);
+      }
       e.min = Math.min(e.min, p.price); e.max = Math.max(e.max, p.price); e.count++;
     }
-    return [...m.values()].sort((a, b) => a.name.localeCompare(b.name, 'vi') || a.unit.localeCompare(b.unit, 'vi'));
+    return Core.sortCat([...m.values()], Core.grpRank(cat));
   },
   // Tính tiền giỏ hàng tại từng cửa hàng
   evaluate(stores, cart) {
     return stores.map(s => {
-      const pm = new Map((s.products || []).map(p => [Core.key(p.name, p.unit), p]));
+      const pm = new Map((s.products || []).map(p => [p.cid, p]));
       let total = 0; const missing = [];
       for (const it of cart) {
         const p = pm.get(it.key);
@@ -499,8 +558,9 @@ const esc = Core.esc, money = Core.money;
 const S = {
   mode: (location.hash || '').toLowerCase() === '#quanly' ? 'admin' : 'public',
   stores: [], customers: [], catalog: [], catMap: new Map(),
+  cat: [], catById: new Map(), grpRank: new Map(),   // danh mục chung (bảng catalog)
   tab: 'stores', search: '', filterKey: '',
-  editing: null,   // {type:'store'|'customer', id, draft, dirty}
+  editing: null,   // {type:'store'|'customer'|'cat', id, draft, dirty}
   detailId: null,  // chi tiết cửa hàng (chế độ xem)
   lookup: null,    // giỏ hàng tra cứu (chế độ xem)
   loaded: false, lastLoad: 0
@@ -710,7 +770,7 @@ function initMap() {
   if (typeof ResizeObserver !== 'undefined') new ResizeObserver(fix).observe($('#map'));
 }
 
-function storeHas(s, key) { return (s.products || []).find(p => Core.key(p.name, p.unit) === key); }
+function storeHas(s, key) { return (s.products || []).find(p => p.cid === key); }
 
 // Cập nhật ghim theo kiểu "so khác biệt": chỉ tạo lại ghim nào thay đổi → bản đồ không bị giật
 function syncMarkers(layer, cache, items, kind, tipOf, onClick) {
@@ -785,9 +845,9 @@ function fitAll() {
 }
 
 /* ---------- Ghim đang chỉnh (kéo được) ---------- */
-function markerDraft() { return S.editing ? S.editing.draft : (isAdmin() ? null : S.lookup); }
+function markerDraft() { return S.editing ? (S.editing.type === 'cat' ? null : S.editing.draft) : (isAdmin() ? null : S.lookup); }
 function clickDraft() {
-  if (S.editing) return S.editing.draft;
+  if (S.editing) return S.editing.type === 'cat' ? null : S.editing.draft;
   if (!isAdmin() && S.tab === 'lookup' && !S.detailId) return S.lookup;
   return null;
 }
@@ -890,8 +950,9 @@ function dbErr(e) {
   const m = (e && (e.message || e.details || e.hint)) || String(e);
   const code = e && e.code;
   if (code === '42501' || code === 'PGRST301' || code === 'PGRST303' || /JWT|permission denied|row-level security/i.test(m)) return { kind: 'auth', msg: 'Không có quyền hoặc phiên đăng nhập đã hết' };
-  if (code === '23505' || /duplicate key|products_uq/i.test(m)) return { kind: 'dup', msg: 'Trùng sản phẩm (cùng tên + đơn vị) trong một cửa hàng' };
-  if (code === '42P01' || code === 'PGRST205' || code === 'PGRST202' || /does not exist|schema cache|Could not find/i.test(m)) return { kind: 'schema', msg: 'Chưa tạo cơ sở dữ liệu' };
+  if (code === '23505' || /duplicate key/i.test(m)) return { kind: 'dup', msg: /catalog/i.test(m) ? 'Sản phẩm (tên + đơn vị) này đã có trong danh mục' : 'Một sản phẩm bị nhập 2 lần trong cùng cửa hàng' };
+  if (code === '23503' || /foreign key/i.test(m)) return { kind: 'fk', msg: 'Sản phẩm đang được cửa hàng hoặc khách hàng dùng — chỉ có thể ẩn, không xóa được' };
+  if (code === '42703' || code === '42P01' || code === 'PGRST205' || code === 'PGRST202' || /does not exist|schema cache|Could not find/i.test(m)) return { kind: 'schema', msg: 'Chưa tạo cơ sở dữ liệu' };
   if (/Failed to fetch|NetworkError|Load failed|network/i.test(m)) return { kind: 'net', msg: 'Lỗi mạng — không kết nối được máy chủ' };
   return { kind: 'other', msg: m };
 }
@@ -902,26 +963,36 @@ async function loadData(quiet) {
   const seq = ++loadSeq;
   if (!quiet) setSync('loading');
   try {
-    const qs = sb.from('stores').select('id,name,phone,address,lat,lng,price_updated_at,products(id,name,unit,price,sort)').order('name');
-    const qc = isAdmin() ? sb.from('customers').select('id,name,phone,address,lat,lng,customer_items(id,product_name,product_unit,qty,sort)').order('name') : null;
-    const [rs, rc] = await Promise.all([qs, qc || Promise.resolve({ data: [] })]);
+    const qk = sb.from('catalog').select('id,grp,name,unit,spec,sort,hidden').order('sort');
+    const qs = sb.from('stores').select('id,name,phone,address,lat,lng,price_updated_at,products(catalog_id,price)').order('name');
+    const qc = isAdmin() ? sb.from('customers').select('id,name,phone,address,lat,lng,customer_items(catalog_id,qty,sort)').order('name') : null;
+    const [rk, rs, rc] = await Promise.all([qk, qs, qc || Promise.resolve({ data: [] })]);
+    if (rk.error) throw rk.error;
     if (rs.error) throw rs.error;
     if (rc.error) throw rc.error;
     if (seq !== loadSeq) return;
+    S.cat = (rk.data || []).map(c => ({ id: c.id, grp: Core.clean(c.grp) || 'Khác', name: c.name, unit: c.unit, spec: c.spec || '', sort: Number(c.sort) || 0, hidden: !!c.hidden }));
+    indexCat();
     S.stores = (rs.data || []).map(s => ({
       ...s, lat: +s.lat, lng: +s.lng, phone: s.phone || '', address: s.address || '',
-      products: (s.products || []).slice().sort((a, b) => a.sort - b.sort).map(p => ({ name: p.name, unit: p.unit, price: Number(p.price) }))
+      products: Core.sortCat((s.products || []).map(p => {
+        const c = S.catById.get(p.catalog_id);
+        return c ? { cid: c.id, grp: c.grp, name: c.name, unit: c.unit, sort: c.sort, price: Number(p.price) } : null;
+      }).filter(Boolean), S.grpRank)
     }));
     S.customers = (rc.data || []).map(c => ({
       ...c, lat: +c.lat, lng: +c.lng, phone: c.phone || '', address: c.address || '',
-      items: (c.customer_items || []).slice().sort((a, b) => a.sort - b.sort).map(i => ({ name: i.product_name, unit: i.product_unit, qty: Number(i.qty) }))
+      items: (c.customer_items || []).slice().sort((a, b) => a.sort - b.sort).map(i => {
+        const k = S.catById.get(i.catalog_id);
+        return { key: i.catalog_id, name: k ? k.name : '(sản phẩm đã xóa)', unit: k ? k.unit : '', qty: Number(i.qty) };
+      })
     }));
     S.lastLoad = Date.now();
     if (!chLive) setSync('ok'); else setSync('live');
     renderAll();
     if (!S.loaded) { S.loaded = true; if (!S.editing) fitAll(); }
     if (S.editing && S.editing.id) {
-      const list = S.editing.type === 'store' ? S.stores : S.customers;
+      const list = S.editing.type === 'store' ? S.stores : S.editing.type === 'cat' ? S.cat : S.customers;
       if (!list.some(x => x.id === S.editing.id)) toast('Mục bạn đang sửa vừa bị người khác xóa', 'warn');
     }
   } catch (e) {
@@ -933,7 +1004,7 @@ async function loadData(quiet) {
       else showNotice('Không có quyền đọc dữ liệu', 'Kiểm tra lại phần phân quyền (file SQL) trên Supabase.');
       return;
     }
-    if (er.kind === 'schema') showNotice('Chưa tạo cơ sở dữ liệu', 'Mở Supabase → SQL Editor, dán toàn bộ file bandovattu_supabase.sql, bấm Run rồi tải lại trang.');
+    if (er.kind === 'schema') showNotice('Cần nâng cấp cơ sở dữ liệu', 'Mở Supabase → SQL Editor, chạy file bandovattu_danhmuc.sql (danh mục sản phẩm) rồi tải lại trang. Nếu là CSDL mới tinh: chạy bandovattu_supabase.sql trước.');
     else if (er.kind === 'net') showNotice('Không kết nối được cơ sở dữ liệu', 'Kiểm tra internet rồi tải lại trang (F5).');
     else showNotice('Lỗi tải dữ liệu', er.msg);
     renderAll();
@@ -950,7 +1021,7 @@ function subscribe() {
   unsubscribe();
   try {
     let ch = sb.channel('bdvt-' + S.mode + '-' + Date.now().toString(36));
-    const tables = isAdmin() ? ['stores', 'products', 'customers', 'customer_items'] : ['stores', 'products'];
+    const tables = isAdmin() ? ['catalog', 'stores', 'products', 'customers', 'customer_items'] : ['catalog', 'stores', 'products'];
     for (const t of tables) ch = ch.on('postgres_changes', { event: '*', schema: 'public', table: t }, scheduleReload);
     channel = ch;
     ch.subscribe(st => {
@@ -962,33 +1033,47 @@ function subscribe() {
 }
 
 /* ================= Danh sách ================= */
+function indexCat() {
+  S.catById = new Map(S.cat.map(c => [c.id, c]));
+  S.grpRank = Core.grpRank(S.cat);
+}
 function rebuildCatalog() {
-  S.catalog = Core.catalog(S.stores);
+  S.catalog = Core.catalog(S.stores, S.cat);
   S.catMap = new Map(S.catalog.map(c => [c.key, c]));
   if (S.filterKey && !S.catMap.has(S.filterKey)) S.filterKey = '';
 }
+function catGroups() { return [...new Set(Core.sortCat(S.cat, S.grpRank).map(c => c.grp))]; }
 function renderDatalists() {
-  const names = [...new Set(S.catalog.map(c => c.name))];
-  $('#dlNames').innerHTML = names.map(n => '<option value="' + esc(n) + '"></option>').join('');
-  const units = [...new Set(UNITS.concat(S.catalog.map(c => c.unit)))];
+  const units = [...new Set(UNITS.concat(S.cat.map(c => c.unit)))];
   $('#dlUnits').innerHTML = units.map(u => '<option value="' + esc(u) + '"></option>').join('');
+  $('#dlGroups').innerHTML = catGroups().map(g => '<option value="' + esc(g) + '"></option>').join('');
+}
+// <option> chia theo nhóm (<optgroup>)
+function groupedOptions(list, selKey, labelFn) {
+  let h = '', g = null;
+  for (const c of list) {
+    if (c.grp !== g) { if (g !== null) h += '</optgroup>'; g = c.grp; h += '<optgroup label="' + esc(g) + '">'; }
+    h += '<option value="' + esc(c.key) + '"' + (c.key === selKey ? ' selected' : '') + '>' + labelFn(c) + '</option>';
+  }
+  return g !== null ? h + '</optgroup>' : h;
 }
 function renderTabs() {
-  const t1 = $('#tab1'), t2 = $('#tab2');
+  const t1 = $('#tab1'), t2 = $('#tab2'), t3 = $('#tab3');
   t1.textContent = isAdmin() ? 'Cửa hàng (' + S.stores.length + ')' : 'Toàn bộ cửa hàng';
   if (isAdmin()) { t2.dataset.tab = 'customers'; t2.textContent = 'Khách hàng (' + S.customers.length + ')'; }
   else { t2.dataset.tab = 'lookup'; t2.textContent = '🔎 Tìm cửa hàng gần nhất và rẻ nhất'; }
-  t1.setAttribute('aria-selected', String(S.tab === 'stores'));
-  t2.setAttribute('aria-selected', String(S.tab !== 'stores'));
+  t3.hidden = !isAdmin();
+  t3.textContent = 'Danh mục (' + S.cat.filter(c => !c.hidden).length + ')';
+  [t1, t2, t3].forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab === S.tab)));
   $('#toolbar').hidden = S.tab === 'lookup';
   $('#btnAdd').hidden = !isAdmin();
-  $('#search').placeholder = S.tab === 'customers' ? 'Tìm khách theo tên, SĐT, địa chỉ…' : 'Tìm cửa hàng theo tên, SĐT, địa chỉ…';
+  $('#search').placeholder = S.tab === 'customers' ? 'Tìm khách theo tên, SĐT, địa chỉ…'
+    : S.tab === 'catalog' ? 'Tìm sản phẩm theo tên, nhóm, quy cách…' : 'Tìm cửa hàng theo tên, SĐT, địa chỉ…';
   $('#filterRow').hidden = S.tab !== 'stores' || !S.catalog.length;
 }
 function renderFilter() {
-  const sel = $('#prodFilter');
-  sel.innerHTML = '<option value="">Tất cả sản phẩm</option>' + S.catalog.map(c =>
-    '<option value="' + esc(c.key) + '"' + (c.key === S.filterKey ? ' selected' : '') + '>' + esc(c.name) + ' (' + esc(c.unit) + ') — ' + c.count + ' cửa hàng</option>').join('');
+  $('#prodFilter').innerHTML = '<option value="">Tất cả sản phẩm</option>' +
+    groupedOptions(S.catalog, S.filterKey, c => esc(c.name) + ' (' + esc(c.unit) + ') — ' + c.count + ' cửa hàng');
 }
 function matchSearch(o) {
   const q = Core.fold(Core.clean(S.search));
@@ -998,6 +1083,7 @@ function matchSearch(o) {
 function renderList() {
   const box = $('#list');
   if (S.tab === 'lookup') { renderLookup(); return; }
+  if (S.tab === 'catalog') { renderCatList(); return; }
   if (S.tab === 'stores') {
     if (!S.stores.length) {
       box.innerHTML = '<div class="empty"><span class="big">🏪</span>Chưa có cửa hàng nào.' + (isAdmin() ? '<br>Bấm <b>＋ Thêm</b> để tạo cửa hàng đầu tiên.' : '') + '</div>';
@@ -1024,7 +1110,7 @@ function renderList() {
     const arr = S.customers.filter(matchSearch);
     if (!arr.length) { box.innerHTML = '<div class="empty">Không có khách hàng phù hợp.</div>'; return; }
     box.innerHTML = arr.map(c => {
-      const gone = c.items.filter(i => !S.catMap.has(Core.key(i.name, i.unit)));
+      const gone = c.items.filter(i => !S.catMap.has(i.key));
       return '<button type="button" class="card" data-kind="customer" data-id="' + esc(c.id) + '">' +
         '<span class="card-ico customer" aria-hidden="true">🏠</span><span class="card-body">' +
         '<span class="card-top"><b>' + esc(c.name) + '</b><span class="chip">' + c.items.length + ' món</span></span>' +
@@ -1058,12 +1144,8 @@ function locHTML(d, legend) {
     '<p class="hint">' + (d === S.lookup ? 'Mẹo: kéo ghim để chỉnh · nhấp đúp chỗ khác để dời ghim · bấm 1 lần lên bản đồ để xóa ghim.' : 'Mẹo: kéo ghim để chỉnh, hoặc bấm thẳng lên bản đồ.') + '</p></fieldset>';
 }
 function cartOptions(it) {
-  let h = '<option value="">— Chọn sản phẩm —</option>', found = false;
-  for (const c of S.catalog) {
-    const sel = c.key === it.key; if (sel) found = true;
-    h += '<option value="' + esc(c.key) + '"' + (sel ? ' selected' : '') + '>' + esc(c.name) + ' (' + esc(c.unit) + ')</option>';
-  }
-  if (it.key && !found) h += '<option value="' + esc(it.key) + '" selected>' + esc(it.name) + ' (' + esc(it.unit) + ') — không còn bán</option>';
+  let h = '<option value="">— Chọn sản phẩm —</option>' + groupedOptions(S.catalog, it.key, c => esc(c.name) + ' (' + esc(c.unit) + ')');
+  if (it.key && !S.catMap.has(it.key)) h += '<option value="' + esc(it.key) + '" selected>' + esc(it.name) + ' (' + esc(it.unit) + ') — không còn bán</option>';
   return h;
 }
 function cartInfo(it) {
@@ -1082,7 +1164,7 @@ function cartRowHTML(it, i) {
 }
 function cartHTML(d) {
   return '<fieldset class="box cart-box"><legend>Danh sách cần mua</legend>' +
-    (S.catalog.length ? '' : '<p class="hint">Chưa có sản phẩm nào — cần thêm cửa hàng có danh mục sản phẩm trước.</p>') +
+    (S.catalog.length ? '' : '<p class="hint">Chưa có cửa hàng nào nhập giá — chưa có sản phẩm để chọn.</p>') +
     '<div class="crows">' + d.items.map(cartRowHTML).join('') + '</div>' +
     '<button type="button" class="btn ghost sm c-add">＋ Thêm món</button></fieldset>';
 }
@@ -1094,6 +1176,8 @@ function refreshCartUI(root, d) {
   if (!root || !d) return;
   $$('.crow', root).forEach(row => {
     const it = d.items[+row.dataset.i]; if (!it) return;
+    const k = it.key && S.catById.get(it.key);
+    if (k) { it.name = k.name; it.unit = k.unit; row.querySelector('.c-unit').textContent = k.unit; }
     const sel = row.querySelector('.c-prod');
     if (document.activeElement !== sel) sel.innerHTML = cartOptions(it);
     row.querySelector('.c-info').innerHTML = cartInfo(it);
@@ -1119,20 +1203,108 @@ function renderLookup() {
   if (d.result) renderResult($('#list').querySelector('.suggest-box'), d.result);
 }
 
-/* ================= Form cửa hàng ================= */
-function prodRowHTML(p, i) {
-  return '<div class="prow" data-i="' + i + '">' +
-    '<input class="p-name" list="dlNames" placeholder="VD: Xi măng Hà Tiên" value="' + esc(p.name) + '" aria-label="Tên sản phẩm dòng ' + (i + 1) + '" autocomplete="off">' +
-    '<input class="p-unit" list="dlUnits" placeholder="bao" value="' + esc(p.unit) + '" aria-label="Đơn vị dòng ' + (i + 1) + '" autocomplete="off">' +
-    '<input class="p-price" inputmode="numeric" placeholder="0" value="' + (p.price == null ? '' : Core.digits(p.price)) + '" aria-label="Giá dòng ' + (i + 1) + '">' +
-    '<button type="button" class="icon-btn p-del" aria-label="Xóa sản phẩm dòng ' + (i + 1) + '" title="Xóa dòng">✕</button></div>';
+/* ================= Form cửa hàng: bảng giá theo danh mục ================= */
+function ptItems(d) {
+  return Core.sortCat(S.cat.filter(c => !c.hidden || d.keep.has(c.id) || d.prices.has(c.id)), S.grpRank);
 }
-function prodBoxHTML(d) {
-  return '<fieldset class="box prod-box"><legend>Danh mục sản phẩm (' + d.products.filter(p => Core.clean(p.name)).length + ')</legend>' +
-    '<div class="phead"><span>Tên sản phẩm</span><span>Đơn vị</span><span style="text-align:right">Giá (đ)</span><span></span></div>' +
-    '<div class="prows">' + d.products.map(prodRowHTML).join('') + '</div>' +
-    '<div class="dup-msg warn-text" hidden></div>' +
-    '<button type="button" class="btn ghost sm p-add" style="margin-top:4px">＋ Thêm sản phẩm</button></fieldset>';
+function prRowHTML(c, d) {
+  const has = d.prices.has(c.id), v = d.prices.get(c.id);
+  return '<div class="pr' + (has ? ' on' : '') + '" data-cid="' + esc(c.id) + '">' +
+    '<span class="pr-name">' + esc(c.name) + (c.hidden ? '<span class="tag-hidden">đã ẩn</span>' : '') + (c.spec ? '<small>' + esc(c.spec) + '</small>' : '') + '</span>' +
+    '<input class="pr-price" inputmode="numeric" placeholder="—" value="' + (has && v != null ? Core.digits(v) : '') + '" aria-label="Giá ' + esc(c.name) + ' (đồng / ' + esc(c.unit) + ')" autocomplete="off">' +
+    '<span class="pr-unit">đ/' + esc(c.unit) + '</span></div>';
+}
+function ptGroupsHTML(d) {
+  const groups = [];
+  for (const c of ptItems(d)) {
+    let g = groups[groups.length - 1];
+    if (!g || g.grp !== c.grp) groups.push(g = { grp: c.grp, items: [] });
+    g.items.push(c);
+  }
+  const q = Core.fold(Core.clean(d.ptq));
+  let h = '';
+  for (const g of groups) {
+    const filled = g.items.filter(c => d.prices.has(c.id)).length;
+    const shown = q ? g.items.filter(c => Core.fold(c.grp + ' ' + c.name + ' ' + c.spec + ' ' + c.unit).includes(q)) : g.items;
+    if (!shown.length) continue;
+    const open = !!q || d.open.has(g.grp);
+    h += '<section class="pg' + (open ? ' open' : '') + '" data-grp="' + esc(g.grp) + '">' +
+      '<button type="button" class="pg-head" aria-expanded="' + open + '"><span class="pg-caret"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></span>' +
+      '<span class="pg-name">' + esc(g.grp) + '</span><span class="pg-cnt' + (filled ? ' has' : '') + '">' + filled + '/' + g.items.length + '</span></button>' +
+      '<div class="pg-body">' + shown.map(c => prRowHTML(c, d)).join('') + '</div></section>';
+  }
+  if (!h) h = q ? '<p class="hint">Không có sản phẩm nào khớp "' + esc(d.ptq) + '" — bấm "Tạo sản phẩm mới" nếu cần.</p>' : '';
+  return h;
+}
+function newProdHTML(d) {
+  if (!d.np) return '<div class="np"><button type="button" class="btn ghost sm np-open">＋ Tạo sản phẩm mới</button></div>';
+  return '<div class="np"><div class="np-form"><b class="np-title">Tạo sản phẩm mới (thêm vào danh mục chung)</b>' +
+    '<label class="fld">Nhóm<input class="np-grp" list="dlGroups" value="' + esc(d.np.grp) + '" placeholder="VD: Xi măng (bỏ trống = Khác)" autocomplete="off"></label>' +
+    '<label class="fld">Tên sản phẩm *<input class="np-name" value="' + esc(d.np.name) + '" placeholder="VD: Xi măng Vicem Hà Tiên Xây Tô" maxlength="120" autocomplete="off"></label>' +
+    '<div class="np-row"><label class="fld">Đơn vị *<input class="np-unit" list="dlUnits" value="' + esc(d.np.unit) + '" placeholder="bao, m³, cây…" maxlength="20" autocomplete="off"></label>' +
+    '<label class="fld">Quy cách<input class="np-spec" value="' + esc(d.np.spec) + '" placeholder="VD: bao 50kg" maxlength="60" autocomplete="off"></label></div>' +
+    '<div class="row"><button type="button" class="btn primary sm np-save">Thêm vào danh mục</button><button type="button" class="btn sm np-cancel">Hủy</button></div></div></div>';
+}
+function priceBoxHTML(d) {
+  return '<fieldset class="box price-box"><legend>Bảng giá <span class="pt-total">(' + d.prices.size + ' món đang bán)</span></legend>' +
+    (S.cat.length
+      ? '<input type="search" class="pt-q" placeholder="Tìm trong bảng giá… (VD: d16, insee, 1x2)" value="' + esc(d.ptq) + '" aria-label="Tìm sản phẩm trong bảng giá" autocomplete="off">' +
+        '<p class="hint" style="margin:6px 0 8px">Điền giá cho món cửa hàng có bán — bỏ trống là không bán.</p>'
+      : '<p class="hint" style="margin:0 0 8px">Danh mục đang trống — chạy file <b>bandovattu_danhmuc.sql</b> để nạp sẵn danh mục, hoặc bấm "Tạo sản phẩm mới".</p>') +
+    '<div class="pt-groups">' + ptGroupsHTML(d) + '</div>' + newProdHTML(d) + '</fieldset>';
+}
+function refreshPtCounts(root, d) {
+  const tot = root.querySelector('.pt-total'); if (tot) tot.textContent = '(' + d.prices.size + ' món đang bán)';
+  $$('.pg', root).forEach(sec => {
+    const g = sec.dataset.grp, items = ptItems(d).filter(c => c.grp === g);
+    const filled = items.filter(c => d.prices.has(c.id)).length;
+    const cnt = sec.querySelector('.pg-cnt');
+    cnt.textContent = filled + '/' + items.length; cnt.classList.toggle('has', filled > 0);
+  });
+}
+function rerenderPt(root, d) { const box = root.querySelector('.pt-groups'); if (box) box.innerHTML = ptGroupsHTML(d); refreshPtCounts(root, d); }
+function focusPrice(root, cid) {
+  const inp = root.querySelector('.pr[data-cid="' + cid + '"] .pr-price');
+  if (inp) { inp.focus(); if (inp.scrollIntoView) inp.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+  return inp;
+}
+function nextSort(grp) {
+  const inG = S.cat.filter(x => x.grp === grp);
+  if (inG.length) return Math.max(...inG.map(x => x.sort)) + 1;
+  if (grp === 'Khác') return 9000;
+  const nonK = S.cat.filter(x => x.grp !== 'Khác' && x.sort < 9000);
+  return (nonK.length ? Math.floor(Math.max(...nonK.map(x => x.sort)) / 100) * 100 : 0) + 100;
+}
+const CAT_COLS = 'id,grp,name,unit,spec,sort,hidden';
+async function addNewProduct(root, d, btn) {
+  const grp = Core.clean(d.np.grp) || 'Khác', name = Core.clean(d.np.name), unit = Core.clean(d.np.unit), spec = Core.clean(d.np.spec);
+  if (!name) { toast('Cần nhập tên sản phẩm', 'warn'); root.querySelector('.np-name').focus(); return; }
+  if (!unit) { toast('Cần nhập đơn vị tính', 'warn'); root.querySelector('.np-unit').focus(); return; }
+  const dup = S.cat.find(x => Core.key(x.name, x.unit) === Core.key(name, unit));
+  if (dup) {
+    if (dup.hidden && !d.prices.has(dup.id)) { toast('"' + dup.name + ' (' + dup.unit + ')" đã có trong danh mục nhưng đang ẩn — vào tab Danh mục để hiện lại', 'warn'); return; }
+    toast('Đã có trong danh mục: ' + dup.name + ' (' + dup.unit + ') — nhóm ' + dup.grp + '. Nhập giá ở dòng này.', 'warn');
+    d.np = null; d.ptq = ''; d.open.add(dup.grp);
+    root.querySelector('.price-box').outerHTML = priceBoxHTML(d);
+    focusPrice(root, dup.id);
+    return;
+  }
+  btn.disabled = true; btn.textContent = 'Đang thêm…';
+  try {
+    const { data, error } = await sb.from('catalog').insert({ grp, name, unit, spec, sort: nextSort(grp) }).select(CAT_COLS).single();
+    if (error) throw error;
+    const c = { id: data.id, grp: data.grp || grp, name: data.name, unit: data.unit, spec: data.spec || '', sort: Number(data.sort) || 0, hidden: !!data.hidden };
+    if (!S.catById.has(c.id)) S.cat.push(c);
+    indexCat(); renderDatalists(); renderTabs();
+    d.np = null; d.ptq = ''; d.open.add(c.grp); d.keep.add(c.id);
+    root.querySelector('.price-box').outerHTML = priceBoxHTML(d);
+    focusPrice(root, c.id);
+    toast('Đã thêm "' + c.name + '" vào danh mục chung — nhập giá cho cửa hàng', 'ok');
+  } catch (err) {
+    const er = dbErr(err);
+    if (er.kind === 'dup') toast(er.msg, 'warn'); else handleWriteErr(er);
+    btn.disabled = false; btn.textContent = 'Thêm vào danh mục';
+  }
 }
 function showFormView(html) {
   if (panelHidden) setPanel(true);
@@ -1142,10 +1314,12 @@ function showFormView(html) {
 function openStoreForm(id) {
   const s = id ? S.stores.find(x => x.id === id) : null;
   if (id && !s) return;
+  const prices = new Map(s ? s.products.map(p => [p.cid, p.price]) : []);
   const d = {
     name: s ? s.name : '', phone: s ? s.phone : '', address: s ? s.address : '',
     lat: s ? s.lat : null, lng: s ? s.lng : null, snapOn: !s,
-    products: s && s.products.length ? s.products.map(p => ({ ...p })) : [{ name: '', unit: '', price: null }]
+    prices, keep: new Set(prices.keys()), ptq: '', np: null,
+    open: new Set(s ? s.products.map(p => p.grp) : [])
   };
   S.editing = { type: 'store', id: id || null, draft: d, dirty: false };
   showFormView(
@@ -1153,7 +1327,7 @@ function openStoreForm(id) {
     (s ? '<span class="muted small">Giá cập nhật ' + Core.date(s.price_updated_at) + '</span>' : '') + '</div>' +
     '<label class="fld">Tên cửa hàng *<input class="f-name" value="' + esc(d.name) + '" maxlength="120" autocomplete="off"></label>' +
     '<label class="fld">Điện thoại<input class="f-phone" type="tel" value="' + esc(d.phone) + '" maxlength="30" autocomplete="off"></label>' +
-    locHTML(d, 'Địa chỉ &amp; vị trí *') + prodBoxHTML(d) +
+    locHTML(d, 'Địa chỉ &amp; vị trí *') + priceBoxHTML(d) +
     '<div class="form-actions">' + (s ? '<button type="button" class="btn danger btn-delete">Xóa</button>' : '') +
     '<span class="sp"></span><button type="button" class="btn btn-cancel">Hủy</button><button type="button" class="btn primary btn-save">Lưu</button></div>');
   updateLocUI(d); renderPins();
@@ -1162,40 +1336,26 @@ function openStoreForm(id) {
 }
 function focusLatLng(lat, lng) { goTo(lat, lng, 16); }
 
-function checkDups(root, d) {
-  const seen = new Map(), dups = new Set();
-  d.products.forEach((p, i) => {
-    if (!Core.clean(p.name) || !Core.clean(p.unit)) return;
-    const k = Core.key(p.name, p.unit);
-    if (seen.has(k)) { dups.add(i); dups.add(seen.get(k)); } else seen.set(k, i);
-  });
-  $$('.prow', root).forEach(r => r.classList.toggle('dup', dups.has(+r.dataset.i)));
-  const msg = root.querySelector('.dup-msg');
-  if (msg) { msg.hidden = !dups.size; msg.textContent = dups.size ? '⚠ Có sản phẩm trùng tên + đơn vị — mỗi sản phẩm chỉ khai báo 1 dòng.' : ''; }
-  return dups.size === 0;
-}
-
 async function saveStore(btn) {
   const root = $('#formView'), e = S.editing, d = e.draft;
-  $$('.prow.err', root).forEach(r => r.classList.remove('err'));
-  const bad = (i, msg) => {
-    toast(msg, 'warn');
-    const r = root.querySelector('.prow[data-i="' + i + '"]');
-    if (r) { r.classList.add('err'); const inp = r.querySelector('input'); if (inp) inp.focus(); }
-  };
+  $$('.pr.err', root).forEach(r => r.classList.remove('err'));
   const name = Core.clean(d.name);
   if (!name) { toast('Cần nhập tên cửa hàng', 'warn'); root.querySelector('.f-name').focus(); return; }
   if (d.lat == null) { toast('Cần đặt vị trí cửa hàng trên bản đồ', 'warn'); return; }
   const products = [];
-  for (let i = 0; i < d.products.length; i++) {
-    const p = d.products[i], pn = Core.clean(p.name), pu = Core.clean(p.unit);
-    if (!pn && !pu && p.price == null) continue;
-    if (!pn) return bad(i, 'Dòng ' + (i + 1) + ': thiếu tên sản phẩm');
-    if (!pu) return bad(i, '"' + pn + '": thiếu đơn vị tính');
-    if (p.price == null) return bad(i, '"' + pn + '": thiếu giá');
-    products.push({ name: pn, unit: pu, price: p.price });
+  for (const c of Core.sortCat(S.cat.filter(x => d.prices.has(x.id)), S.grpRank)) {
+    const price = d.prices.get(c.id);
+    if (!(price > 0)) {
+      toast('Giá của "' + c.name + '" phải lớn hơn 0', 'warn');
+      d.open.add(c.grp);
+      if (!root.querySelector('.pr[data-cid="' + c.id + '"]')) { d.ptq = ''; root.querySelector('.pt-q') && (root.querySelector('.pt-q').value = ''); }
+      rerenderPt(root, d);
+      const row = root.querySelector('.pr[data-cid="' + c.id + '"]'); if (row) row.classList.add('err');
+      focusPrice(root, c.id);
+      return;
+    }
+    products.push({ catalog_id: c.id, price });
   }
-  if (!checkDups(root, d)) { toast('Có sản phẩm bị trùng tên + đơn vị', 'warn'); return; }
   btn.disabled = true; btn.textContent = 'Đang lưu…';
   try {
     const { data, error } = await sb.rpc('save_store', { p: { id: e.id, name, phone: Core.clean(d.phone), address: Core.clean(d.address), lat: d.lat, lng: d.lng, products } });
@@ -1219,7 +1379,7 @@ function openCustomerForm(id) {
     name: c ? c.name : '', phone: c ? c.phone : '', address: c ? c.address : '',
     lat: c ? c.lat : null, lng: c ? c.lng : null, snapOn: !c, result: null,
     items: c && c.items.length
-      ? c.items.map(i => ({ key: Core.key(i.name, i.unit), name: i.name, unit: i.unit, qty: i.qty, qtyText: Core.fmtQty(i.qty) }))
+      ? c.items.map(i => ({ key: i.key, name: i.name, unit: i.unit, qty: i.qty, qtyText: Core.fmtQty(i.qty) }))
       : [emptyItem()]
   };
   S.editing = { type: 'customer', id: id || null, draft: d, dirty: false };
@@ -1256,7 +1416,7 @@ async function saveCustomer(btn) {
   if (cc.error) { toast(cc.error, 'warn'); return; }
   btn.disabled = true; btn.textContent = 'Đang lưu…';
   try {
-    const items = cc.items.map(i => ({ product_name: i.name, product_unit: i.unit, qty: i.qty }));
+    const items = cc.items.map(i => ({ catalog_id: i.key, qty: i.qty }));
     const { error } = await sb.rpc('save_customer', { p: { id: e.id, name, phone: Core.clean(d.phone), address: Core.clean(d.address), lat: d.lat, lng: d.lng, items } });
     if (error) throw error;
     toast('Đã lưu khách hàng "' + name + '"', 'ok');
@@ -1273,13 +1433,15 @@ async function saveCustomer(btn) {
 
 async function deleteCurrent(btn) {
   const e = S.editing; if (!e || !e.id) return;
-  const isStore = e.type === 'store';
-  const item = (isStore ? S.stores : S.customers).find(x => x.id === e.id);
+  const kind = e.type;
+  const table = kind === 'store' ? 'stores' : kind === 'cat' ? 'catalog' : 'customers';
+  const item = (kind === 'store' ? S.stores : kind === 'cat' ? S.cat : S.customers).find(x => x.id === e.id);
   const label = item ? item.name : '';
-  if (!confirm('Xóa ' + (isStore ? 'cửa hàng' : 'khách hàng') + ' "' + label + '"? Thao tác này không hoàn tác được.')) return;
+  const what = kind === 'store' ? 'cửa hàng' : kind === 'cat' ? 'sản phẩm khỏi danh mục' : 'khách hàng';
+  if (!confirm('Xóa ' + what + ' "' + label + '"? Thao tác này không hoàn tác được.')) return;
   btn.disabled = true;
   try {
-    const { error } = await sb.from(isStore ? 'stores' : 'customers').delete().eq('id', e.id);
+    const { error } = await sb.from(table).delete().eq('id', e.id);
     if (error) throw error;
     toast('Đã xóa "' + label + '"', 'ok');
     closeForm(true);
@@ -1294,7 +1456,7 @@ function handleWriteErr(er) {
     showLogin('Phiên đăng nhập đã hết hoặc tài khoản không có quyền sửa. Đăng nhập lại để tiếp tục — nội dung đang sửa vẫn được giữ.');
     return;
   }
-  toast(er.kind === 'schema' ? 'Chưa tạo cơ sở dữ liệu — hãy chạy file SQL' : er.msg, 'err');
+  toast(er.kind === 'schema' ? 'Cần chạy file bandovattu_danhmuc.sql trên Supabase' : er.msg, er.kind === 'fk' || er.kind === 'dup' ? 'warn' : 'err');
 }
 
 function closeForm(force) {
@@ -1305,6 +1467,117 @@ function closeForm(force) {
   $('#formView').hidden = true; $('#formView').innerHTML = '';
   $('#listView').hidden = false;
   renderList(); renderPins();
+}
+
+/* ================= Tab Danh mục (quản lý) ================= */
+function catUsage() {
+  const u = new Map();
+  const get = id => { let e = u.get(id); if (!e) u.set(id, e = { stores: 0, min: Infinity, max: -Infinity, customers: 0 }); return e; };
+  for (const s of S.stores) for (const p of s.products) { const e = get(p.cid); e.stores++; e.min = Math.min(e.min, p.price); e.max = Math.max(e.max, p.price); }
+  for (const c of S.customers) for (const i of c.items) get(i.key).customers++;
+  return u;
+}
+function renderCatList() {
+  const box = $('#list');
+  if (!S.cat.length) {
+    box.innerHTML = '<div class="empty"><span class="big">📦</span>Danh mục đang trống.<br>Chạy file <b>bandovattu_danhmuc.sql</b> trên Supabase để nạp sẵn danh mục, hoặc bấm <b>＋ Thêm</b>.</div>';
+    return;
+  }
+  const q = Core.fold(Core.clean(S.search)), use = catUsage();
+  const all = Core.sortCat(S.cat, S.grpRank);
+  const list = q ? all.filter(c => Core.fold(c.grp + ' ' + c.name + ' ' + c.unit + ' ' + c.spec).includes(q)) : all;
+  if (!list.length) { box.innerHTML = '<div class="empty">Không có sản phẩm phù hợp.</div>'; return; }
+  let h = '', g = null;
+  for (const c of list) {
+    if (c.grp !== g) {
+      g = c.grp;
+      const n = all.filter(x => x.grp === g);
+      h += '<div class="cat-grp"><span>' + esc(g) + '</span><span class="muted small">' + n.length + ' món</span></div>';
+    }
+    const grpAll = all.filter(x => x.grp === c.grp), idx = grpAll.indexOf(c);
+    const u = use.get(c.id);
+    const sold = u && u.stores ? u.stores + ' cửa hàng bán · ' + (u.min === u.max ? money(u.min) : money(u.min) + ' – ' + money(u.max)) + '/' + esc(c.unit) : 'Chưa có cửa hàng bán';
+    h += '<div class="catrow' + (c.hidden ? ' is-hidden' : '') + '">' +
+      '<button type="button" class="cat-main" data-cid="' + esc(c.id) + '"><span><b>' + esc(c.name) + '</b>' + (c.hidden ? '<span class="tag-hidden">đã ẩn</span>' : '') + '</span>' +
+      '<span class="meta">Đơn vị: ' + esc(c.unit) + (c.spec ? ' · ' + esc(c.spec) : '') + '</span>' +
+      '<span class="meta">' + sold + '</span></button>' +
+      '<span class="cat-move"><button type="button" class="mv-btn" data-cid="' + esc(c.id) + '" data-dir="-1" aria-label="Đưa ' + esc(c.name) + ' lên trên" title="Lên"' + (idx <= 0 ? ' disabled' : '') + '><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg></button>' +
+      '<button type="button" class="mv-btn" data-cid="' + esc(c.id) + '" data-dir="1" aria-label="Đưa ' + esc(c.name) + ' xuống dưới" title="Xuống"' + (idx >= grpAll.length - 1 ? ' disabled' : '') + '><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></span></div>';
+  }
+  box.innerHTML = h;
+}
+let moving = false;
+async function moveCat(cid, dir) {
+  const c = S.catById.get(cid); if (!c || moving) return;
+  const grp = Core.sortCat(S.cat.filter(x => x.grp === c.grp), S.grpRank);
+  const i = grp.indexOf(c), j = i + dir;
+  if (i < 0 || j < 0 || j >= grp.length) return;
+  const order = grp.slice(); [order[i], order[j]] = [order[j], order[i]];
+  const slots = grp.map(x => x.sort).sort((a, b) => a - b);
+  const distinct = slots.every((v, k) => k === 0 || v > slots[k - 1]);
+  const changes = order.map((x, k) => ({ x, s: distinct ? slots[k] : slots[0] + k })).filter(o => o.x.sort !== o.s);
+  changes.forEach(o => { o.old = o.x.sort; o.x.sort = o.s; });
+  indexCat(); renderCatList();
+  const again = $('#list .mv-btn[data-cid="' + cid + '"][data-dir="' + dir + '"]');
+  if (again && !again.disabled) again.focus(); else { const m = $('#list .cat-main[data-cid="' + cid + '"]'); if (m) m.focus(); }
+  moving = true;
+  try {
+    const res = await Promise.all(changes.map(o => sb.from('catalog').update({ sort: o.s }).eq('id', o.x.id)));
+    const bad = res.find(r => r && r.error); if (bad) throw bad.error;
+  } catch (err) {
+    changes.forEach(o => { o.x.sort = o.old; }); indexCat(); renderCatList();
+    handleWriteErr(dbErr(err));
+  } finally { moving = false; }
+}
+function openCatForm(id) {
+  const c = id ? S.catById.get(id) : null;
+  if (id && !c) return;
+  const u = (c && catUsage().get(c.id)) || { stores: 0, customers: 0 };
+  const used = u.stores + u.customers > 0;
+  const d = { grp: c ? c.grp : (S.search ? '' : ''), name: c ? c.name : '', unit: c ? c.unit : '', spec: c ? c.spec : '', hidden: c ? c.hidden : false };
+  S.editing = { type: 'cat', id: id || null, draft: d, dirty: false };
+  showFormView(
+    '<div class="form-head"><h2>' + (c ? 'Sửa sản phẩm trong danh mục' : 'Thêm sản phẩm vào danh mục') + '</h2></div>' +
+    (c ? '<div class="usage"><span class="' + (u.stores ? 'on' : '') + '">' + u.stores + ' cửa hàng đang bán</span><span>' + u.customers + ' khách có trong giỏ</span></div>' : '') +
+    '<label class="fld">Nhóm<input class="k-grp" list="dlGroups" value="' + esc(d.grp) + '" placeholder="VD: Xi măng (bỏ trống = Khác)" maxlength="40" autocomplete="off"></label>' +
+    '<label class="fld">Tên sản phẩm *<input class="k-name" value="' + esc(d.name) + '" maxlength="120" autocomplete="off"></label>' +
+    '<div class="np-row"><label class="fld">Đơn vị *<input class="k-unit" list="dlUnits" value="' + esc(d.unit) + '" maxlength="20" autocomplete="off"></label>' +
+    '<label class="fld">Quy cách<input class="k-spec" value="' + esc(d.spec) + '" placeholder="VD: bao 50kg" maxlength="60" autocomplete="off"></label></div>' +
+    (c && u.stores ? '<p class="hint" style="margin:-2px 0 10px">Đổi tên / quy cách: mọi cửa hàng và giỏ hàng tự đổi theo. Đổi <b>đơn vị</b> thì giá của ' + u.stores + ' cửa hàng vẫn giữ con số cũ — nhớ kiểm tra lại.</p>' : '') +
+    (c ? '<label class="chk" style="margin-bottom:6px"><input type="checkbox" class="k-hidden"' + (d.hidden ? ' checked' : '') + '> Ẩn sản phẩm này</label>' +
+         '<p class="hint" style="margin:0 0 10px">Món đã ẩn không hiện trong bảng giá khi tạo cửa hàng mới; cửa hàng đang bán vẫn giữ giá và vẫn được tính khi gợi ý.</p>' : '') +
+    '<div class="form-actions">' +
+    (c ? '<button type="button" class="btn danger btn-delete"' + (used ? ' disabled title="Đang được dùng — chỉ có thể ẩn"' : '') + '>Xóa</button>' : '') +
+    '<span class="sp"></span><button type="button" class="btn btn-cancel">Hủy</button><button type="button" class="btn primary btn-save">Lưu</button></div>' +
+    (c && used ? '<p class="hint" style="margin-top:0">Không xóa được vì đang có cửa hàng hoặc khách hàng dùng — hãy dùng "Ẩn".</p>' : ''));
+  setTimeout(() => { const f = $('#formView ' + (c ? '.k-name' : '.k-grp')); if (f) f.focus(); }, 50);
+}
+async function saveCat(btn) {
+  const root = $('#formView'), e = S.editing, d = e.draft;
+  const grp = Core.clean(d.grp) || 'Khác', name = Core.clean(d.name), unit = Core.clean(d.unit), spec = Core.clean(d.spec);
+  if (!name) { toast('Cần nhập tên sản phẩm', 'warn'); root.querySelector('.k-name').focus(); return; }
+  if (!unit) { toast('Cần nhập đơn vị tính', 'warn'); root.querySelector('.k-unit').focus(); return; }
+  const dup = S.cat.find(x => x.id !== e.id && Core.key(x.name, x.unit) === Core.key(name, unit));
+  if (dup) { toast('Đã có trong danh mục: ' + dup.name + ' (' + dup.unit + ') — nhóm ' + dup.grp + (dup.hidden ? ' (đang ẩn)' : ''), 'warn'); root.querySelector('.k-name').focus(); return; }
+  const old = e.id ? S.catById.get(e.id) : null;
+  if (old && old.unit.toLowerCase() !== unit.toLowerCase()) {
+    const u = catUsage().get(old.id);
+    if (u && u.stores && !confirm('Đổi đơn vị "' + old.unit + '" → "' + unit + '" áp dụng cho giá của ' + u.stores + ' cửa hàng (con số giá giữ nguyên). Tiếp tục?')) return;
+  }
+  const row = { grp, name, unit, spec, hidden: !!d.hidden };
+  if (!old || old.grp !== grp) row.sort = nextSort(grp);
+  btn.disabled = true; btn.textContent = 'Đang lưu…';
+  try {
+    const { error } = old ? await sb.from('catalog').update(row).eq('id', old.id) : await sb.from('catalog').insert(row);
+    if (error) throw error;
+    toast((old ? 'Đã lưu "' : 'Đã thêm "') + name + '" ' + (old ? '' : 'vào danh mục'), 'ok');
+    closeForm(true);
+    await loadData(true);
+  } catch (err) {
+    const er = dbErr(err);
+    if (er.kind === 'dup') toast(er.msg, 'warn'); else handleWriteErr(er);
+    btn.disabled = false; btn.textContent = 'Lưu';
+  }
 }
 
 /* ================= Chi tiết cửa hàng (chế độ xem) ================= */
@@ -1322,7 +1595,8 @@ function renderDetail() {
     (s.address ? '<p class="muted">' + esc(s.address) + '</p>' : '') +
     '<p class="muted small">Giá cập nhật ' + Core.date(s.price_updated_at) + '</p>' +
     '<table class="ptable"><thead><tr><th>Sản phẩm</th><th>ĐVT</th><th class="num">Giá</th></tr></thead><tbody>' +
-    (s.products.length ? s.products.map(p => '<tr><td>' + esc(p.name) + '</td><td>' + esc(p.unit) + '</td><td class="num">' + money(p.price) + '</td></tr>').join('')
+    (s.products.length ? (() => { let g = null; return s.products.map(p => (p.grp !== g ? '<tr class="pt-grp"><td colspan="3">' + esc(g = p.grp) + '</td></tr>' : '') +
+      '<tr><td>' + esc(p.name) + '</td><td>' + esc(p.unit) + '</td><td class="num">' + money(p.price) + '</td></tr>').join(''); })()
       : '<tr><td colspan="3" class="muted">Chưa có sản phẩm</td></tr>') +
     '</tbody></table>' +
     '<a class="btn primary block" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=' + s.lat + ',' + s.lng + '">🧭 Chỉ đường (Google Maps)</a></div>');
@@ -1419,7 +1693,7 @@ function renderResult(box, R) {
   h += '</div>';
   if (!c) {
     const sold = new Set();
-    S.stores.forEach(s => s.products.forEach(p => sold.add(Core.key(p.name, p.unit))));
+    S.stores.forEach(s => s.products.forEach(p => sold.add(p.cid)));
     const nowhere = R.cart.filter(i => !sold.has(i.key));
     h += '<div class="alert"><b>Không cửa hàng nào bán đủ mọi món.</b> ' +
       (nowhere.length ? 'Không nơi nào bán: ' + esc(nowhere.map(i => i.name + ' (' + i.unit + ')').join(', ')) + '.'
@@ -1487,7 +1761,9 @@ document.addEventListener('click', ev => {
   const cx = ctx(t);
 
   if (t.classList.contains('tab')) { switchTab(t.dataset.tab); return; }
-  if (t.id === 'btnAdd') { S.tab === 'customers' ? openCustomerForm(null) : openStoreForm(null); return; }
+  if (t.id === 'btnAdd') { S.tab === 'customers' ? openCustomerForm(null) : S.tab === 'catalog' ? openCatForm(null) : openStoreForm(null); return; }
+  if (t.classList.contains('cat-main')) { openCatForm(t.dataset.cid); return; }
+  if (t.classList.contains('mv-btn')) { moveCat(t.dataset.cid, +t.dataset.dir); return; }
   if (t.classList.contains('card')) {
     const id = t.dataset.id;
     if (t.dataset.kind === 'store') { if (isAdmin()) openStoreForm(id); else openDetail(id); }
@@ -1497,7 +1773,7 @@ document.addEventListener('click', ev => {
   if (t.dataset.store) { focusStore(t.dataset.store); return; }
   if (t.classList.contains('btn-back')) { closeDetail(); return; }
   if (t.classList.contains('btn-cancel')) { closeForm(false); return; }
-  if (t.classList.contains('btn-save')) { S.editing.type === 'store' ? saveStore(t) : saveCustomer(t); return; }
+  if (t.classList.contains('btn-save')) { const k = S.editing.type; k === 'store' ? saveStore(t) : k === 'cat' ? saveCat(t) : saveCustomer(t); return; }
   if (t.classList.contains('btn-delete')) { deleteCurrent(t); return; }
   if (!cx) return;
   const { root, d } = cx;
@@ -1513,14 +1789,20 @@ document.addEventListener('click', ev => {
     d.items.splice(+t.closest('.crow').dataset.i, 1);
     if (!d.items.length) d.items.push(emptyItem());
     rerenderCart(root, d); markDirty(d); invalidateResult(d);
-  } else if (t.classList.contains('p-add')) {
-    d.products.push({ name: '', unit: '', price: null });
-    root.querySelector('.prod-box').outerHTML = prodBoxHTML(d); checkDups(root, d); markDirty(d);
-    const rows = $$('.prow', root); rows[rows.length - 1].querySelector('input').focus();
-  } else if (t.classList.contains('p-del')) {
-    d.products.splice(+t.closest('.prow').dataset.i, 1);
-    if (!d.products.length) d.products.push({ name: '', unit: '', price: null });
-    root.querySelector('.prod-box').outerHTML = prodBoxHTML(d); checkDups(root, d); markDirty(d);
+  } else if (t.classList.contains('pg-head')) {
+    const sec = t.closest('.pg'), g = sec.dataset.grp, open = !sec.classList.contains('open');
+    if (open) d.open.add(g); else d.open.delete(g);
+    sec.classList.toggle('open', open); t.setAttribute('aria-expanded', String(open));
+  } else if (t.classList.contains('np-open')) {
+    const fromSearch = Core.clean(d.ptq);
+    d.np = { grp: '', name: fromSearch, unit: '', spec: '' };
+    root.querySelector('.np').outerHTML = newProdHTML(d);
+    root.querySelector(fromSearch ? '.np-unit' : '.np-grp').focus();
+  } else if (t.classList.contains('np-cancel')) {
+    d.np = null; root.querySelector('.np').outerHTML = newProdHTML(d);
+    root.querySelector('.np-open').focus();
+  } else if (t.classList.contains('np-save')) {
+    addNewProduct(root, d, t);
   }
 });
 
@@ -1538,13 +1820,17 @@ document.addEventListener('input', ev => {
     it.qtyText = t.value; it.qty = Core.parseQty(t.value);
     t.classList.toggle('invalid', Number.isNaN(it.qty) || it.qty === 0);
     markDirty(d); invalidateResult(d);
-  } else if (t.classList.contains('p-name') || t.classList.contains('p-unit') || t.classList.contains('p-price')) {
-    const p = d.products[+t.closest('.prow').dataset.i];
-    if (t.classList.contains('p-name')) p.name = t.value;
-    else if (t.classList.contains('p-unit')) p.unit = t.value;
-    else p.price = Core.parsePrice(t.value);
-    t.closest('.prow').classList.remove('err');
-    checkDups(root, d); markDirty(d);
+  } else if (t.classList.contains('pr-price')) {
+    const row = t.closest('.pr'), cid = row.dataset.cid, v = Core.parsePrice(t.value);
+    if (v == null) d.prices.delete(cid); else d.prices.set(cid, v);
+    row.classList.toggle('on', v != null); row.classList.remove('err');
+    refreshPtCounts(root, d); markDirty(d);
+  } else if (t.classList.contains('pt-q')) {
+    d.ptq = t.value; rerenderPt(root, d);
+  } else if (t.classList.contains('np-grp') || t.classList.contains('np-name') || t.classList.contains('np-unit') || t.classList.contains('np-spec')) {
+    d.np[t.className.match(/np-(grp|name|unit|spec)/)[1]] = t.value;
+  } else if (/\bk-(grp|name|unit|spec)\b/.test(t.className)) {
+    d[t.className.match(/\bk-(grp|name|unit|spec)\b/)[1]] = t.value; markDirty(d);
   }
 });
 
@@ -1563,19 +1849,14 @@ document.addEventListener('change', ev => {
     row.querySelector('.c-info').innerHTML = cartInfo(it);
     if (it.key && !it.qtyText) { it.qtyText = '1'; it.qty = 1; row.querySelector('.c-qty').value = '1'; }
     markDirty(d); invalidateResult(d);
-  } else if (t.classList.contains('p-name')) {
-    // Tự điền đơn vị nếu tên này chỉ có 1 đơn vị trong danh sách tổng
-    const p = d.products[+t.closest('.prow').dataset.i];
-    if (!Core.clean(p.unit)) {
-      const units = S.catalog.filter(c => c.name.toLowerCase() === Core.clean(p.name).toLowerCase());
-      if (units.length === 1) { p.unit = units[0].unit; t.closest('.prow').querySelector('.p-unit').value = p.unit; checkDups(root, d); }
-    }
+  } else if (t.classList.contains('k-hidden')) {
+    d.hidden = t.checked; markDirty(d);
   }
 });
 
 document.addEventListener('focusout', ev => {
   const t = ev.target;
-  if (t.classList && t.classList.contains('p-price')) {
+  if (t.classList && t.classList.contains('pr-price')) {
     const v = Core.parsePrice(t.value); t.value = v == null ? '' : Core.digits(v);
   } else if (t.classList && t.classList.contains('c-qty')) {
     const v = Core.parseQty(t.value);
@@ -1584,6 +1865,18 @@ document.addEventListener('focusout', ev => {
 });
 
 document.addEventListener('keydown', ev => {
+  if (ev.key === 'Enter' && ev.target.closest && ev.target.closest('.np-form')) {
+    ev.preventDefault();
+    const b = ev.target.closest('.np-form').querySelector('.np-save'); if (b && !b.disabled) b.click();
+    return;
+  }
+  if (ev.key === 'Enter' && ev.target.classList && ev.target.classList.contains('pr-price')) {
+    // Enter ở ô giá → nhảy xuống ô giá kế tiếp
+    ev.preventDefault();
+    const all = $$('#formView .pg.open .pr-price'), i = all.indexOf(ev.target);
+    if (i >= 0 && all[i + 1]) all[i + 1].focus();
+    return;
+  }
   if (ev.key === 'Enter' && ev.target.classList && ev.target.classList.contains('f-addr')) {
     ev.preventDefault();
     const btn = ev.target.parentElement.querySelector('.btn-geo'); if (btn && !btn.disabled) btn.click();
