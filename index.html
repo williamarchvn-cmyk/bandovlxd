@@ -647,14 +647,18 @@ function initMap() {
 
   // Nhấp đúp / chạm 2 lần (trang xem) → ghim vị trí của bạn + mở tab tìm cửa hàng
   // Tự nhận diện 2 lần bấm liên tiếp để chạy giống nhau trên chuột lẫn màn hình cảm ứng
-  let lastTap = null;
+  // Bấm 1 lần (trang xem) → xóa ghim vị trí của bạn (chờ xem có phải nhấp đúp không rồi mới xóa)
+  let lastTap = null, singleTimer = null;
   map.on('click', e => {
     if (!isAdmin()) {
       const now = Date.now();
+      clearTimeout(singleTimer);
       if (lastTap && now - lastTap.t < 450 && lastTap.p.distanceTo(e.containerPoint) < 30) {
         lastTap = null; lookupAt(e.latlng); return;
       }
       lastTap = { t: now, p: e.containerPoint };
+      singleTimer = setTimeout(() => { lastTap = null; clearLookupPin(); }, 460);
+      return;
     }
     const d = clickDraft();
     if (d) setDraftLocation(d, e.latlng.lat, e.latlng.lng);
@@ -780,7 +784,7 @@ function placeEditMarker() {
 function updateLocUI(d) {
   const root = rootFor(d); if (!root) return;
   const el = root.querySelector('.loc-text'); if (!el) return;
-  if (d.lat == null) { el.textContent = 'Chưa có vị trí — bấm "Đặt vị trí", tìm địa chỉ, hoặc bấm lên bản đồ.'; el.classList.remove('set'); }
+  if (d.lat == null) { el.textContent = 'Chưa có vị trí — bấm "Đặt vị trí", tìm địa chỉ, hoặc ' + (d === S.lookup ? 'nhấp đúp lên bản đồ.' : 'bấm lên bản đồ.'); el.classList.remove('set'); }
   else { el.textContent = '📍 ' + d.lat.toFixed(6) + ', ' + d.lng.toFixed(6); el.classList.add('set'); }
 }
 function setSnapNote(d, text) {
@@ -837,11 +841,11 @@ async function doGeocode(d, btn) {
     const wait = 1100 - (Date.now() - lastGeo); if (wait > 0) await sleep(wait);
     lastGeo = Date.now();
     const r = await fetchJSON(NOMINATIM + '?format=jsonv2&limit=1&countrycodes=vn&accept-language=vi&q=' + encodeURIComponent(q), 10000);
-    if (!Array.isArray(r) || !r.length) { toast('Không tìm được địa chỉ — hãy bấm lên bản đồ để đặt vị trí', 'warn'); return; }
+    if (!Array.isArray(r) || !r.length) { toast('Không tìm được địa chỉ — hãy ' + (d === S.lookup ? 'nhấp đúp' : 'bấm') + ' lên bản đồ để đặt vị trí', 'warn'); return; }
     setDraftLocation(d, +r[0].lat, +r[0].lon, { fly: true });
     toast('Đã tìm thấy: ' + String(r[0].display_name || '').split(',').slice(0, 3).join(','), 'ok');
   } catch (e) {
-    toast('Không tìm được địa chỉ (lỗi mạng) — hãy bấm lên bản đồ để đặt vị trí', 'err');
+    toast('Không tìm được địa chỉ (lỗi mạng) — hãy ' + (d === S.lookup ? 'nhấp đúp' : 'bấm') + ' lên bản đồ để đặt vị trí', 'err');
   } finally { btn.disabled = false; btn.textContent = old; }
 }
 
@@ -1016,7 +1020,7 @@ function locHTML(d, legend) {
     '<div class="loc-text"></div>' +
     '<label class="chk"><input type="checkbox" class="snap-chk"' + (d.snapOn ? ' checked' : '') + '> Tự bám vào đường gần nhất</label>' +
     '<div class="snap-note muted small"></div>' +
-    '<p class="hint">Mẹo: kéo ghim để chỉnh, hoặc bấm thẳng lên bản đồ.</p></fieldset>';
+    '<p class="hint">' + (d === S.lookup ? 'Mẹo: kéo ghim để chỉnh · nhấp đúp chỗ khác để dời ghim · bấm 1 lần lên bản đồ để xóa ghim.' : 'Mẹo: kéo ghim để chỉnh, hoặc bấm thẳng lên bản đồ.') + '</p></fieldset>';
 }
 function cartOptions(it) {
   let h = '<option value="">— Chọn sản phẩm —</option>', found = false;
@@ -1667,6 +1671,18 @@ $('#panelHideM').addEventListener('click', () => { setPanel(false); $('#panelTog
 document.body.addEventListener('transitionend', e => {
   if (e.target === document.body && hasMap) map.invalidateSize();
 });
+
+/* ---------- Xóa ghim vị trí (bấm 1 lần lên bản đồ, trang xem) ---------- */
+function clearLookupPin() {
+  const d = S.lookup;
+  if (isAdmin() || S.editing || d.lat == null) return;
+  snapToken++;
+  invalidateResult(d);
+  d.lat = null; d.lng = null;
+  removeEditMarker();
+  updateLocUI(d); setSnapNote(d, '');
+  toast('Đã xóa ghim vị trí — nhấp đúp lên bản đồ để ghim lại', 'ok');
+}
 
 /* ---------- Ghim vị trí từ bản đồ (nhấp đúp) ---------- */
 function lookupAt(latlng) {
